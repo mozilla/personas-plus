@@ -7,7 +7,7 @@ XPI            = $(DIST)$(NAME)-$(VERSION).xpi
 NAME    = personas-plus
 VERSION = $(shell sed -rn 's,.*<em:version>(.*)</em:version>,\1,p; /em:version/q' <$(EXTENSION_ROOT)install.rdf)
 
-FILE_EXTENSIONS = jpg dtd js png properties xml xul
+FILE_EXTENSIONS = jpg css dtd js png properties xml xul
 
 # Oh GNU make...
 space :=
