@@ -1,0 +1,20 @@
+<!ENTITY personas_app_title "Personas">
+<!ENTITY useDefaultPersona.label "Lehentsia">
+<!ENTITY preferences.label "Hobespenak…">
+<!ENTITY viewDirectory.label "Ikusi galeria…">
+<!ENTITY customPersona.label "Pertsonalizatutako Persona">
+<!ENTITY customName.label "Izena:">
+<!ENTITY header.label "Burua:">
+<!ENTITY selectBackground.label "Arakatu…">
+<!ENTITY footer.label "Oina:">
+<!ENTITY textColorPicker.label "Testu kolorea:">
+<!ENTITY accentColorPicker.label "Azentu kolorea:">
+<!ENTITY useDefaultColor.label "Erabili lehenetsia">
+<!ENTITY okButton.label "Ados">
+<!ENTITY contextHomePage.label "Etxe orrialdea">
+<!ENTITY contextPreferences.label "Ezarpenak">
+<!ENTITY contextEdit.label "Editatu">
+<!ENTITY contextApply.label "Ezarri">
+<!ENTITY usePersona.label "Use Persona">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Use this Persona">

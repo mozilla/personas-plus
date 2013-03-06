@@ -1,0 +1,20 @@
+<!ENTITY personas_app_title "Personas">
+<!ENTITY useDefaultPersona.label "Varsayılan">
+<!ENTITY preferences.label "Tercihler...">
+<!ENTITY viewDirectory.label "Dizini Göster...">
+<!ENTITY customPersona.label "Varsayılan Kişi">
+<!ENTITY customName.label "İsim:">
+<!ENTITY header.label "Başlık:">
+<!ENTITY selectBackground.label "Tara...">
+<!ENTITY footer.label "Sayfa Altlığı">
+<!ENTITY textColorPicker.label "Metin Rengi:">
+<!ENTITY accentColorPicker.label "Vurgu Rengi:">
+<!ENTITY useDefaultColor.label "Varsayılanı Kullan">
+<!ENTITY okButton.label "TAMAM">
+<!ENTITY contextHomePage.label "Ana Sayfa">
+<!ENTITY contextPreferences.label "Ayarlar">
+<!ENTITY contextEdit.label "Düzenle">
+<!ENTITY contextApply.label "Uygula">
+<!ENTITY usePersona.label "Use Persona">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Use this Persona">

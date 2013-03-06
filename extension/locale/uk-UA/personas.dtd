@@ -1,0 +1,20 @@
+<!ENTITY personas_app_title "Персони">
+<!ENTITY useDefaultPersona.label "Типовий">
+<!ENTITY preferences.label "Налаштування">
+<!ENTITY viewDirectory.label "Переглянути галерею">
+<!ENTITY customPersona.label "Моя Персона">
+<!ENTITY customName.label "Ім`я:">
+<!ENTITY header.label "Верхній колонтитул:">
+<!ENTITY selectBackground.label "Вибрати…">
+<!ENTITY footer.label "Нижній колонтитул:">
+<!ENTITY textColorPicker.label "Колір Тексту:">
+<!ENTITY accentColorPicker.label "Наголошений колір:">
+<!ENTITY useDefaultColor.label "Використовувати типовий">
+<!ENTITY okButton.label "Гаразд">
+<!ENTITY contextHomePage.label "Домашня сторінка">
+<!ENTITY contextPreferences.label "Налаштування">
+<!ENTITY contextEdit.label "Редагувати">
+<!ENTITY contextApply.label "Прийняти">
+<!ENTITY usePersona.label "Use Persona">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Use this Persona">

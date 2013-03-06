@@ -1,0 +1,20 @@
+<!ENTITY personas_app_title "Personas">
+<!ENTITY useDefaultPersona.label "Основно">
+<!ENTITY preferences.label "Подесувања…">
+<!ENTITY viewDirectory.label "Погледни ја галеријата…">
+<!ENTITY customPersona.label "Споствена персона">
+<!ENTITY customName.label "Име:">
+<!ENTITY header.label "Хедер:">
+<!ENTITY selectBackground.label "Пронајди…">
+<!ENTITY footer.label "Футер:">
+<!ENTITY textColorPicker.label "Боја на текстот:">
+<!ENTITY accentColorPicker.label "Боја на акцент:">
+<!ENTITY useDefaultColor.label "Користи ги основните">
+<!ENTITY okButton.label "OK">
+<!ENTITY contextHomePage.label "Домашна страна">
+<!ENTITY contextPreferences.label "Сетинзи">
+<!ENTITY contextEdit.label "Измени">
+<!ENTITY contextApply.label "Користи">
+<!ENTITY usePersona.label "Use Persona">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Use this Persona">

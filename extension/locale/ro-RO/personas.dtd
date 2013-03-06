@@ -1,0 +1,20 @@
+<!ENTITY personas_app_title "Personas">
+<!ENTITY useDefaultPersona.label "Predefinită">
+<!ENTITY preferences.label "Opţiuni">
+<!ENTITY viewDirectory.label "Vizualizează galeria">
+<!ENTITY customPersona.label "Personalizare temă">
+<!ENTITY customName.label "Denumire:">
+<!ENTITY header.label "Antet:">
+<!ENTITY selectBackground.label "Răsfoieşte...">
+<!ENTITY footer.label "Subsol:">
+<!ENTITY textColorPicker.label "Culoare text:">
+<!ENTITY accentColorPicker.label "Culoare evidenţiere:">
+<!ENTITY useDefaultColor.label "Iniţializează">
+<!ENTITY okButton.label "Ieşire">
+<!ENTITY contextHomePage.label "Pagină iniţială">
+<!ENTITY contextPreferences.label "Configurare">
+<!ENTITY contextEdit.label "Editează">
+<!ENTITY contextApply.label "Aplică">
+<!ENTITY usePersona.label "Foloseşte tema">
+<!ENTITY usePersona.accesskey "F">
+<!ENTITY usePersona.tooltip "Foloseşte această temă">

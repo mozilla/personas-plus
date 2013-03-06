@@ -1,0 +1,20 @@
+<!ENTITY personas_app_title "Personas">
+<!ENTITY useDefaultPersona.label "Predeterminado">
+<!ENTITY preferences.label "Preferencias">
+<!ENTITY viewDirectory.label "Ver galería">
+<!ENTITY customPersona.label "Mi Persona">
+<!ENTITY customName.label "Nombre:">
+<!ENTITY header.label "Imagen superior:">
+<!ENTITY selectBackground.label "Navegar...">
+<!ENTITY footer.label "Imagen inferior:">
+<!ENTITY textColorPicker.label "Color de texto:">
+<!ENTITY accentColorPicker.label "Color remarcado:">
+<!ENTITY useDefaultColor.label "Usar predeterminado">
+<!ENTITY okButton.label "Aceptar">
+<!ENTITY contextHomePage.label "Página principal">
+<!ENTITY contextPreferences.label "Configuración">
+<!ENTITY contextEdit.label "Editar">
+<!ENTITY contextApply.label "Aplicar">
+<!ENTITY usePersona.label "Usar Persona">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Usar esta Persona">

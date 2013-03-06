@@ -1,0 +1,8 @@
+<!ENTITY preferences.title "Nastavení">
+<!ENTITY generalSettings.label "Obecné">
+<!ENTITY previewEnabled.label "Zobrazit náhled při výběru z nabídky">
+<!ENTITY displaySettings.label "Zobrazení">
+<!ENTITY useTextColor.label "Použít barvy textu">
+<!ENTITY useAccentColor.label "Použít barvy akcentu">
+<!ENTITY advancedSettings.label "Pokročilé">
+<!ENTITY showCustomMenu.label "Zobrazit vlastní personu v nabídce">

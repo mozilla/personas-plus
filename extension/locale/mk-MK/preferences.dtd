@@ -1,0 +1,8 @@
+<!ENTITY preferences.title "Подесувања на Персони">
+<!ENTITY generalSettings.label "Главно">
+<!ENTITY previewEnabled.label "Прижаи ја персоната кога се избира од менито">
+<!ENTITY displaySettings.label "Изглед">
+<!ENTITY useTextColor.label "Користи боја на текст">
+<!ENTITY useAccentColor.label "Користи акцент боја">
+<!ENTITY advancedSettings.label "Напредно">
+<!ENTITY showCustomMenu.label "Прикажи го 'Своја Персона' менито">

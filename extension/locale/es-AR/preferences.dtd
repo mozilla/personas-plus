@@ -1,0 +1,8 @@
+<!ENTITY preferences.title "Preferencias de Personas">
+<!ENTITY generalSettings.label "General">
+<!ENTITY previewEnabled.label "Mostrar previsualización cuando seleccione desde el menú">
+<!ENTITY displaySettings.label "Mostrar">
+<!ENTITY useTextColor.label "Usar color de texto">
+<!ENTITY useAccentColor.label "Usar color remarcado">
+<!ENTITY advancedSettings.label "Avanzado">
+<!ENTITY showCustomMenu.label "Mostrar Mi Persona en el menú">

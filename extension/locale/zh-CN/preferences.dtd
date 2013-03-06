@@ -1,0 +1,8 @@
+<!ENTITY preferences.title "风格选项">
+<!ENTITY generalSettings.label "常规">
+<!ENTITY previewEnabled.label "从菜单中选择时显示预览">
+<!ENTITY displaySettings.label "显示">
+<!ENTITY useTextColor.label "使用文字颜色">
+<!ENTITY useAccentColor.label "使用加重颜色">
+<!ENTITY advancedSettings.label "高级">
+<!ENTITY showCustomMenu.label "在菜单中显示自定义风格">

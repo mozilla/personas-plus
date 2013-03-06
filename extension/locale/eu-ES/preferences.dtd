@@ -1,0 +1,8 @@
+<!ENTITY preferences.title "Personas hobespenak">
+<!ENTITY generalSettings.label "Orokorra">
+<!ENTITY previewEnabled.label "Bistarazi aurreikuspena menuan hautatzean">
+<!ENTITY displaySettings.label "Bistarazi">
+<!ENTITY useTextColor.label "Erabili testu kolorea">
+<!ENTITY useAccentColor.label "Erabili azentu kolorea">
+<!ENTITY advancedSettings.label "Aurreratua">
+<!ENTITY showCustomMenu.label "Ikusi Persona pertsonalizatuak menuan">

@@ -1,0 +1,8 @@
+<!ENTITY preferences.title "Personas beállítások">
+<!ENTITY generalSettings.label "Általános">
+<!ENTITY previewEnabled.label "Előnézet megjelenítése kiválasztáskor">
+<!ENTITY displaySettings.label "Megjelenítés">
+<!ENTITY useTextColor.label "Szövegszín használata">
+<!ENTITY useAccentColor.label "Másodlagos szín használata">
+<!ENTITY advancedSettings.label "Speciális">
+<!ENTITY showCustomMenu.label "Egyéni Persona megjelenítése a menüben">

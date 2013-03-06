@@ -1,0 +1,204 @@
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Personas.
+ *
+ * The Initial Developer of the Original Code is Mozilla.
+ * Portions created by the Initial Developer are Copyright (C) 2007
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *   Chris Beard <cbeard@mozilla.org>
+ *   Myk Melez <myk@mozilla.org>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+
+/* Note: pan-OS styles live in the content/personas.css stylesheet. */
+
+
+/******************************************************************************/
+/* Header */
+
+#main-window[persona] {
+  -moz-appearance: none;
+}
+
+#main-window[persona] #navigator-toolbox toolbar {
+  -moz-appearance: none;
+  background-color: transparent;
+  background-image: none; 
+}
+
+#main-window[persona] #nav-bar {
+  /* When we set -moz-appearance: none so the persona will appear, the toolbar
+   * gains 1px tall top and bottom borders.  This causes the toolbar to become
+   * 2px bigger overall, which would make content jump down two pixels.
+   * To prevent that jump, we remove the top and bottom borders, matching their
+   * state in the default theme with -moz-appearance: -moz-mac-unified-toolbar.
+   */
+  border-top: none;
+  border-bottom: none;
+}
+
+#main-window[persona] #PersonalToolbar {
+  /* The personal (a.k.a. bookmarks) toolbar doesn't have a -moz-appearance,
+   * but it does have top and bottom borders, which we simply hide by setting
+   * their color to transparent.  Note that the bottom border is set via both
+   * border-bottom-color and -moz-border-bottom-colors in the default theme.
+   * The latter appears to override the former, so we probably only need to set
+   * -moz-border-bottom-colors to transparent, but we set them both anyway
+   * just in case.
+   */
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  -moz-border-bottom-colors: transparent;
+}
+
+/* Gray out the window slightly when it's not active. */
+#main-window[persona]:not([active="true"]) > #navigator-toolbox > toolbar,
+#main-window[persona]:not([active="true"]) > #navigator-toolbox > #nav-bar,
+#main-window[persona]:not([active="true"]) > #navigator-toolbox > #PersonalToolbar {
+  -moz-appearance: none;
+  background-image: none; 
+  background-color: transparent; 
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  -moz-border-bottom-colors: transparent;
+}
+
+/* Change the toolbarbutton icons for the default toolbarbuttons when a persona
+ * is active.  Firefox applies its version of Toolbar.png to all toolbarbuttons
+ * with class toolbarbutton-1, but we can't simply do the same, since extensions
+ * frequently apply that class to their toolbarbuttons, and our rule can
+ * override the extensions' rules, causing our Toolbar.png to appear in place
+ * of their icons (see bug 482318).  Instead we have to apply our icons to each
+ * default toolbarbutton individually. */
+#main-window[persona] #back-button,
+#main-window[persona] #forward-button,
+#main-window[persona] #reload-button,
+#main-window[persona] #stop-button,
+#main-window[persona] #print-button,
+#main-window[persona] #downloads-button,
+#main-window[persona] #history-button,
+#main-window[persona] #bookmarks-button,
+#main-window[persona] #new-tab-button,
+#main-window[persona] #new-window-button,
+#main-window[persona] #cut-button,
+#main-window[persona] #copy-button,
+#main-window[persona] #paste-button,
+#main-window[persona] #back-forward-dropmarker {
+  list-style-image: url("chrome://personas/skin/Toolbar.png");
+}
+
+/* The Home button gets styled specially when placed on the Bookmarks Toolbar.
+ * There it takes on the appearance of a bookmark.  And we don't want to hork
+ * that.  So here we only apply the persona-specific style when the button
+ * is not a bookmark item. */
+#main-window[persona] #home-button:not(.bookmark-item) {
+  list-style-image: url("chrome://personas/skin/Toolbar.png");
+}
+
+/* Eliminate text shadows from toolbarbutton and tab text so it doesn't create
+ * an unnatural color stroke on the bottom half of the text. */
+#main-window[persona] .toolbarbutton-text-shadow,
+#main-window[persona] .tab-text-shadow {
+  display: none;
+}
+
+#main-window[persona] .tabbrowser-tabs {
+  -moz-appearance: none;
+  background-image: none; 
+  background-color: transparent;
+}
+
+#main-window[persona] .tabbrowser-strip {
+  -moz-appearance: none;
+  background-image: url(chrome://personas/skin/tabbrowser-tabs-bkgnd.png);
+  background-color: transparent; 
+}
+
+#main-window[persona] .tabbrowser-tab {
+  /*opacity: 0.6;*/
+}
+
+#main-window[persona] .tabbrowser-tab[selected="true"],
+#main-window[persona] .tabbrowser-tab:hover {
+  opacity: 0.8;
+}
+
+#main-window[persona] .tabbrowser-tab:not([selected="true"]),
+#main-window[persona] .tab-text {
+  font-weight: normal !important;
+}
+
+
+/******************************************************************************/
+/* Make some elements a little transparent so the persona flavors their look. */
+#main-window[persona] #urlbar,
+#main-window[persona] #searchbar {
+  opacity: 0.8;
+}
+
+#main-window[persona] .toolbarbutton-1, #back-forward-dropmarker {
+  /*opacity: 0.9;*/
+}
+
+#main-window[persona] toolbarbutton.bookmark-item {
+  -moz-appearance: none;
+  background-color: transparent;
+}
+
+#main-window[persona] .findbar-find-next,
+#main-window[persona] .findbar-find-previous,
+#main-window[persona] .findbar-highlight {
+  background: url("chrome://personas/skin/white-gray-gradient.png") repeat-x top center;
+  color: inherit !important;
+}
+
+#main-window[persona] .findbar-container > toolbarbutton:not([disabled]):hover:active,
+#main-window[persona] .findbar-container > hbox > toolbarbutton:not([disabled]):hover:active {
+  background-image: url("chrome://personas/skin/white-gray-gradient-active.png");
+  color: inherit !important;
+}
+
+#main-window[persona] .findbar-container > toolbarbutton[disabled],
+#main-window[persona] .findbar-container > hbox > toolbarbutton[disabled] {
+  opacity: 0.5;
+}
+
+
+/******************************************************************************/
+/* Footer */
+
+#browser-bottombox[persona] statusbar {
+  border-top-width: 1px !important;
+  border-top-color: transparent !important;
+}
+
+#browser-bottombox[persona] #FindToolbar {
+  border-top-width: 1px;
+  border-top-color: transparent;
+}

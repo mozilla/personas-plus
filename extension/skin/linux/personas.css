@@ -1,0 +1,112 @@
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Personas.
+ *
+ * The Initial Developer of the Original Code is Mozilla.
+ * Portions created by the Initial Developer are Copyright (C) 2007
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *   Chris Beard <cbeard@mozilla.org>
+ *   Myk Melez <myk@mozilla.org>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+
+/* Note: pan-OS styles live in the content/personas.css stylesheet. */
+
+
+/******************************************************************************/
+/* Personas Menu/Toolbarbutton */
+
+/* Show the Personas icon to the Personas Tools menu item.  This is OS-specific
+ * because it doesn't look good on Mac, which also doesn't seem to respect
+ * the -moz-image-region rule, so we only show it on Windows and Linux. */
+#personas-menu {
+  list-style-image: url("chrome://personas/content/personas_16x16.png");
+  -moz-image-region: rect(0, 16px, 16px, 0px);
+}
+
+
+/******************************************************************************/
+/* Header */
+
+#main-window[persona] {
+  -moz-appearance: none;
+}
+
+#main-window[persona] #navigator-toolbox toolbar {
+  -moz-appearance: none;
+}
+
+#main-window[persona] #navigator-toolbox toolbarbutton {
+  -moz-appearance: none;
+}
+
+
+/******************************************************************************/
+/* Make some elements a little transparent so the persona flavors their look. */
+
+#main-window[persona] #urlbar,
+#main-window[persona] #searchbar,
+#main-window[persona] .tabbrowser-tab {
+  opacity: 0.8;
+}
+
+
+/******************************************************************************/
+/* Footer */
+
+#browser-bottombox[persona] #status-bar {
+  border-left: none;
+  border-bottom: none;
+  border-right: none;
+}
+
+#browser-bottombox[persona] #FindToolbar {
+  border-top-width: 1px;
+  border-top-color: transparent;
+  -moz-border-top-colors: transparent !important;
+}
+
+/**
+ * The statusbarpanel element that sits inside the statusbar element defines
+ * its own background color and border, so we have to turn them off separately.
+ */
+#browser-bottombox[persona] statusbarpanel {
+  -moz-appearance: none; /* undo -moz-appearance: statusbarpanel */
+
+  /* These rules prevent horizontal jumping, as -moz-appearance: statusbarpanel
+   * apparently creates hidden left-right (or perhaps there's margin or padding;
+   * there's no way to know with -moz-appearance because Gecko doesn't expose
+   * the results of applying OS-specific style via that rule). */
+  border-left: 2px solid transparent;
+  border-right: 2px solid transparent;
+
+  /* These rules prevent top-bottom jumping. */
+  border-bottom: 2px solid transparent;
+  border-top: 2px solid transparent;
+}

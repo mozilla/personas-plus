@@ -1,0 +1,20 @@
+<!ENTITY personas_app_title "Personas">
+<!ENTITY useDefaultPersona.label "預設值">
+<!ENTITY preferences.label "偏好設定…">
+<!ENTITY viewDirectory.label "瀏覽更多…">
+<!ENTITY customPersona.label "自訂 Persona">
+<!ENTITY customName.label "名稱：">
+<!ENTITY header.label "上方圖片：">
+<!ENTITY selectBackground.label "瀏覽…">
+<!ENTITY footer.label "下方圖片：">
+<!ENTITY textColorPicker.label "文字色彩：">
+<!ENTITY accentColorPicker.label "強調色彩：">
+<!ENTITY useDefaultColor.label "使用預設值">
+<!ENTITY okButton.label "確定">
+<!ENTITY contextHomePage.label "首頁">
+<!ENTITY contextPreferences.label "設定">
+<!ENTITY contextEdit.label "編輯">
+<!ENTITY contextApply.label "套用">
+<!ENTITY usePersona.label "使用 Persona">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "使用這個 Persona">

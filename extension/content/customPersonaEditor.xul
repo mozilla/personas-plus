@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1/GPL 2.0/LGPL 2.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is Personas.
+   -
+   - The Initial Developer of the Original Code is Mozilla.
+   - Portions created by the Initial Developer are Copyright (C) 2008
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -   Myk Melez <myk@mozilla.org>
+   -
+   - Alternatively, the contents of this file may be used under the terms of
+   - either the GNU General Public License Version 2 or later (the "GPL"), or
+   - the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+   - in which case the provisions of the GPL or the LGPL are applicable instead
+   - of those above. If you wish to allow use of your version of this file only
+   - under the terms of either the GPL or the LGPL, and not to allow others to
+   - use your version of this file under the terms of the MPL, indicate your
+   - decision by deleting the provisions above and replace them with the notice
+   - and other provisions required by the GPL or the LGPL. If you do not delete
+   - the provisions above, a recipient may use your version of this file under
+   - the terms of any one of the MPL, the GPL or the LGPL.
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
+<?xml-stylesheet href="chrome://personas/content/customPersonaEditor.css" type="text/css"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://personas/locale/personas.dtd">
+
+<page id="customPersonaEditor"
+      xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+      title="Custom Persona"
+      align="center"
+      onload="CustomPersonaEditor.onLoad()"
+      onunload="CustomPersonaEditor.onUnload()">
+
+  <script type="application/javascript" src="chrome://personas/content/init.js"/>
+  <script type="application/javascript" src="chrome://personas/content/customPersonaEditor.js"/>
+
+  <vbox id="top">
+    <spacer flex="1"/>
+  </vbox>
+
+  <vbox id="form">
+    <description id="title" value="&customPersona.label;"/>
+    <grid>
+      <columns>
+        <column/>
+        <column/>
+      </columns>
+      <rows>
+        <row align="center">
+         <hbox flex="1" pack="end">
+           <label control="customName" value="&customName.label;"/>
+         </hbox>
+         <hbox>
+           <textbox id="customName" onchange="CustomPersonaEditor.onChangeName(event)"/>
+         </hbox>
+        </row>
+        <row align="center">
+          <hbox flex="1" pack="end">
+            <label control="header" value="&header.label;"/>
+          </hbox>
+          <hbox>
+            <textbox id="headerURL"
+                     onchange="CustomPersonaEditor.onChangeBackground(event)"/>
+            <button id="selectHeaderButton" label="&selectBackground.label;"
+                    oncommand="CustomPersonaEditor.onSelectBackground(event)"/>
+          </hbox>
+        </row>
+        <row align="center">
+          <hbox flex="1" pack="end">
+            <label control="footer" value="&footer.label;"/>
+          </hbox>
+          <hbox>
+            <textbox id="footerURL"
+                     onchange="CustomPersonaEditor.onChangeBackground(event)"/>
+            <button id="selectFooterButton" label="&selectBackground.label;"
+                    oncommand="CustomPersonaEditor.onSelectBackground(event)"/>
+          </hbox>
+        </row>
+        <row align="center">
+          <hbox flex="1" pack="end">
+            <label control="textColorPicker" value="&textColorPicker.label;"/>
+          </hbox>
+          <hbox pack="start">
+            <colorpicker id="textColorPicker" type="button"
+                         onchange="CustomPersonaEditor.onChangeTextColor(event)"/>
+            <button label="&useDefaultColor.label;" oncommand="CustomPersonaEditor.onSetDefaultTextColor();"/>
+          </hbox>
+        </row>
+        <row align="center">
+          <hbox flex="1" pack="end">
+            <label control="accentColorPicker" value="&accentColorPicker.label;"/>
+          </hbox>
+          <hbox pack="start">
+            <colorpicker id="accentColorPicker" type="button"
+                         onchange="CustomPersonaEditor.onChangeAccentColor(event)"/>
+            <button label="&useDefaultColor.label;" oncommand="CustomPersonaEditor.onSetDefaultAccentColor();"/>
+          </hbox>
+        </row>
+      </rows>
+    </grid>
+    <hbox style="margin-top: 2em">
+      <button label="&okButton.label;" oncommand="CustomPersonaEditor.onApply()"/>
+      <spacer flex="1"/>
+    </hbox>
+  </vbox>
+</page>

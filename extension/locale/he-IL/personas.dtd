@@ -1,0 +1,20 @@
+<!ENTITY personas_app_title "Personas">
+<!ENTITY useDefaultPersona.label "ברירת מחדל">
+<!ENTITY preferences.label "העדפות...">
+<!ENTITY viewDirectory.label "הצגת הגלריה...">
+<!ENTITY customPersona.label "Persona מותאמת אישית">
+<!ENTITY customName.label "שם:">
+<!ENTITY header.label "כותרת עליונה:">
+<!ENTITY selectBackground.label "דפדוף...">
+<!ENTITY footer.label "כותרת תחתונה:">
+<!ENTITY textColorPicker.label "צבע הטקסט:">
+<!ENTITY accentColorPicker.label "צבע מודגש:">
+<!ENTITY useDefaultColor.label "שימוש בברירת מחדל">
+<!ENTITY okButton.label "אישור">
+<!ENTITY contextHomePage.label "עמוד הבית">
+<!ENTITY contextPreferences.label "הגדרות">
+<!ENTITY contextEdit.label "עריכה">
+<!ENTITY contextApply.label "החל">
+<!ENTITY usePersona.label "שימוש בפרסונה (Persona)">
+<!ENTITY usePersona.accesskey "פ">
+<!ENTITY usePersona.tooltip "שימוש בפרסונה הזאת (Persona)">

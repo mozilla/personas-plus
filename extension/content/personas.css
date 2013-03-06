@@ -1,0 +1,135 @@
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Personas.
+ *
+ * The Initial Developer of the Original Code is Mozilla.
+ * Portions created by the Initial Developer are Copyright (C) 2007
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *   Chris Beard <cbeard@mozilla.org>
+ *   Myk Melez <myk@mozilla.org>
+ *   Jose E. Bolanos <jose@appcoast.com>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+
+/* Note: OS-specific styles live in the stylesheets in the skin/ directory. */
+
+
+/******************************************************************************/
+/* Personas Menu/Toolbarbutton */
+
+#personas-selector-button,
+#personas-toolbar-button {
+  list-style-image: url("chrome://personas/content/personas_16x16.png");
+  -moz-image-region: rect(0, 16px, 16px, 0px);
+}
+
+#personas-toolbar-button {
+  -moz-box-orient: horizontal;
+}
+
+#personas-toolbar-button > .toolbarbutton-icon {
+  margin: 0px !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+#personas-selector-button[buttonover="true"],
+#personas-selector-button:hover,
+#personas-toolbar-button[buttonover="true"],
+#personas-toolbar-button:hover {
+  -moz-image-region: rect(16px, 16px, 32px, 0px);
+}
+
+#personas-selector-button[buttondown="true"],
+#personas-selector-button[open="true"],
+#personas-selector-button:hover:active,
+#personas-toolbar-button[buttondown="true"],
+#personas-toolbar-button[open="true"],
+#personas-toolbar-button:hover:active {
+  -moz-image-region: rect(48px, 16px, 64px, 0px);
+}
+
+#personas-selector-menu menuitem[header],
+#personas-toolbar-menu menuitem[header] {
+  font-weight: bold;
+  color: black;
+}
+
+#personas-selector-menu menuitem[recent="true"],
+#personas-toolbar-menu menuitem[recent="true"] {
+  list-style-image: url("chrome://personas/content/new.png");
+}
+
+#personas-current menu {
+  font-weight: bold !important;
+}
+
+/**
+ * Header and footer rules are designed to do four things:
+ *
+ *   1. position the personas background images behind header/footer chrome;
+ *   1. make element backgrounds transparent so you can see the images;
+ *   2. hide or remove element borders so they don't mar the look of the images;
+ *   3. maintain the size of elements whether or not a persona is selected
+ *      so chrome doesn't change size when a user switches from the default
+ *      theme to a persona.
+ *
+ * Maintaining the size of elements is particularly challenging given that
+ * -moz-appearance applies style that you can't introspect, and removing it
+ * (as we often do to make backgrounds transparent or hide/remove borders)
+ * applies different style that changes element heights or widths.
+ *
+ * Make sure you test for changes to chrome width and height in the transition
+ * from the default theme to a persona when making changes to these rules!
+ */
+
+
+/******************************************************************************/
+/* Header */
+
+#main-window[persona] {
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+
+/******************************************************************************/
+/* Footer */
+
+#browser-bottombox[persona] {
+  background-repeat: no-repeat;
+  background-position: bottom left;
+  background-color: transparent;
+}
+
+#browser-bottombox[persona] > * {
+  -moz-appearance: none;
+  background-color: transparent;
+  background-image: none;
+}

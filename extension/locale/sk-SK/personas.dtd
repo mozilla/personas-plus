@@ -1,0 +1,20 @@
+<!ENTITY personas_app_title "Personas">
+<!ENTITY useDefaultPersona.label "Predvolené">
+<!ENTITY preferences.label "Možnosti...">
+<!ENTITY viewDirectory.label "Zobraziť galériu...">
+<!ENTITY customPersona.label "Vlastná téma">
+<!ENTITY customName.label "Názov:">
+<!ENTITY header.label "Hlavička:">
+<!ENTITY selectBackground.label "Prehľadávať">
+<!ENTITY footer.label "Päta:">
+<!ENTITY textColorPicker.label "Farba textu:">
+<!ENTITY accentColorPicker.label "Farba akcentu:">
+<!ENTITY useDefaultColor.label "Použiť predvolené">
+<!ENTITY okButton.label "OK">
+<!ENTITY contextHomePage.label "Domovská stránka">
+<!ENTITY contextPreferences.label "Nastavenia">
+<!ENTITY contextEdit.label "Upraviť">
+<!ENTITY contextApply.label "Použiť">
+<!ENTITY usePersona.label "Use Persona">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Use this Persona">

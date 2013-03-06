@@ -1,0 +1,20 @@
+<!ENTITY personas_app_title "Personas">
+<!ENTITY useDefaultPersona.label "Standert">
+<!ENTITY preferences.label "Foarkarren...">
+<!ENTITY viewDirectory.label "Toan map...">
+<!ENTITY customPersona.label "Eigen Persona">
+<!ENTITY customName.label "Namme:">
+<!ENTITY header.label "Boppekant:">
+<!ENTITY selectBackground.label "Blêdzje...">
+<!ENTITY footer.label "Underkant:">
+<!ENTITY textColorPicker.label "Tekstkleur:">
+<!ENTITY accentColorPicker.label "Aksentkleur:">
+<!ENTITY useDefaultColor.label "Brûk standert">
+<!ENTITY okButton.label "OK">
+<!ENTITY contextHomePage.label "Thússide">
+<!ENTITY contextPreferences.label "Ynstellings">
+<!ENTITY contextEdit.label "Bewurkje">
+<!ENTITY contextApply.label "Tapasse">
+<!ENTITY usePersona.label "Use Persona">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Use this Persona">

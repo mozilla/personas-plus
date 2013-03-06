@@ -1,0 +1,8 @@
+<!ENTITY preferences.title "Možnosti">
+<!ENTITY generalSettings.label "Hlavné">
+<!ENTITY previewEnabled.label "Pri výbere z ponuky zobrazovať náhľad">
+<!ENTITY displaySettings.label "Zobrazenie">
+<!ENTITY useTextColor.label "Použiť farbu textu">
+<!ENTITY useAccentColor.label "Použiť farbu akcentu">
+<!ENTITY advancedSettings.label "Rozšírené">
+<!ENTITY showCustomMenu.label "Zobraziť vlastnú tému v ponuke">

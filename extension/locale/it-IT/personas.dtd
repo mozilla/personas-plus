@@ -1,0 +1,20 @@
+<!ENTITY personas_app_title "Personas">
+<!ENTITY useDefaultPersona.label "Predefinito">
+<!ENTITY preferences.label "Opzioni...">
+<!ENTITY viewDirectory.label "Visualizza galleria...">
+<!ENTITY customPersona.label "Personalizzazioni">
+<!ENTITY customName.label "Nome:">
+<!ENTITY header.label "Intestazione:">
+<!ENTITY selectBackground.label "Sfoglia...">
+<!ENTITY footer.label "Piè di pagina:">
+<!ENTITY textColorPicker.label "Colore del testo:">
+<!ENTITY accentColorPicker.label "Colore evidenziatore:">
+<!ENTITY useDefaultColor.label "Utilizza predefinito">
+<!ENTITY okButton.label "OK">
+<!ENTITY contextHomePage.label "Pagina iniziale">
+<!ENTITY contextPreferences.label "Impostazioni">
+<!ENTITY contextEdit.label "Modifica">
+<!ENTITY contextApply.label "Applica">
+<!ENTITY usePersona.label "Utilizza tema">
+<!ENTITY usePersona.accesskey "z">
+<!ENTITY usePersona.tooltip "Utilizza questo tema">
