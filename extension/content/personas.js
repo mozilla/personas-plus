@@ -342,45 +342,11 @@ let PersonaController = {
     document.addEventListener("RemoveFavoritePersona", this, false, true);
 
 
-    // Check for a first-run or updated version and display some additional
-    // information to users.
-    let lastVersion = this._prefs.get("lastversion");
-    let thisVersion = null;
-    let t = this;
-
-    let displayVersionInfo = function() {
-      if (lastVersion == "firstrun") {
-        // Show the first run page.
-        let firstRunURL = t._siteURL + "firstrun?version=" + thisVersion;
-        setTimeout(function() t.openURLInTab(firstRunURL), 500);
-        t._prefs.set("lastversion", thisVersion);
-      }
-      else if (lastVersion != thisVersion) {
-        let updatedURL = t._siteURL + "updated?version=" + thisVersion;
-        setTimeout(function() t.openURLInTab(updatedURL), 500);
-        t._prefs.set("lastversion", thisVersion);
-      }
-    };
-
-    if ("@mozilla.org/extensions/manager;1" in Cc) {  // removed in FF 4.*
-      thisVersion = Cc["@mozilla.org/extensions/manager;1"].
-                        getService(Ci.nsIExtensionManager).
-                        getItemForID(PERSONAS_EXTENSION_ID).version
-      displayVersionInfo();
-    }
-    else {
-      try {
-        Cu.import("resource://gre/modules/AddonManager.jsm", this);
-        this.AddonManager.getAddonByID(PERSONAS_EXTENSION_ID,
-          function(aAddon) {
-            thisVersion = aAddon.version;
-            displayVersionInfo();
-          });
-      }
-      catch (e) {
-        // AddonManager module not available.
-      }
-    }
+    Cu.import("resource://gre/modules/AddonManager.jsm", this);
+    this.AddonManager.getAddonByID(PERSONAS_EXTENSION_ID,
+      function(aAddon) {
+        this._prefs.set("lastversion", aAddon.version);
+      }.bind(this));
 
     // Apply the current persona to the window if the LightweightThemeManager
     // is not available.
