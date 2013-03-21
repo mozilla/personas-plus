@@ -682,10 +682,10 @@ let PersonaController = {
    * @param event   {Event}
    *        the SelectPersona DOM event
    */
-  onSelectPersonaFromContent: function(event) {
+  onSelectPersonaFromContent: PersonaService.wrap(function(event) {
     this._authorizeHost(event);
     this.onSelectPersona(event);
-  },
+  }),
 
   /**
    * Select the persona specified by the DOM node target of the given event.
@@ -693,7 +693,7 @@ let PersonaController = {
    * @param event   {Event}
    *        the SelectPersona DOM event
    */
-  onSelectPersona: function(event) {
+  onSelectPersona: PersonaService.wrap(function(event) {
     let node = event.target;
 
     if (!node.hasAttribute("persona"))
@@ -739,7 +739,7 @@ let PersonaController = {
           break;
       }
     }
-  },
+  }),
 
   /**
    * Preview the persona specified by a web page via a PreviewPersona event.
@@ -748,12 +748,12 @@ let PersonaController = {
    * @param   event   {Event}
    *          the PreviewPersona DOM event
    */
-  onPreviewPersonaFromContent: function(event) {
+  onPreviewPersonaFromContent: PersonaService.wrap(function(event) {
     this._authorizeHost(event);
     this.onPreviewPersona(event);
-  },
+  }),
 
-  onPreviewPersona: function(event) {
+  onPreviewPersona: PersonaService.wrap(function(event) {
     if (!this._prefs.get("previewEnabled"))
       return;
 
@@ -787,7 +787,7 @@ let PersonaController = {
       this._previewTimeoutID =
         window.setTimeout(callback, this._previewTimeout);
     }
-  },
+  }),
 
   _previewPersona: function(persona) {
     PersonaService.previewPersona(persona);
@@ -800,12 +800,12 @@ let PersonaController = {
    * @param event   {Event}
    *        the ResetPersona DOM event
    */
-  onResetPersonaFromContent: function(event) {
+  onResetPersonaFromContent: PersonaService.wrap(function(event) {
     this._authorizeHost(event);
     this.onResetPersona();
-  },
+  }),
 
-  onResetPersona: function(event) {
+  onResetPersona: PersonaService.wrap(function(event) {
     if (!this._prefs.get("previewEnabled"))
       return;
 
@@ -825,7 +825,7 @@ let PersonaController = {
     let t = this;
     let callback = function() { t._resetPersona() };
     this._resetTimeoutID = window.setTimeout(callback, this._previewTimeout);
-  },
+  }),
 
   _resetPersona: function() {
     PersonaService.resetPersona();
@@ -840,23 +840,23 @@ let PersonaController = {
    * @param event   {Event}
    *        the CheckPersonas DOM event
    */
-  onCheckPersonasFromContent: function(event) {
+  onCheckPersonasFromContent: PersonaService.wrap(function(event) {
     this._authorizeHost(event);
     event.target.setAttribute("personas", "true");
-  },
+  }),
 
-  onSelectPreferences: function() {
+  onSelectPreferences: PersonaService.wrap(function() {
     window.openDialog('chrome://personas/content/preferences.xul', '',
                       'chrome,titlebar,toolbar,centerscreen');
-  },
+  }),
 
-  onViewDirectory: function() {
+  onViewDirectory: PersonaService.wrap(function() {
     this.openURLInTab(this._siteURL + "gallery/All/Popular");
-  },
+  }),
 
-  onEditCustomPersona: function() {
+  onEditCustomPersona: PersonaService.wrap(function() {
     this.openURLInTab("chrome://personas/content/customPersonaEditor.xul");
-  },
+  }),
 
   /**
    * Adds the favorite persona specified by a web page via a AddFavoritePersona event.
@@ -865,10 +865,10 @@ let PersonaController = {
    * @param event   {Event}
    *        the AddFavoritePersona DOM event
    */
-  onAddFavoritePersonaFromContent: function(event) {
+  onAddFavoritePersonaFromContent: PersonaService.wrap(function(event) {
     this._authorizeHost(event);
     this.onAddFavoritePersona(event);
-  },
+  }),
 
   /**
    * Adds the persona specified by the DOM node target of the given event to
@@ -877,7 +877,7 @@ let PersonaController = {
    * @param event   {Event}
    *        the AddFavoritePersona DOM event
    */
-  onAddFavoritePersona: function(event) {
+  onAddFavoritePersona: PersonaService.wrap(function(event) {
     let node = event.target;
 
     if (!node.hasAttribute("persona"))
@@ -885,7 +885,7 @@ let PersonaController = {
 
     let persona = node.getAttribute("persona");
     PersonaService.addFavoritePersona(JSON.parse(persona));
-  },
+  }),
 
   /**
    * Removes the favorite persona specified by a web page via a
@@ -895,10 +895,10 @@ let PersonaController = {
    * @param event   {Event}
    *        the RemoveFavoritePersona DOM event
    */
-  onRemoveFavoritePersonaFromContent: function(event) {
+  onRemoveFavoritePersonaFromContent: PersonaService.wrap(function(event) {
     this._authorizeHost(event);
     this.onRemoveFavoritePersona(event);
-  },
+  }),
 
   /**
    * Removes the persona specified by the DOM node target of the given event
@@ -907,7 +907,7 @@ let PersonaController = {
    * @param event   {Event}
    *        the RemoveFavoritePersona DOM event
    */
-  onRemoveFavoritePersonaFromContent: function(event) {
+  onRemoveFavoritePersonaFromContent: PersonaService.wrap(function(event) {
     let node = event.target;
 
     if (!node.hasAttribute("persona"))
@@ -915,7 +915,7 @@ let PersonaController = {
 
     let persona = node.getAttribute("persona");
     PersonaService.removeFavoritePersona(JSON.parse(persona));
-  },
+  }),
 
   /**
    * Ensure the host that loaded the document from which the given DOM event
@@ -937,7 +937,7 @@ let PersonaController = {
   //**************************************************************************//
   // Popup Construction
 
-  onMenuButtonMouseDown: function(event) {
+  onMenuButtonMouseDown: PersonaService.wrap(function(event) {
     // If the menu popup isn't on the menu button, then move the popup
     // onto the button so the popup appears when the user clicks it.
     // We'll move the popup back onto the Personas menu in the Tools menu
@@ -945,9 +945,9 @@ let PersonaController = {
     // FIXME: remove this workaround once bug 461899 is fixed.
     if (this._menuPopup.parentNode != this._menuButton)
       this._menuButton.appendChild(this._menuPopup);
-  },
+  }),
 
-  onToolbarButtonMouseDown: function(event) {
+  onToolbarButtonMouseDown: PersonaService.wrap(function(event) {
     // If the menu popup isn't on the toolbar button, then move the popup
     // onto the button so the popup appears when the user clicks it.
     // We'll move the popup back onto the Personas menu in the Tools menu
@@ -955,16 +955,16 @@ let PersonaController = {
     // FIXME: remove this workaround once bug 461899 is fixed.
     if (this._menuPopup.parentNode != this._toolbarButton)
       this._toolbarButton.appendChild(this._menuPopup);
-  },
+  }),
 
-  onPopupShowing: function(event) {
+  onPopupShowing: PersonaService.wrap(function(event) {
     if (event.target == this._menuPopup)
       this._rebuildMenu();
 
     return true;
-  },
+  }),
 
-  onPopupHiding: function(event) {
+  onPopupHiding: PersonaService.wrap(function(event) {
     if (event.target == this._menuPopup) {
       // If the menu popup isn't on the Personas menu in the Tools menu,
       // then move the popup back onto that menu so the popup appears when
@@ -975,7 +975,7 @@ let PersonaController = {
         this._menu.appendChild(this._menuPopup);
       }
     }
-  },
+  }),
 
   _rebuildMenu: function() {
     // If we don't have personas data, we won't be able to fully build the menu,
@@ -1101,10 +1101,10 @@ let PersonaController = {
       this._menuPopup.insertBefore(document.createElement("menuseparator"), closingSeparator);
     }
 
-    // Create the New & Featured menu.
+    // Create the Featured menu.
     {
       let menu = document.createElement("menu");
-      menu.setAttribute("label", this._strings.get("new"));
+      menu.setAttribute("label", this._strings.get("featured"));
 
       if (PersonaService.personas) {
         let popupmenu = document.createElement("menupopup");
@@ -1116,14 +1116,13 @@ let PersonaController = {
         // personas are enabled.
         if (!this._prefs.get("perwindow")) {
           popupmenu.appendChild(document.createElement("menuseparator"));
-          popupmenu.appendChild(this._createRandomItem(this._strings.get("new"), "new"));
+          popupmenu.appendChild(this._createRandomItem(this._strings.get("featured"), "featured"));
         }
 
         // Create an item that links to the gallery for this category.
         popupmenu.appendChild(
-          this._createViewMoreItem(this._strings.get("new"),
-                                   PersonaService.personas.total,
-                                   "new"));
+          this._createViewMoreItem(this._strings.get("featured"),
+                                   "featured"));
 
         menu.appendChild(popupmenu);
       }
@@ -1134,102 +1133,28 @@ let PersonaController = {
 
       this._menuPopup.insertBefore(menu, closingSeparator);
     }
-
-    // Create the Most Popular menu.
-    {
-      let menu = document.createElement("menu");
-      menu.setAttribute("label", this._strings.get("popular"));
-
-      if (PersonaService.personas) {
-        let popupmenu = document.createElement("menupopup");
-        for each (let persona in PersonaService.personas.popular)
-          popupmenu.appendChild(this._createPersonaItem(persona));
-
-        // Create an item that picks a random persona from the category.
-        // Disable random from favorites menu item if per-window
-        // personas are enabled.
-        if (!this._prefs.get("perwindow")) {
-          popupmenu.appendChild(document.createElement("menuseparator"));
-          popupmenu.appendChild(this._createRandomItem(this._strings.get("popular"), "popular"));
-        }
-
-        // Create an item that links to the gallery for this category.
-        popupmenu.appendChild(this._createViewMoreItem(this._strings.get("popular"),
-                              42 - PersonaService.personas.popular.length,
-                              "popular"));
-
-        menu.appendChild(popupmenu);
-      }
-      else {
-        menu.setAttribute("disabled", "true");
-        menu.setAttribute("tooltip", "personasDataUnavailableTooltip");
-      }
-
-      this._menuPopup.insertBefore(menu, closingSeparator);
-    }
-
-    // Create the Categories menu.
-    let categoriesMenu = document.createElement("menu");
-    if (PersonaService.personas) {
-      let categoriesPopup = document.createElement("menupopup");
-
-      // Create the category-specific submenus.
-      for each (let category in PersonaService.personas.categories) {
-        let menu = document.createElement("menu");
-        menu.setAttribute("label", category.name + " (" + (+category.total).toLocaleString() + ")");
-        let popupmenu = document.createElement("menupopup");
-
-        for each (let persona in category.personas)
-          popupmenu.appendChild(this._createPersonaItem(persona));
-
-        // Create an item that picks a random persona from the category.
-        // Disable random from favorites menu item if per-window
-        // personas are enabled
-        if (!this._prefs.get("perwindow")) {
-          popupmenu.appendChild(document.createElement("menuseparator"));
-          popupmenu.appendChild(this._createRandomItem(category.name));
-        }
-
-        // Create an item that links to the gallery for this category.
-        popupmenu.appendChild(this._createViewMoreItem(category.name,
-                                                       category.total - category.personas.length));
-
-        menu.appendChild(popupmenu);
-        categoriesPopup.appendChild(menu);
-      }
-      categoriesMenu.setAttribute("label", this._strings.get("categories") +
-                                  " (" + (+PersonaService.personas.total).toLocaleString() + ")");
-      categoriesMenu.appendChild(categoriesPopup);
-    }
-    else {
-      categoriesMenu.setAttribute("label", this._strings.get("categories"));
-      categoriesMenu.setAttribute("disabled", "true");
-      categoriesMenu.setAttribute("tooltip", "personasDataUnavailableTooltip");
-    }
-
-    this._menuPopup.insertBefore(categoriesMenu, closingSeparator);
 
     // Update the Custom menu. Custom personas unavailable in per-window
     // personas mode.
     let customMenu = document.getElementById("personas-plus-custom-menu");
-    customMenu.hidden = true;
-    if (!this._prefs.get("perwindow") && this._prefs.get("showCustomMenu")) {
+    customMenu.hidden = this._prefs.get("perwindow") || !this._prefs.get("showCustomMenu");
+    if (!customMenu.hidden) {
        let name = PersonaService.customPersona &&
                    PersonaService.customPersona.name ? PersonaService.customPersona.name
                                                      : this._strings.get("customPersona");
        customMenu.setAttribute("label", name);
-       customMenu.hidden = false;
     }
   },
 
   _createPersonaItem: function(persona) {
     let item = document.createElement("menuitem");
+    let theme = persona.theme || persona;
 
     let headerURI;
     if (persona.custom) {
-      headerURI = persona.headerURL || persona.header;
+      headerURI = theme.headerURL || theme.header;
     } else {
-      headerURI = persona.dataurl || persona.iconURL;
+      headerURI = theme.dataurl || theme.iconURL;
     }
 
     item.setAttribute("class", "menuitem-iconic");
@@ -1242,28 +1167,22 @@ let PersonaController = {
     item.setAttribute("autocheck", "false");
     item.setAttribute("oncommand", "PersonaController.onSelectPersona(event)");
     item.setAttribute("recent", persona.recent ? "true" : "false");
-    item.setAttribute("persona", JSON.stringify(persona));
+    item.setAttribute("persona", JSON.stringify(theme));
     item.addEventListener("DOMMenuItemActive", function(evt) { PersonaController.onPreviewPersona(evt) }, false);
     item.addEventListener("DOMMenuItemInactive", function(evt) { PersonaController.onResetPersona(evt) }, false);
 
     return item;
   },
 
-  _createViewMoreItem: function(category, number, categoryId) {
+  _createViewMoreItem: function(category, categoryId) {
     let item = document.createElement("menuitem");
 
     item.setAttribute("class", "menuitem-iconic");
-    item.setAttribute("label", this._strings.get("viewMore", [(+number).toLocaleString(), category]));
+    item.setAttribute("label", this._strings.get("viewMore", [category]));
     item.setAttribute("oncommand", "PersonaController.openURLInTab(this.getAttribute('href'))");
 
-    if (categoryId == "popular") {
-      item.setAttribute("href", this._siteURL + "gallery/All/Popular");
-    }
-    else if (categoryId == "new") {
-      item.setAttribute("href", this._siteURL + "gallery/All/Recent");
-    }
-    else {
-      item.setAttribute("href", this._siteURL + "gallery/" + category + "/All");
+    if (categoryId == "featured") {
+      item.setAttribute("href", this._prefs.get("browse.url") + "?sort=featured");
     }
 
     return item;

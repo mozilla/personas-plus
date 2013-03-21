@@ -45,6 +45,7 @@ const Cu = Components.utils;
 
 // modules that come with Firefox
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
+Cu.import("resource://gre/modules/Services.jsm");
 // LightweightThemeManager may not be not available (Firefox < 3.6 or Thunderbird)
 try { Cu.import("resource://gre/modules/LightweightThemeManager.jsm"); }
 catch (e) { LightweightThemeManager = null; }
@@ -64,6 +65,17 @@ const COOKIE_USER = "PERSONA_USER";
 let PersonaService = {
   THUNDERBIRD_ID: "{3550f703-e582-4d05-9a08-453d09bdfdc6}",
   FIREFOX_ID:     "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}",
+
+  // Wraps event listener functions so errors are not lost.
+  wrap: function(fn) {
+    return function() {
+      try {
+        return fn.apply(this, arguments);
+      } catch (e) {
+        Cu.reportError(e);
+      }
+    };
+  },
 
   //**************************************************************************//
   // Shortcuts
@@ -316,9 +328,8 @@ let PersonaService = {
    * no matter how many times a user starts the application in a given day).
    */
   refreshData: function() {
-    let url = this.dataURL + "index_" + this._prefs.get("data.version") + ".json";
-    let t = this;
-    this._makeRequest(url, function(evt) { t.onDataLoadComplete(evt) });
+    let url = this._prefs.get("featured-feed.url");
+    this._makeRequest(url, this.onDataLoadComplete.bind(this));
   },
 
   /**
@@ -368,10 +379,9 @@ let PersonaService = {
 
     //dump("params: " + [name + "=" + encodeURIComponent(params[name]) for (name in params)].join("&") + "\n");
 
-    let url = this.dataURL + "index_" + this._prefs.get("data.version") + ".json?" +
-              [name + "=" + encodeURIComponent(params[name]) for (name in params)].join("&");
-    let t = this;
-    this._makeRequest(url, function(evt) { t.onDataLoadComplete(evt) });
+    let url = this._prefs.get("featured-feed.url") +
+              "?" + [name + "=" + encodeURIComponent(params[name]) for (name in params)].join("&");
+    this._makeRequest(url, this.onDataLoadComplete.bind(this));
   },
 
   onDataLoadComplete: function(aEvent) {
@@ -381,7 +391,11 @@ let PersonaService = {
     if (request.status != 200)
       throw("problem loading data: " + request.status + " - " + request.statusText);
 
-    this.personas = JSON.parse(request.responseText);
+    let response = JSON.parse(request.responseText);
+
+    this.personas = {
+        featured: response.addons
+    };
 
     // Cache the response
     let cacheDirectory =
@@ -824,6 +838,8 @@ let PersonaService = {
           break;
       }
 
+      if (randomItem && randomItem.theme)
+          return randomItem.theme;
       return randomItem;
     }
     return this.currentPersona;
@@ -836,18 +852,8 @@ let PersonaService = {
     if (this.personas) {
       let personas = null;
 
-      if (aCategoryName == "new")
+      if (aCategoryName == "featured")
         personas = this.personas.featured;
-      else if (aCategoryName == "popular")
-        personas = this.personas.popular;
-      else if (this.personas.categories) {
-        for each (let category in this.personas.categories) {
-          if (aCategoryName == category.name) {
-            personas = category.personas;
-            break;
-          }
-        }
-      }
       if (personas)
         return this._getRandomPersonaFromArray(personas);
     }
