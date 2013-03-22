@@ -53,11 +53,17 @@ pref("extensions.personas.host", "www.getpersonas.com");
 // The host where the data files are located.
 pref("extensions.personas.datahost", "getpersonas-cdn.mozilla.net");
 
-pref("extensions.personas.featured-feed.url", "https://addons.mozilla.org/en-US/firefox/collections/mozilla/featured-personas/format:json");
+pref("extensions.personas.addons-host", "addons.mozilla.org");
+pref("extensions.personas.services-host", "services.addons.mozilla.org");
 
-pref("extensions.personas.browse.url", "https://addons.mozilla.org/themes/");
+pref("extensions.personas.featured-feed.url", "https://%ADDONS_HOST%/collections/mozilla/featured-personas/format:json");
 
-pref("extensions.personas.addon-details.url", "https://services.addons.mozilla.org/en-US/api/1.5/addon/%ADDON_SLUG%/?format=json");
+pref("extensions.personas.favorites-feed.url", "https://%ADDONS_HOST%/collections/mine/favorites/format:json");
+pref("extensions.personas.favorites-browse.url", "https://%ADDONS_HOST%/collections/mine/favorites/");
+
+pref("extensions.personas.browse.url", "https://%ADDONS_HOST%/themes/?sort=%SORT%");
+
+pref("extensions.personas.addon-details.url", "https://%SERVICES_HOST%/en-US/api/1.5/addon/%ADDON_SLUG%/?format=json");
 
 pref("extensions.personas.initial.slug", "groovy-blue");
 

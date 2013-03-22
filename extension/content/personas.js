@@ -1051,35 +1051,35 @@ let PersonaController = {
 
       let popupmenu = menu.appendChild(document.createElement("menupopup"));
 
-      if (!PersonaService.isUserSignedIn) {
+      if (!PersonaService.favorites) {
         let item = popupmenu.appendChild(document.createElement("menuitem"));
         item.setAttribute("label", this._strings.get("favoritesSignIn"));
         item.setAttribute("oncommand", "PersonaController.openURLInTab(this.getAttribute('href'))");
-        item.setAttribute("href", this._siteURL + "signin?return=/gallery/All/Favorites");
+        item.setAttribute("href", PersonaService.getURL("favorites-browse"));
       } else {
-
-        if (PersonaService.favorites) {
-          for each (let persona in PersonaService.favorites)
+        let favorites = PersonaService.favorites;
+        if (favorites.length) {
+          for each (let persona in favorites)
             popupmenu.appendChild(this._createPersonaItem(persona));
           popupmenu.appendChild(document.createElement("menuseparator"));
-        }
 
-        // Disable random from favorites menu item if per-window
-        // personas are enabled
-        if (!this._prefs.get("perwindow")) {
-          let item = popupmenu.appendChild(document.createElement("menuitem"));
-          item.setAttribute("label", this._strings.get("useRandomPersona", [this._strings.get("favorites")]));
-//        item.setAttribute("type", "checkbox");
-          item.setAttribute("checked", (PersonaService.selected == "randomFavorite"));
-          item.setAttribute("autocheck", "false");
-          item.setAttribute("oncommand", "PersonaController.toggleFavoritesRotation()");
+          // Disable random from favorites menu item if per-window
+          // personas are enabled
+          if (!this._prefs.get("perwindow")) {
+            let item = popupmenu.appendChild(document.createElement("menuitem"));
+            item.setAttribute("label", this._strings.get("useRandomPersona", [this._strings.get("favorites")]));
+            // item.setAttribute("type", "checkbox");
+            item.setAttribute("checked", (PersonaService.selected == "randomFavorite"));
+            item.setAttribute("autocheck", "false");
+            item.setAttribute("oncommand", "PersonaController.toggleFavoritesRotation()");
+          }
         }
 
         // go to my favorites menu item
-        item = popupmenu.appendChild(document.createElement("menuitem"));
+        let item = popupmenu.appendChild(document.createElement("menuitem"));
         item.setAttribute("label", this._strings.get("favoritesGoTo"));
         item.setAttribute("oncommand", "PersonaController.openURLInTab(this.getAttribute('href'))");
-        item.setAttribute("href", this._siteURL + "gallery/All/Favorites");
+        item.setAttribute("href", PersonaService.getURL("favorites-browse"));
       }
 
       this._menuPopup.insertBefore(menu, closingSeparator);
@@ -1182,7 +1182,7 @@ let PersonaController = {
     item.setAttribute("oncommand", "PersonaController.openURLInTab(this.getAttribute('href'))");
 
     if (categoryId == "featured") {
-      item.setAttribute("href", this._prefs.get("browse.url") + "?sort=featured");
+      item.setAttribute("href", PersonaService.getURL("browse", { SORT: "featured" }));
     }
 
     return item;
@@ -1202,7 +1202,7 @@ let PersonaController = {
 
   toggleFavoritesRotation : function() {
     if (PersonaService.selected != "randomFavorite") {
-      PersonaService.selected = "randomFavorite";
+      PersonaService.changeToRandomFavoritePersona();
     } else {
       PersonaService.selected = "current";
     }

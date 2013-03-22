@@ -60,7 +60,6 @@ Cu.import("resource://personas/modules/URI.js");
 const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
 
 const COOKIE_INITIAL_PERSONA = "initial_persona";
-const COOKIE_USER = "PERSONA_USER";
 
 let PersonaService = {
   THUNDERBIRD_ID: "{3550f703-e582-4d05-9a08-453d09bdfdc6}",
@@ -143,6 +142,7 @@ let PersonaService = {
     this._prefs.observe("useTextColor",   this.onUseColorChanged,     this);
     this._prefs.observe("useAccentColor", this.onUseColorChanged,     this);
     this._prefs.observe("selected",       this.onSelectedModeChanged, this);
+    this._prefs.observe("addons-host",    this.onAddonsHostChanged,   this);
 
     this._ltmSyncTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
 
@@ -179,11 +179,12 @@ let PersonaService = {
         this.changeToPersona(LightweightThemeManager.currentTheme);
       else {
         let addonSlug = this._prefs.get("initial.slug");
-        let url = this._prefs.get("addon-details.url")
-                      .replace("%ADDON_SLUG%", addonSlug);
+        let url = this.getURL("addon-details", { "ADDON_SLUG": addonSlug });
 
         this._makeRequest(url, function (event) {
           let responseJSON = JSON.parse(event.target.responseText);
+          this._log.debug("Fetched persona from " + url + " " +
+                          JSON.stringify(responseJSON.theme));
           this.changeToPersona(this.getPersonaJSON(responseJSON));
           // There seems to be a bug in the LightweightThemeManager that
           // prevents this from being called automatically at this
@@ -231,7 +232,8 @@ let PersonaService = {
     // Load cached favorite personas
     this.loadFavoritesFromCache();
 
-    this.refreshFavorites();
+    this.onAddonsHostChanged();
+
     // Refresh the favorite personas once per day.
     let favoritesRefreshCallback = {
       _svc: this,
@@ -253,6 +255,7 @@ let PersonaService = {
     this._prefs.ignore("useTextColor",   this.onUseColorChanged,     this);
     this._prefs.ignore("useAccentColor", this.onUseColorChanged,     this);
     this._prefs.ignore("selected",       this.onSelectedModeChanged, this);
+    this._prefs.ignore("addons-host",    this.onAddonsHostChanged,   this);
   },
 
 
@@ -267,11 +270,13 @@ let PersonaService = {
   //**************************************************************************//
   // Data Retrieval
 
-  _makeRequest: function(url, loadCallback, headers, aIsBinary) {
+  _makeRequest: function(url, loadCallback, headers, aIsBinary, wantErrors) {
     let request = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance();
 
     request = request.QueryInterface(Ci.nsIDOMEventTarget);
-    request.addEventListener("load", loadCallback, false);
+    request.addEventListener("load", this.wrap(loadCallback), false);
+    if (wantErrors)
+      request.addEventListener("error", this.wrap(loadCallback), false);
 
     request = request.QueryInterface(Ci.nsIXMLHttpRequest);
     request.open("GET", url, true);
@@ -305,7 +310,7 @@ let PersonaService = {
    * no matter how many times a user starts the application in a given day).
    */
   refreshData: function() {
-    let url = this._prefs.get("featured-feed.url");
+    let url = this.getURL("featured-feed");
     this._makeRequest(url, this.onDataLoadComplete.bind(this));
   },
 
@@ -356,7 +361,7 @@ let PersonaService = {
 
     //dump("params: " + [name + "=" + encodeURIComponent(params[name]) for (name in params)].join("&") + "\n");
 
-    let url = this._prefs.get("featured-feed.url") +
+    let url = this.getURL("featured-feed") +
               "?" + [name + "=" + encodeURIComponent(params[name]) for (name in params)].join("&");
     this._makeRequest(url, this.onDataLoadComplete.bind(this));
   },
@@ -410,13 +415,9 @@ let PersonaService = {
    * a user is currenly signed in.
    */
   refreshFavorites : function() {
-    // Only refresh if the user is signed in at the moment.
-    if (this.isUserSignedIn) {
-      let url =
-        "https://" + this._prefs.get("host") + "/gallery/All/Favorites?json=1";
-      let t = this;
-      this._makeRequest(url, function(evt) { t.onFavoritesLoadComplete(evt) });
-    }
+    let url = this.getURL("favorites-feed");
+    this._makeRequest(url, this.onFavoritesLoadComplete.bind(this),
+                      null, null, true);
   },
 
   /**
@@ -427,15 +428,18 @@ let PersonaService = {
   onFavoritesLoadComplete : function(aEvent) {
     let request = aEvent.target;
 
-    if (request.status != 200)
-      throw("problem loading favorites: " + request.status + " - " + request.statusText);
+    if (request.status != 200) {
+      this._log.info("problem loading favorites from " + request.channel.name + ": " + request.status + " - " + request.statusText);
+      this.favorites = null;
+      return;
+    }
 
     try {
-      this.favorites = JSON.parse(request.responseText);
+      this.favorites = JSON.parse(request.responseText)
+        .addons.filter(function (a) a.theme);
     }
     catch(ex) {
-      Cu.reportError("error parsing favorites data; perhaps you are using " +
-                     "Firefox 3.5 and have disabled third-party cookies?");
+      Cu.reportError("error parsing favorites data");
       return;
     }
 
@@ -622,6 +626,21 @@ let PersonaService = {
   },
 
   /**
+   * Returns a formatted URL from preferences.
+   */
+  getURL: function(pref, replacements) {
+    let t = this;
+    return this._prefs.get(pref + ".url")
+               .replace(/%([A-Z_]+)%/g, function(m0, m1) {
+      if (replacements && m1 in replacements)
+        return encodeURIComponent(replacements[m1]);
+
+      let pref = m1.toLowerCase().replace("_", "-");
+      return encodeURIComponent(t._prefs.get(pref));
+    });
+  },
+
+  /**
    * extensions.personas.custom: the custom persona.
    */
   get customPersona() {
@@ -670,7 +689,7 @@ let PersonaService = {
   },
 
   changeToRandomFavoritePersona : function() {
-    if (this.favorites && this.favorites.length > 0 && this.isUserSignedIn) {
+    if (this.favorites && this.favorites.length > 0) {
       this.currentPersona = this._getRandomPersonaFromArray(this.favorites);
       this.selected = "randomFavorite";
       this._prefs.set("persona.lastChanged", new Date().getTime().toString());
@@ -713,11 +732,14 @@ let PersonaService = {
   getPersonaJSON: function(data) {
       if (data.theme) {
           if (data.learnmore && !data.theme.detailURL)
-              data.theme.detailURL = data.learnmore
-                .replace(/([?&])src=api($|&)/, "$1src=personas-plus$2");
+              data.theme.detailURL = this.updateURLSource(data.learnmore);
           return data.theme;
       }
       return data;
+  },
+
+  updateURLSource: function(url) {
+    return url.replace(/([?&])src=api($|&)/, "$1src=personas-plus$2");
   },
 
   /**
@@ -992,25 +1014,6 @@ let PersonaService = {
     return null;
   },
 
-  /**
-   * Whether or not a user is signed in, determined by the presence of a cookie
-   * named "PERSONA_USER".
-   * @return True if signed in, false otherwise.
-   */
-  get isUserSignedIn() {
-    let cookieManager =
-      Cc["@mozilla.org/cookiemanager;1"].getService(Ci.nsICookieManager2);
-
-    let userCookie = {
-      QueryInterface: XPCOMUtils.generateQI([Ci.nsICookie2, Ci.nsICookie]),
-      host: this._prefs.get("host"),
-      path: "/",
-      name: COOKIE_USER
-    };
-
-    return cookieManager.cookieExists(userCookie);
-  },
-
   //**************************************************************************//
   // Lightweight Themes - Personas synchronization
 
@@ -1072,6 +1075,14 @@ let PersonaService = {
 
       this._rotatePersona();
     }
+  },
+
+  /**
+   * Handles the addons-host preference being changed.
+   */
+  onAddonsHostChanged: function() {
+    this.addonsHost = this._prefs.get("addons-host");
+    this.refreshFavorites();
   },
 
   /**
@@ -1214,11 +1225,15 @@ let PersonaService = {
    * @param aCookie The cookie that has been added, changed or removed.
    */
   onCookieChanged : function(aCookie) {
-    aCookie.QueryInterface(Ci.nsICookie);
-
-    if (aCookie.name == COOKIE_USER &&
-        aCookie.host == this._prefs.get("host")) {
-      this.refreshFavorites();
+    if (aCookie instanceof Ci.nsICookie) {
+      if (aCookie.name == "sessionid" && (aCookie.host == this.addonsHost ||
+                                          aCookie.host == "." + this.addonsHost)) {
+        this.refreshFavorites();
+      }
+    }
+    else if (aCookie instanceof Ci.nsIArray) {
+      for (let enum_ = aCookie.enumerate(); enum_.hasMoreElements();)
+        this.onCookieChanged(enum_.getNext());
     }
   },
 
