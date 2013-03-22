@@ -57,6 +57,10 @@ pref("extensions.personas.featured-feed.url", "https://addons.mozilla.org/en-US/
 
 pref("extensions.personas.browse.url", "https://addons.mozilla.org/themes/");
 
+pref("extensions.personas.addon-details.url", "https://services.addons.mozilla.org/en-US/api/1.5/addon/%ADDON_SLUG%/?format=json");
+
+pref("extensions.personas.initial.slug", "groovy-blue");
+
 // The authorizedHosts preference is a comma and/or space-separated list
 // of domains allowed to set and preview personas.
 // At a minimum, it must contain a value matching the domain at which the web
