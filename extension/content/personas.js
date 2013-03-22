@@ -1148,7 +1148,7 @@ let PersonaController = {
 
   _createPersonaItem: function(persona) {
     let item = document.createElement("menuitem");
-    let theme = persona.theme || persona;
+    let theme = PersonaService.getPersonaJSON(persona);
 
     let headerURI;
     if (persona.custom) {
