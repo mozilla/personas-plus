@@ -619,13 +619,6 @@ let PersonaService = {
   set category(newVal)  {        this._prefs.set("category", newVal) },
 
   /**
-   * The URL at which the static data is located.
-   */
-  get dataURL() {
-    return "http://" + this._prefs.get("datahost") + "/static/";
-  },
-
-  /**
    * Returns a formatted URL from preferences.
    */
   getURL: function(pref, replacements) {
@@ -635,7 +628,7 @@ let PersonaService = {
       if (replacements && m1 in replacements)
         return encodeURIComponent(replacements[m1]);
 
-      let pref = m1.toLowerCase().replace("_", "-");
+      let pref = m1.toLowerCase().replace(/_/g, "-");
       return encodeURIComponent(t._prefs.get(pref));
     });
   },
@@ -732,7 +725,10 @@ let PersonaService = {
   getPersonaJSON: function(data) {
       if (data.theme) {
           if (data.learnmore && !data.theme.detailURL)
-              data.theme.detailURL = this.updateURLSource(data.learnmore);
+            data.theme.detailURL = this.updateURLSource(data.learnmore);
+          let authorURL = data.authors && data.authors[0] && data.authors[0].link;
+          if (authorURL)
+            data.theme.authorURL = this.updateURLSource(authorURL);
           return data.theme;
       }
       return data;
@@ -1132,8 +1128,8 @@ let PersonaService = {
       // The header can be a base64 string or a malformed URL, in which case
       // the error can be safely ignored.
       try {
-        let headerURI = URI.get(header, null, URI.get(this.dataURL)).
-                        QueryInterface(Ci.nsIURL);
+        let headerURI = URI.get(header, null, null)
+                           .QueryInterface(Ci.nsIURL);
 
         let headerCallback = function(aEvent) {
           let request = aEvent.target;
@@ -1156,8 +1152,8 @@ let PersonaService = {
       // The footer can be a base64 string or a malformed URL, in which case
       // the error can be safely ignored.
       try {
-        let footerURI = URI.get(footer, null, URI.get(this.dataURL)).
-                        QueryInterface(Ci.nsIURL);
+        let footerURI = URI.get(footer, null, null)
+                           .QueryInterface(Ci.nsIURL);
         let footerCallback = function(aEvent) {
           let request = aEvent.target;
           // Save only if the folder still exists (Could have been deleted already)
@@ -1193,12 +1189,12 @@ let PersonaService = {
       let footerFile = personaDir.clone();
 
       let headerFileExtension =
-        URI.get(aPersona.headerURL || aPersona.header, null, URI.get(this.dataURL)).
-        QueryInterface(Ci.nsIURL).fileExtension;
+        URI.get(aPersona.headerURL || aPersona.header, null, null)
+           .QueryInterface(Ci.nsIURL).fileExtension;
 
       let footerFileExtension =
-        URI.get(aPersona.footerURL || aPersona.footer, null, URI.get(this.dataURL)).
-        QueryInterface(Ci.nsIURL).fileExtension;
+        URI.get(aPersona.footerURL || aPersona.footer, null, null)
+           .QueryInterface(Ci.nsIURL).fileExtension;
 
       headerFile.append("header" + "." + headerFileExtension);
       footerFile.append("footer" + "." + footerFileExtension);

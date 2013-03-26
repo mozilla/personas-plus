@@ -97,7 +97,7 @@ let CustomPersonaEditor = {
   },
 
   get _blankImage() {
-    return "http://" + this._prefs.get("host") + "/static/img/blank.gif";
+    return "data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAAAICVAEAOw=="
   },
 
   customPersona: null,
