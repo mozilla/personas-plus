@@ -43,27 +43,17 @@ pref("extensions.personas.category", "");
 
 pref("extensions.personas.lastversion", "firstrun");
 
-// The host where the gallery files are located.
-// Note: this should be the canonical hostname, not one that redirects us
-// to another, since we set the If-Modified-Since header so we can find out
-// when a persona record has changed, and that header doesn't get preserved
-// across redirects because of bug 401564.
-pref("extensions.personas.host", "www.getpersonas.com");
-
-// The host where the data files are located.
-pref("extensions.personas.datahost", "getpersonas-cdn.mozilla.net");
-
 pref("extensions.personas.addons-host", "addons.mozilla.org");
 pref("extensions.personas.services-host", "services.addons.mozilla.org");
+
+pref("extensions.personas.addon-details.url", "https://%SERVICES_HOST%/en-US/api/1.5/addon/%ADDON_SLUG%/?format=json");
+
+pref("extensions.personas.browse.url", "https://%ADDONS_HOST%/themes/?sort=%SORT%");
 
 pref("extensions.personas.featured-feed.url", "https://%ADDONS_HOST%/collections/mozilla/featured-personas/format:json");
 
 pref("extensions.personas.favorites-feed.url", "https://%ADDONS_HOST%/collections/mine/favorites/format:json");
 pref("extensions.personas.favorites-browse.url", "https://%ADDONS_HOST%/collections/mine/favorites/");
-
-pref("extensions.personas.browse.url", "https://%ADDONS_HOST%/themes/?sort=%SORT%");
-
-pref("extensions.personas.addon-details.url", "https://%SERVICES_HOST%/en-US/api/1.5/addon/%ADDON_SLUG%/?format=json");
 
 pref("extensions.personas.initial.slug", "groovy-blue");
 
