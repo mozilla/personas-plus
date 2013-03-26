@@ -143,11 +143,11 @@ let PersonaController = {
 
   get _thunderbirdRegExp() {
     delete this._thunderbirdRegExp;
-    return this._thunderbirdRegExp = new RegExp("^" + this._siteURL);
+    return this._thunderbirdRegExp = new RegExp("^" + this._siteURL.replace(/\./g, "\\."));
   },
 
   get _siteURL() {
-    return "https://" + this._prefs.get("host") + "/";
+    return "https://" + this._prefs.get("addons-host") + "/";
   },
 
   get _previewTimeout() {
@@ -447,13 +447,11 @@ let PersonaController = {
     else {
       // Use the URI module to resolve the possibly relative URI to an absolute one.
       let headerURI = this.URI.get(persona.headerURL || persona.header,
-                                   null,
-                                   this.URI.get(PersonaService.dataURL));
+                                   null, null);
       this._header.style.backgroundImage = "url(" + this._escapeURLForCSS(headerURI.spec) + ")";
       // Use the URI module to resolve the possibly relative URI to an absolute one.
       let footerURI = this.URI.get(persona.footerURL || persona.footer,
-                                   null,
-                                   this.URI.get(PersonaService.dataURL));
+                                   null, null);
       this._footer.style.backgroundImage = "url(" + this._escapeURLForCSS(footerURI.spec) + ")";
     }
 
@@ -850,10 +848,6 @@ let PersonaController = {
                       'chrome,titlebar,toolbar,centerscreen');
   }),
 
-  onViewDirectory: PersonaService.wrap(function() {
-    this.openURLInTab(this._siteURL + "gallery/All/Popular");
-  }),
-
   onEditCustomPersona: PersonaService.wrap(function() {
     this.openURLInTab("chrome://personas/content/customPersonaEditor.xul");
   }),
@@ -1027,16 +1021,15 @@ let PersonaController = {
     // with null username. In this case we only check the username is not null
     // because it is used to generate the url to go to the personas designer page
     // (bug 526788).
-    if (PersonaService.currentPersona.custom || !PersonaService.currentPersona.username) {
+    let persona = PersonaService.currentPersona;
+    if (!persona.authorURL) {
       personaStatusDesigner.setAttribute("collapsed", true);
     } else {
       personaStatusDesigner.removeAttribute("collapsed");
-      let designerLabel = PersonaService.currentPersona.author ?
-                            PersonaService.currentPersona.author : PersonaService.currentPersona.username;
+      let designerLabel = persona.author || persona.username;
       personaStatusDesigner.setAttribute("label", this._strings.get("viewDesigner", [designerLabel]));
-      let designerURL = this._siteURL + "gallery/Designer/" + PersonaService.currentPersona.username;
       personaStatusDesigner.setAttribute("oncommand", "PersonaController.openURLInTab(this.getAttribute('href'))");
-      personaStatusDesigner.setAttribute("href", designerURL);
+      personaStatusDesigner.setAttribute("href", persona.authorURL);
     }
 
     // Update the checkmark on the Default menu item.
