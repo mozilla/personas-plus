@@ -428,7 +428,7 @@ let PersonaService = {
   onFavoritesLoadComplete : function(aEvent) {
     let request = aEvent.target;
 
-    if (request.status != 200) {
+    if (request.status != 200 || request.getResponseHeader("Content-Type") != "application/json") {
       this._log.info("problem loading favorites from " + request.channel.name + ": " + request.status + " - " + request.statusText);
       this.favorites = null;
       return;
@@ -439,7 +439,7 @@ let PersonaService = {
         .addons.filter(function (a) a.theme);
     }
     catch(ex) {
-      Cu.reportError("error parsing favorites data");
+      this._log.debug("error parsing favorites data: " + request.responseText.slice(0, 100) + "...");
       return;
     }
 
@@ -1220,10 +1220,13 @@ let PersonaService = {
    * cookie, then the favorites are refreshed (if the user is signed in).
    * @param aCookie The cookie that has been added, changed or removed.
    */
-  onCookieChanged : function(aCookie) {
+  onCookieChanged : function(aCookie, aChange) {
     if (aCookie instanceof Ci.nsICookie) {
       if (aCookie.name == "sessionid" && (aCookie.host == this.addonsHost ||
                                           aCookie.host == "." + this.addonsHost)) {
+        if (aCookie.value == this._cookieValue)
+          return;
+        this._cookieValue = aCookie.value;
         this.refreshFavorites();
       }
     }
@@ -1232,6 +1235,7 @@ let PersonaService = {
         this.onCookieChanged(enum_.getNext());
     }
   },
+  _cookieValue: null,
 
   onQuitApplication: function() {
     Observers.remove("quit-application", this.onQuitApplication, this);
