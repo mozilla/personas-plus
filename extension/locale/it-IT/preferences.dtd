@@ -1,8 +1,0 @@
-<!ENTITY preferences.title "Opzioni di Personas">
-<!ENTITY generalSettings.label "Generale">
-<!ENTITY previewEnabled.label "Visualizza anteprima durante la selezione da menu">
-<!ENTITY displaySettings.label "Visualizza">
-<!ENTITY useTextColor.label "Utilizza testo colorato">
-<!ENTITY useAccentColor.label "Utilizza evidenziatore">
-<!ENTITY advancedSettings.label "Avanzate">
-<!ENTITY showCustomMenu.label "Visualizza la voce &apos;Personalizzazioni&apos; nel menu">

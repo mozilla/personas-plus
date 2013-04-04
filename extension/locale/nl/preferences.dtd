@@ -1,0 +1,8 @@
+<!ENTITY preferences.title "Personas-voorkeuren">
+<!ENTITY generalSettings.label "Algemeen">
+<!ENTITY previewEnabled.label "Voorbeeld tonen bij selecteren vanuit menu">
+<!ENTITY displaySettings.label "Weergave">
+<!ENTITY useTextColor.label "Tekstkleur gebruiken">
+<!ENTITY useAccentColor.label "Accentkleur gebruiken">
+<!ENTITY advancedSettings.label "Geavanceerd">
+<!ENTITY showCustomMenu.label "Eigen persona’s inschakelen">
