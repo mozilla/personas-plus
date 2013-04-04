@@ -1,0 +1,8 @@
+<!ENTITY preferences.title "පුද්ගල සැකසුමේ අභිමත">
+<!ENTITY generalSettings.label "සාමාන්‍ය">
+<!ENTITY previewEnabled.label "මෙනු මගින් සැකසීමේදී  පූර්වදර්ශනයක් කරන්න">
+<!ENTITY displaySettings.label "සංදර්ශකය">
+<!ENTITY useTextColor.label "සරල වර්ණ භාවිතා කරන්න">
+<!ENTITY useAccentColor.label "ගැඹුරු වර්ණ භාවිතා කරන්න">
+<!ENTITY advancedSettings.label "දියුණු">
+<!ENTITY showCustomMenu.label "තමාගේම පුද්ගල සැකසුම් මෙනුවේ පෙන්වන්න">

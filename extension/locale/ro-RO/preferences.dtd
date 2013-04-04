@@ -1,8 +1,0 @@
-<!ENTITY preferences.title "Opţiuni">
-<!ENTITY generalSettings.label "General">
-<!ENTITY previewEnabled.label "Vizualizează tema la selectarea din meniu">
-<!ENTITY displaySettings.label "Afişare">
-<!ENTITY useTextColor.label "Foloseşte text colorat">
-<!ENTITY useAccentColor.label "Foloseşte evidenţiere colorată">
-<!ENTITY advancedSettings.label "Complex">
-<!ENTITY showCustomMenu.label "Afişează tema personalizată în meniu">

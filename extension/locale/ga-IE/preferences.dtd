@@ -1,0 +1,8 @@
+<!ENTITY preferences.title "Sainroghanna Pearsantachtaí">
+<!ENTITY generalSettings.label "Ginearálta">
+<!ENTITY previewEnabled.label "Taispeáin réamhamharc le linn roghnú ó roghchlár">
+<!ENTITY displaySettings.label "Taispeáint">
+<!ENTITY useTextColor.label "Úsáid dath téacs">
+<!ENTITY useAccentColor.label "Úsáid dath aibhsithe">
+<!ENTITY advancedSettings.label "Casta">
+<!ENTITY showCustomMenu.label "Taispeáin Pearsantacht Shaincheaptha sa roghchlár">

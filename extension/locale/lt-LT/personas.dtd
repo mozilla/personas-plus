@@ -1,0 +1,20 @@
+<!ENTITY personas_app_title "Kaukės">
+<!ENTITY useDefaultPersona.label "Įprastasis">
+<!ENTITY preferences.label "Nuostatymai">
+<!ENTITY viewDirectory.label "Žiurėti galeriją">
+<!ENTITY customPersona.label "Kita kaukė">
+<!ENTITY customName.label "Pavadinimas:">
+<!ENTITY header.label "Antraštė:">
+<!ENTITY selectBackground.label "Naršyti:">
+<!ENTITY footer.label "Apačia:">
+<!ENTITY textColorPicker.label "TEksto spalva:">
+<!ENTITY accentColorPicker.label "Kirčio spalva:">
+<!ENTITY useDefaultColor.label "Naudoti įprastą">
+<!ENTITY okButton.label "OK">
+<!ENTITY contextHomePage.label "Namų puslapis">
+<!ENTITY contextPreferences.label "Nustatymai">
+<!ENTITY contextEdit.label "Redaguoti">
+<!ENTITY contextApply.label "Taikyti">
+<!ENTITY usePersona.label "Use Persona">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Use this Persona">

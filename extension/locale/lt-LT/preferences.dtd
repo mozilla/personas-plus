@@ -1,0 +1,8 @@
+<!ENTITY preferences.title "Kaukių nustatymai">
+<!ENTITY generalSettings.label "Bendrai">
+<!ENTITY previewEnabled.label "Rodyti peržiūrą, kai pasirenkate iš meniu">
+<!ENTITY displaySettings.label "Rodyti">
+<!ENTITY useTextColor.label "Naudoti teksto spalvą">
+<!ENTITY useAccentColor.label "Naudoti skirtuko spalvą">
+<!ENTITY advancedSettings.label "Sudėtingiau">
+<!ENTITY showCustomMenu.label "Rodyti kauke pagal užsakyma meniu">
