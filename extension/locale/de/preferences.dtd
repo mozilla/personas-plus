@@ -1,0 +1,8 @@
+<!ENTITY preferences.title "Personas-Einstellungen">
+<!ENTITY generalSettings.label "Allgemein">
+<!ENTITY previewEnabled.label "Vorschau anzeigen, wenn im Menü ausgewählt">
+<!ENTITY displaySettings.label "Ansicht">
+<!ENTITY useTextColor.label "Textfarbe verwenden">
+<!ENTITY useAccentColor.label "Akzentfarbe verwenden">
+<!ENTITY advancedSettings.label "Erweiterte Einstellungen">
+<!ENTITY showCustomMenu.label "Benutzerdefiniertes Persona im Menü anzeigen">

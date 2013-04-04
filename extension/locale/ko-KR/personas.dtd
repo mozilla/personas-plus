@@ -1,7 +1,7 @@
 <!ENTITY personas_app_title "Personas">
 <!ENTITY useDefaultPersona.label "기본">
 <!ENTITY preferences.label "환경설정...">
-<!ENTITY viewDirectory.label "사전 보기...">
+<!ENTITY viewDirectory.label "목록 보기…">
 <!ENTITY customPersona.label "사용자 Persona">
 <!ENTITY customName.label "이름:">
 <!ENTITY header.label "머리글:">

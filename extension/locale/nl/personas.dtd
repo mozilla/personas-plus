@@ -1,0 +1,20 @@
+<!ENTITY personas_app_title "Personas">
+<!ENTITY useDefaultPersona.label "Standaard">
+<!ENTITY preferences.label "Voorkeuren">
+<!ENTITY viewDirectory.label "Galerij bekijken">
+<!ENTITY customPersona.label "Eigen persona">
+<!ENTITY customName.label "Naam:">
+<!ENTITY header.label "Koptekst:">
+<!ENTITY selectBackground.label "Bladeren…">
+<!ENTITY footer.label "Voettekst:">
+<!ENTITY textColorPicker.label "Tekstkleur:">
+<!ENTITY accentColorPicker.label "Accentkleur:">
+<!ENTITY useDefaultColor.label "Standaard gebruiken">
+<!ENTITY okButton.label "OK">
+<!ENTITY contextHomePage.label "Startpagina">
+<!ENTITY contextPreferences.label "Instellingen">
+<!ENTITY contextEdit.label "Bewerken">
+<!ENTITY contextApply.label "Toepassen">
+<!ENTITY usePersona.label "Persona gebruiken">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Deze persona gebruiken">
