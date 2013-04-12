@@ -44,8 +44,9 @@ const Cr = Components.results;
 const Cu = Components.utils;
 
 // modules that come with Firefox
-Cu.import("resource://gre/modules/XPCOMUtils.jsm");
+Cu.import("resource://gre/modules/AddonManager.jsm");
 Cu.import("resource://gre/modules/Services.jsm");
+Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 // LightweightThemeManager may not be not available (Firefox < 3.6 or Thunderbird)
 try { Cu.import("resource://gre/modules/LightweightThemeManager.jsm"); }
 catch (e) { LightweightThemeManager = null; }
@@ -60,6 +61,10 @@ Cu.import("resource://personas/modules/URI.js");
 const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
 
 const COOKIE_INITIAL_PERSONA = "initial_persona";
+
+function endsWith(str, end) {
+  return !end || end.length <= str.length && end == str.slice(-end.length);
+}
 
 let PersonaService = {
   THUNDERBIRD_ID: "{3550f703-e582-4d05-9a08-453d09bdfdc6}",
@@ -98,27 +103,6 @@ let PersonaService = {
                            QueryInterface(Ci.nsIXULRuntime);
   },
 
-  get extension() {
-    delete this.extension;
-
-    if (this.appInfo.ID == this.FIREFOX_ID) {
-      let fuelApplication =
-        Cc["@mozilla.org/fuel/application;1"].getService(Ci.fuelIApplication);
-      // Fuel Application extensions is no longer available (synchronously) in
-      // Firefox 4. However, it is only used to detect the extension's first run
-      // and load the initial_persona cookie in old versions of Firefox which have no
-      // integrated support for Personas; it does not need to be adjusted since there
-      // will never exist a initial_persona cookie for Firefox 4.
-      if (fuelApplication.extensions)
-        return this.extension = fuelApplication.extensions.get(PERSONAS_EXTENSION_ID);
-    }
-
-    // If STEEL provides a FUEL-compatible extIExtension interface
-    // in Thunderbird, return it here.
-
-    return this.extension = null;
-  },
-
   get _log() {
     delete this._log;
     return this._log = Log4Moz.getConfiguredLogger("PersonaService");
@@ -129,15 +113,27 @@ let PersonaService = {
   // Initialization & Destruction
 
   _init: function() {
+    let t = this;
+    AddonManager.getAddonByID(PERSONAS_EXTENSION_ID, function (addon) {
+      t.urlSource = "personas-plus-" + addon.version;
+      t.onAddonsHostChanged();
+    });
+
     // Observe quit so we can destroy ourselves.
     Observers.add("quit-application", this.onQuitApplication, this);
     // Observe the "cookie-changed" topic to load the favorite personas when
     // the user signs in.
-    Observers.add("cookie-changed", this.onCookieChanged, this);
+    if (false)
+      // Skip this for now, since AMO session cookies are not currently
+      // cooperative
+      Observers.add("cookie-changed", this.onCookieChanged, this);
     // Observe the "lightweight-theme-changed" to sync the add-on with the
     // lightweight theme manager.
     Observers.add("lightweight-theme-changed",
                   this.onLightweightThemeChanged, this);
+    // Observe HTTP responses to detect login and logout
+    Observers.add("http-on-examine-response",
+                  this.onHTTPResponse, this);
 
     this._prefs.observe("useTextColor",   this.onUseColorChanged,     this);
     this._prefs.observe("useAccentColor", this.onUseColorChanged,     this);
@@ -145,16 +141,6 @@ let PersonaService = {
     this._prefs.observe("addons-host",    this.onAddonsHostChanged,   this);
 
     this._ltmSyncTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
-
-    // Get the initial persona specified by a cookie, if any.  The gallery
-    // sets this when users download Personas from the Details page
-    // for a specific persona, so that the user sees that persona when they
-    // install the extension.  We only check for a cookie on first run,
-    // because it would be expensive to traverse cookies every time, and since
-    // the gallery only sets the initial persona cookie on installation.
-    let personaFromCookie;
-    if (this.extension && this.extension.firstRun)
-      personaFromCookie = this._getPersonaFromCookie();
 
     // Change to the initial persona if preferences indicate that a persona
     // should be active but they don't specify the persona that is active.
@@ -171,9 +157,7 @@ let PersonaService = {
     // See bug 513765 and bug 503300 for some details on why it works this way.
     //
     if (this._prefs.get("selected") == "current" && !this._prefs.get("current")) {
-      if (personaFromCookie)
-        this.changeToPersona(personaFromCookie);
-      else if (this._prefs.has("initial"))
+      if (this._prefs.has("initial"))
         this.changeToPersona(JSON.parse(this._prefs.get("initial")));
       else if (LightweightThemeManager && LightweightThemeManager.currentTheme)
         this.changeToPersona(LightweightThemeManager.currentTheme);
@@ -232,8 +216,6 @@ let PersonaService = {
     // Load cached favorite personas
     this.loadFavoritesFromCache();
 
-    this.onAddonsHostChanged();
-
     // Refresh the favorite personas once per day.
     let favoritesRefreshCallback = {
       _svc: this,
@@ -241,7 +223,7 @@ let PersonaService = {
     };
     timerManager.registerTimer("personas-favorites-refresh-timer",
                                favoritesRefreshCallback,
-                               86400 /* in seconds == one day */);
+                               24 * 60 * 60);
 
     this._rotationTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
     this.onSelectedModeChanged();
@@ -251,12 +233,16 @@ let PersonaService = {
     Observers.remove("cookie-changed", this.onCookieChanged, this);
     Observers.remove("lightweight-theme-changed",
                      this.onLightweightThemeChanged, this);
+    Observers.remove("http-on-examine-response", this.onHTTPResponse, this);
 
     this._prefs.ignore("useTextColor",   this.onUseColorChanged,     this);
     this._prefs.ignore("useAccentColor", this.onUseColorChanged,     this);
     this._prefs.ignore("selected",       this.onSelectedModeChanged, this);
     this._prefs.ignore("addons-host",    this.onAddonsHostChanged,   this);
   },
+
+  // The `src` parameter used in AMO requests.
+  urlSource: "personas-plus",
 
 
   //**************************************************************************//
@@ -622,11 +608,18 @@ let PersonaService = {
    * Returns a formatted URL from preferences.
    */
   getURL: function(pref, replacements) {
+    let defaults = {
+        SRC: this.urlSource
+    };
+
     let t = this;
     return this._prefs.get(pref + ".url")
                .replace(/%([A-Z_]+)%/g, function(m0, m1) {
       if (replacements && m1 in replacements)
         return encodeURIComponent(replacements[m1]);
+
+      if (m1 in defaults)
+        return encodeURIComponent(defaults[m1]);
 
       let pref = m1.toLowerCase().replace(/_/g, "-");
       return encodeURIComponent(t._prefs.get(pref));
@@ -1236,6 +1229,23 @@ let PersonaService = {
     }
   },
   _cookieValue: null,
+
+  /**
+   * Monitors HTTP responses so that we can heuristically detect logins
+   * and logouts.
+   * @param aRequest The HTTP request
+   */
+  onHTTPResponse : function(aRequest) {
+    aRequest.QueryInterface(Ci.nsIHttpChannel);
+
+    let uri = aRequest.URI.QueryInterface(Ci.nsIURL);
+    if (uri.host != this.addonsHost)
+      return;
+
+    if (endsWith(uri.filePath, "/users/logout")
+        || aRequest.requestMethod == "POST" && endsWith(uri.filePath, "/users/login"))
+      this.refreshFavorites();
+  },
 
   onQuitApplication: function() {
     Observers.remove("quit-application", this.onQuitApplication, this);
