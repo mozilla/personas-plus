@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "Цвят на текст">
 <!ENTITY useAccentColor.label "Цвят на акцент">
 <!ENTITY advancedSettings.label "Разширени">
-<!ENTITY showCustomMenu.label "Възможност за добавяне на лична персона">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

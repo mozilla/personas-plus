@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "Utilizza testo colorato">
 <!ENTITY useAccentColor.label "Utilizza evidenziatore">
 <!ENTITY advancedSettings.label "Avanzate">
-<!ENTITY showCustomMenu.label "Visualizza la voce &apos;Personalizzazioni&apos; nel menu">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

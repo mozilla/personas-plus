@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "글자 색상 사용">
 <!ENTITY useAccentColor.label "강조 색상 사용">
 <!ENTITY advancedSettings.label "고급">
-<!ENTITY showCustomMenu.label "메뉴에 사용자 지정 Persona 표시">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "Dùng màu chữ">
 <!ENTITY useAccentColor.label "Dùng màu nhấn">
 <!ENTITY advancedSettings.label "Nâng cao">
-<!ENTITY showCustomMenu.label "Hiện Persona Tùy biến trong trình đơn">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

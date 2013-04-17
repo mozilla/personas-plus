@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "Використовувати колір тексту">
 <!ENTITY useAccentColor.label "Використовувати наголошений колір">
 <!ENTITY advancedSettings.label "Додаткові">
-<!ENTITY showCustomMenu.label "Показувати налаштовані Персони в меню">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

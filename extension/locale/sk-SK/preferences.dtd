@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "Použiť farbu textu">
 <!ENTITY useAccentColor.label "Použiť farbu akcentu">
 <!ENTITY advancedSettings.label "Rozšírené">
-<!ENTITY showCustomMenu.label "Zobraziť vlastnú tému v ponuke">
+<!ENTITY enableCustomMenu.label "Enable custom personas">
