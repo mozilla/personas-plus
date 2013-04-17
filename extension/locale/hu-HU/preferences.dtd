@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "Szövegszín használata">
 <!ENTITY useAccentColor.label "Másodlagos szín használata">
 <!ENTITY advancedSettings.label "Speciális">
-<!ENTITY showCustomMenu.label "Egyéni Persona megjelenítése a menüben">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

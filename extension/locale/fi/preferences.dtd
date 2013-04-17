@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "Käytä tekstin väriä">
 <!ENTITY useAccentColor.label "Käytä aksentin väriä">
 <!ENTITY advancedSettings.label "Lisäasetukset">
-<!ENTITY showCustomMenu.label "Näytä &quot;Mukautettu Persona&quot; lisäosan valikossa">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

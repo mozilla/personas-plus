@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "Úsáid dath téacs">
 <!ENTITY useAccentColor.label "Úsáid dath aibhsithe">
 <!ENTITY advancedSettings.label "Casta">
-<!ENTITY showCustomMenu.label "Taispeáin Pearsantacht Shaincheaptha sa roghchlár">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

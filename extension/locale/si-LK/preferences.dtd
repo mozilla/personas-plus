@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "සරල වර්ණ භාවිතා කරන්න">
 <!ENTITY useAccentColor.label "ගැඹුරු වර්ණ භාවිතා කරන්න">
 <!ENTITY advancedSettings.label "දියුණු">
-<!ENTITY showCustomMenu.label "තමාගේම පුද්ගල සැකසුම් මෙනුවේ පෙන්වන්න">
+<!ENTITY enableCustomMenu.label "Enable custom personas">
