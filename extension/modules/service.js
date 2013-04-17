@@ -1067,10 +1067,54 @@ let PersonaService = {
   },
 
   /**
+   * Ensures that cookies are enabled for our current add-ons host, and
+   * prompts the user to enable them if not.
+   */
+  checkCookiesEnabled: function() {
+    const PERM = "cookie";
+    const ALLOW = 1, SESSION_ONLY = 8;
+
+    try {
+      let prefs = new Preferences("network.cookie.");
+      let cookiesEnabled = (prefs.get("alwaysAcceptSessionCookies") ||
+                            prefs.get("cookieBehavior") != 2);
+      let uri = Services.io.newURI(this.getURL("favorites-feed"), null, null);
+
+      let _ = this._strings.get.bind(this._strings);
+      if (cookiesEnabled
+            || ~[ALLOW, SESSION_ONLY].indexOf(Services.perms.testPermission(uri, PERM))) {
+        this._prefs.reset("naggedAboutCookies");
+      } else {
+        if (this._prefs.get("naggedAboutCookies") == this.addonsHost)
+          return;
+
+        let stopNagging = { value: true };
+        let enableCookies = Services.prompt.confirmCheck(
+            null, _("cookies.confirm.title"),
+            _("cookies.confirm.message", [this.addonsHost]),
+            _("cookies.confirm.checkbox"),
+            stopNagging);
+
+        if (enableCookies) {
+          Services.perms.remove(uri.host, PERM);
+          Services.perms.add(uri, PERM, ALLOW);
+        }
+        else if (stopNagging.value) {
+          this._prefs.set("naggedAboutCookies", this.addonsHost);
+        }
+      }
+    }
+    catch (e) {
+        Cu.reportError(e);
+    }
+  },
+
+  /**
    * Handles the addons-host preference being changed.
    */
   onAddonsHostChanged: function() {
     this.addonsHost = this._prefs.get("addons-host");
+    this.checkCookiesEnabled()
     this.refreshFavorites();
   },
 

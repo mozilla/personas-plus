@@ -273,13 +273,12 @@ let PersonaController = {
   handleEvent: function(aEvent) {
     switch (aEvent.type) {
       case "SelectPersona":
-        this.onSelectPersonaFromContent(aEvent);
-        break;
       case "PreviewPersona":
-        this.onPreviewPersonaFromContent(aEvent);
-        break;
       case "ResetPersona":
-        this.onResetPersonaFromContent(aEvent);
+        let doc = aEvent.originalTarget.ownerDocument;
+        if (Services.perms.testPermission(doc.documentURIObject, "install") 
+              == Services.perms.ALLOW_ACTION)
+          this.checkPrivateBrowsing();
         break;
       case "CheckPersonas":
         this.onCheckPersonasFromContent(aEvent);
@@ -290,17 +289,12 @@ let PersonaController = {
       case "RemoveFavoritePersona":
         this.onRemoveFavoritePersonaFromContent(aEvent);
         break;
-      case "pagehide":
-      case "TabSelect":
-        this.onResetPersona();
-        break;
     }
   },
 
   // Tab Monitor methods (Thunderbird)
   onTabTitleChanged : function(aTab) { /* ignored */ },
   onTabSwitched : function(aTab, aOldTab) {
-    this.onResetPersona();
   },
 
   //**************************************************************************//
@@ -314,27 +308,9 @@ let PersonaController = {
       this._strings.get("dataUnavailable",
                         [this._brandStrings.get("brandShortName")]);
 
-    if (!this.LightweightThemeManager) {
-      // Observe various changes that we should apply to the browser window.
-      this.Observers.add("personas:persona:changed", this);
-      this.Observers.add("domwindowopened", this);
-
-      // Listen for various persona-related events that can bubble up from content.
-      document.addEventListener("SelectPersona", this, false, true);
-      document.addEventListener("PreviewPersona", this, false, true);
-      document.addEventListener("ResetPersona", this, false, true);
-      window.addEventListener("pagehide", this, false, true);
-      // Detect when the selected tab is changed to remove the persona being
-      // previewed.
-      switch (PersonaService.appInfo.ID) {
-        case PersonaService.FIREFOX_ID:
-          gBrowser.tabContainer.addEventListener("TabSelect", this, false);
-          break;
-        case PersonaService.THUNDERBIRD_ID:
-          document.getElementById("tabmail").registerTabMonitor(this);
-          break;
-      }
-    }
+    document.addEventListener("SelectPersona", this, false, true);
+    document.addEventListener("PreviewPersona", this, false, true);
+    document.addEventListener("ResetPersona", this, false, true);
     // Listen for various persona-related events that can bubble up from content,
     // not handled by the LightweightThemeManager.
     document.addEventListener("CheckPersonas", this, false, true);
@@ -347,21 +323,6 @@ let PersonaController = {
       function(aAddon) {
         this._prefs.set("lastversion", aAddon.version);
       }.bind(this));
-
-    // Apply the current persona to the window if the LightweightThemeManager
-    // is not available.
-    // Also, we don't apply the default persona because Firefox starts with that.
-    // Check for per-window personas and restore the persona from session store.
-    if (!this.LightweightThemeManager) {
-      if (this._prefs.get("perwindow") &&
-          this._sessionStore.getWindowValue(window, "persona")) {
-        this._applyPersona(JSON.parse(
-          this._sessionStore.getWindowValue(window, "persona")
-        ));
-      } else if (PersonaService.selected != "default") {
-        this._applyPersona(PersonaService.currentPersona);
-      }
-    }
 
     // Perform special operations for Firefox 4 compatibility:
     // * Hide the status bar button
@@ -380,22 +341,9 @@ let PersonaController = {
   },
 
   shutDown: function() {
-    if (!this.LightweightThemeManager) {
-      this.Observers.remove("personas:persona:changed", this);
-      this.Observers.remove("domwindowopened", this);
-      document.removeEventListener("SelectPersona", this, false);
-      document.removeEventListener("PreviewPersona", this, false);
-      document.removeEventListener("ResetPersona", this, false);
-      window.removeEventListener("pagehide", this, false);
-      switch (PersonaService.appInfo.ID) {
-        case PersonaService.FIREFOX_ID:
-          gBrowser.tabContainer.removeEventListener("TabSelect", this, false);
-          break;
-        case PersonaService.THUNDERBIRD_ID:
-          document.getElementById("tabmail").unregisterTabMonitor(this);
-          break;
-      }
-    }
+    document.removeEventListener("SelectPersona", this, false);
+    document.removeEventListener("PreviewPersona", this, false);
+    document.removeEventListener("ResetPersona", this, false);
     document.removeEventListener("CheckPersonas", this, false);
     document.removeEventListener("AddFavoritePersona", this, false);
     document.removeEventListener("RemoveFavoritePersona", this, false);
@@ -669,21 +617,34 @@ let PersonaController = {
     }
   },
 
+  /**
+   * Checks if the current window is in private browsing mode, and shows
+   * an alert warning that personas will not work, if so.
+   */
+  checkPrivateBrowsing: function() {
+    if (typeof PrivateBrowsingUtils !== "undefined" &&
+          PrivateBrowsingUtils.isWindowPrivate(window)) {
+
+      const ID = "personas-plus-private-browsing-warning";
+
+      var notifications = gBrowser.getNotificationBox();
+      if(!notifications.getNotificationWithValue(ID)) {
+        let _ = this._strings.get.bind(this._strings);
+
+        notifications.appendNotification(
+            _("pbm.message"), ID,
+            "chrome://personas/content/personas_16x16.png",
+            notifications.PRIORITY_WARNING_HIGH,
+            [{ label: _("pbm.button.label"),
+                accessKey: _("pbm.button.accesskey"),
+                callback: function (n) { n.close() } }]);
+      }
+    }
+  },
+
 
   //**************************************************************************//
   // Persona Selection, Preview, and Reset
-
-  /**
-   * Select the persona specified by a web page via a SelectPersona event.
-   * Checks to ensure the page is hosted on a server authorized to select personas.
-   *
-   * @param event   {Event}
-   *        the SelectPersona DOM event
-   */
-  onSelectPersonaFromContent: PersonaService.wrap(function(event) {
-    this._authorizeHost(event);
-    this.onSelectPersona(event);
-  }),
 
   /**
    * Select the persona specified by the DOM node target of the given event.
@@ -739,18 +700,6 @@ let PersonaController = {
     }
   }),
 
-  /**
-   * Preview the persona specified by a web page via a PreviewPersona event.
-   * Checks to ensure the page is hosted on a server authorized to set personas.
-   *
-   * @param   event   {Event}
-   *          the PreviewPersona DOM event
-   */
-  onPreviewPersonaFromContent: PersonaService.wrap(function(event) {
-    this._authorizeHost(event);
-    this.onPreviewPersona(event);
-  }),
-
   onPreviewPersona: PersonaService.wrap(function(event) {
     if (!this._prefs.get("previewEnabled"))
       return;
@@ -790,18 +739,6 @@ let PersonaController = {
   _previewPersona: function(persona) {
     PersonaService.previewPersona(persona);
   },
-
-  /**
-   * Reset the persona as specified by a web page via a ResetPersona event.
-   * Checks to ensure the page is hosted on a server authorized to reset personas.
-   *
-   * @param event   {Event}
-   *        the ResetPersona DOM event
-   */
-  onResetPersonaFromContent: PersonaService.wrap(function(event) {
-    this._authorizeHost(event);
-    this.onResetPersona();
-  }),
 
   onResetPersona: PersonaService.wrap(function(event) {
     if (!this._prefs.get("previewEnabled"))
