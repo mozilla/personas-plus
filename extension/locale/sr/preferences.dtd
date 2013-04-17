@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "Користи боју текста">
 <!ENTITY useAccentColor.label "Користи боју нагласка">
 <!ENTITY advancedSettings.label "Напредно">
-<!ENTITY showCustomMenu.label "Прикажи „Прилагођено одело” у менију">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

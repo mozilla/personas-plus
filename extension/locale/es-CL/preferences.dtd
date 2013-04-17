@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "Usar color de texto">
 <!ENTITY useAccentColor.label "Usar color de resaltado">
 <!ENTITY advancedSettings.label "Avanzado">
-<!ENTITY showCustomMenu.label "Mostrar Persona personalizado en menú">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

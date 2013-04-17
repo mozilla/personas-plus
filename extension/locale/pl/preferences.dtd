@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "Zezwalaj na zmianę koloru tekstu">
 <!ENTITY useAccentColor.label "Zezwalaj na zmianę koloru akcentu">
 <!ENTITY advancedSettings.label "Zaawansowane">
-<!ENTITY showCustomMenu.label "Wyświetlaj w menu element „Prywatny minimotyw”">
+<!ENTITY enableCustomMenu.label "Aktywuj prywatne minimotywy">

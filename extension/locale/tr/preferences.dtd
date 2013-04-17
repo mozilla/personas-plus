@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "Metin rengini kullan">
 <!ENTITY useAccentColor.label "Vurgu rengi kullan">
 <!ENTITY advancedSettings.label "Gelişmiş">
-<!ENTITY showCustomMenu.label "Menüde Varsayılan Kişiyi göster">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

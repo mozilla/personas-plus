@@ -46,14 +46,14 @@ pref("extensions.personas.lastversion", "firstrun");
 pref("extensions.personas.addons-host", "addons.mozilla.org");
 pref("extensions.personas.services-host", "services.addons.mozilla.org");
 
-pref("extensions.personas.addon-details.url", "https://%SERVICES_HOST%/en-US/api/1.5/addon/%ADDON_SLUG%/?format=json");
+pref("extensions.personas.addon-details.url", "https://%SERVICES_HOST%/en-US/api/1.5/addon/%ADDON_SLUG%/?format=json&src=%SRC%");
 
-pref("extensions.personas.browse.url", "https://%ADDONS_HOST%/themes/?sort=%SORT%");
+pref("extensions.personas.browse.url", "https://%ADDONS_HOST%/themes/?sort=%SORT%&src=%SRC%");
 
-pref("extensions.personas.featured-feed.url", "https://%ADDONS_HOST%/collections/mozilla/featured-personas/format:json");
+pref("extensions.personas.featured-feed.url", "https://%ADDONS_HOST%/collections/mozilla/featured-personas/format:json?src=%SRC%");
 
-pref("extensions.personas.favorites-feed.url", "https://%ADDONS_HOST%/collections/mine/favorites/format:json");
-pref("extensions.personas.favorites-browse.url", "https://%ADDONS_HOST%/collections/mine/favorites/");
+pref("extensions.personas.favorites-feed.url", "https://%ADDONS_HOST%/collections/mine/favorites/format:json?src=%SRC%");
+pref("extensions.personas.favorites-browse.url", "https://%ADDONS_HOST%/collections/mine/favorites/?src=%SRC%");
 
 pref("extensions.personas.initial.slug", "groovy-blue");
 

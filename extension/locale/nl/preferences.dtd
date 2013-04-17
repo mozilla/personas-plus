@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "Tekstkleur gebruiken">
 <!ENTITY useAccentColor.label "Accentkleur gebruiken">
 <!ENTITY advancedSettings.label "Geavanceerd">
-<!ENTITY showCustomMenu.label "Eigen persona’s inschakelen">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

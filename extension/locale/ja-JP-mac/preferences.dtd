@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "テキストカラーを利用する">
 <!ENTITY useAccentColor.label "強調カラーを利用する">
 <!ENTITY advancedSettings.label "詳細">
-<!ENTITY showCustomMenu.label "メニューにカスタムペルソナを表示する">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

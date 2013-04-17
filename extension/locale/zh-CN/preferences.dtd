@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "使用文字颜色">
 <!ENTITY useAccentColor.label "使用加重颜色">
 <!ENTITY advancedSettings.label "高级">
-<!ENTITY showCustomMenu.label "在菜单中显示自定义风格">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

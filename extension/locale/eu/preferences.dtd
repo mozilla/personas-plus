@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "Erabili testu kolorea">
 <!ENTITY useAccentColor.label "Erabili azentu kolorea">
 <!ENTITY advancedSettings.label "Aurreratua">
-<!ENTITY showCustomMenu.label "Ikusi Persona pertsonalizatuak menuan">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

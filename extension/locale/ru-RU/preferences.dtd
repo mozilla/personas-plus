@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "Использовать цвет текста">
 <!ENTITY useAccentColor.label "Использовать цвет строки заголовка">
 <!ENTITY advancedSettings.label "Дополнительные">
-<!ENTITY showCustomMenu.label "Показывать пункт 'Скин пользователя' в меню">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

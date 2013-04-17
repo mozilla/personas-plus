@@ -5,4 +5,4 @@
 <!ENTITY useTextColor.label "שימוש בצבע טקסט">
 <!ENTITY useAccentColor.label "שימוש בצבע מודגש">
 <!ENTITY advancedSettings.label "מתקדם">
-<!ENTITY showCustomMenu.label "הצגת Persona מותאם אישית בתפריט">
+<!ENTITY enableCustomMenu.label "אפשור פרסונות (personas) מותאמות אישית">
