@@ -49,7 +49,7 @@
         ondialogaccept="">
 
   <script type="application/javascript" src="chrome://personas/content/preferences.js"/>
-  
+
   <prefpane id="personas-preferences-pane" label="&preferences.title;">
 
     <preferences>
@@ -79,7 +79,7 @@
     <groupbox>
       <caption label="&advancedSettings.label;"/>
       <hbox align="center">
-        <checkbox label="&showCustomMenu.label;" preference="custommenu"/>
+        <checkbox label="&enableCustomMenu.label;" preference="custommenu"/>
       </hbox>
     </groupbox>
 

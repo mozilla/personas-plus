@@ -1108,7 +1108,7 @@ let PersonaController = {
     let item = document.createElement("menuitem");
 
     item.setAttribute("class", "menuitem-iconic");
-    item.setAttribute("label", this._strings.get("viewMore", [category]));
+    item.setAttribute("label", this._strings.get("viewMoreFrom", [category]));
     item.setAttribute("oncommand", "PersonaController.openURLInTab(this.getAttribute('href'))");
 
     if (categoryId == "featured") {
