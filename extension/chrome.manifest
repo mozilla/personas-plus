@@ -75,8 +75,10 @@ locale   personas   he-IL       locale/he-IL/
 locale   personas   hu-HU       locale/hu-HU/
 locale   personas   it          locale/it/
 locale   personas   ja          locale/ja/
+locale   personas   ja-JP       locale/ja-JP/
 locale   personas   ja-JP-mac   locale/ja-JP-mac/
 locale   personas   ko-KR       locale/ko-KR/
+locale   personas   lt          locale/lt/
 locale   personas   lt-LT       locale/lt-LT/
 locale   personas   mk-MK       locale/mk-MK/
 locale   personas   nl          locale/nl/
