@@ -1440,11 +1440,10 @@ let FileUtils = {
             createInstance(Ci.nsIConverterInputStream);
         cstream.init(fstream, "UTF-8", 0, 0);
 
-        let (str = {}) {
-          // read the whole file
-          while (cstream.readString(-1, str))
-            data += str.value;
-        }
+        let str = {};
+        // read the whole file
+        while (cstream.readString(-1, str))
+          data += str.value;
         cstream.close(); // this also closes fstream
       }
     }
