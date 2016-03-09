@@ -35,7 +35,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-let EXPORTED_SYMBOLS = ["Observers"];
+var EXPORTED_SYMBOLS = ["Observers"];
 
 const Cc = Components.classes;
 const Ci = Components.interfaces;
@@ -50,7 +50,7 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
  *
  * @version 0.2
  */
-let Observers = {
+var Observers = {
   /**
    * Register the given callback as an observer of the given topic.
    *
@@ -131,7 +131,7 @@ let Observers = {
  *
  * We use this to remove observers when a caller calls |Observers.remove|.
  */
-let cache = [];
+var cache = [];
 
 function Observer(topic, callback, thisObject) {
   this.topic = topic;

@@ -35,7 +35,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-let EXPORTED_SYMBOLS = ["Preferences"];
+var EXPORTED_SYMBOLS = ["Preferences"];
 
 const Cc = Components.classes;
 const Ci = Components.interfaces;
@@ -398,7 +398,7 @@ Preferences.__proto__ = Preferences.prototype;
  * in this object by their complete pref name, not just their name relative to
  * the root branch of the Preferences object with which they were created.
  */
-let observers = [];
+var observers = [];
 
 function PrefObserver(prefName, callback, thisObject) {
   this.prefName = prefName;
