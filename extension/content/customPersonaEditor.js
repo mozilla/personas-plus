@@ -47,7 +47,7 @@ Cu.import("resource://personas/modules/StringBundle.js");
 Cu.import("resource://personas/modules/service.js");
 
 
-let CustomPersonaEditor = {
+var CustomPersonaEditor = {
   //**************************************************************************//
   // Shortcuts
 

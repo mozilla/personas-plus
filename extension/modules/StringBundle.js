@@ -34,7 +34,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-let EXPORTED_SYMBOLS = ["StringBundle"];
+var EXPORTED_SYMBOLS = ["StringBundle"];
 
 const Cc = Components.classes;
 const Ci = Components.interfaces;

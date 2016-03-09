@@ -36,7 +36,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-let EXPORTED_SYMBOLS = ["PersonaService", "PERSONAS_EXTENSION_ID"];
+var EXPORTED_SYMBOLS = ["PersonaService", "PERSONAS_EXTENSION_ID"];
 
 const Cc = Components.classes;
 const Ci = Components.interfaces;
@@ -71,7 +71,7 @@ function endsWith(str, end) {
     return !end || end.length <= str.length && end == str.slice(-end.length);
 }
 
-let PersonaService = {
+var PersonaService = {
     THUNDERBIRD_ID: "{3550f703-e582-4d05-9a08-453d09bdfdc6}",
     FIREFOX_ID: "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}",
 
@@ -1361,7 +1361,7 @@ let PersonaService = {
     }
 };
 
-let DateUtils = {
+var DateUtils = {
     /**
      * Returns the number as a string with a 0 prepended to it if it contains
      * only one digit, for formats like ISO 8601 that require two digit month,
@@ -1420,7 +1420,7 @@ let DateUtils = {
     }
 };
 
-let FileUtils = {
+var FileUtils = {
     /**
      * Gets the [profile]/personas directory.
      * @return The reference to the personas directory (nsIFile).

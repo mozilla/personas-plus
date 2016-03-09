@@ -57,7 +57,7 @@ if (typeof Cu == "undefined")
 // exported symbols all contain the word "persona" (f.e. PersonaService).
 Cu.import("resource://personas/modules/service.js");
 
-let PersonaController = {
+var PersonaController = {
     _previewTimeoutID: null,
     _resetTimeoutID: null,
 
