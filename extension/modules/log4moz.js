@@ -21,8 +21,6 @@
  * Contributor(s):
  * Michael Johnston <special.michael@gmail.com>
  * Dan Mills <thunder@mozilla.com>
- * Andrew Sutherland <asutherland@asutherland.org>
- * David Ascher <dascher@mozillamessaging.com>
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -45,8 +43,6 @@ const Ci = Components.interfaces;
 const Cr = Components.results;
 const Cu = Components.utils;
 
-Cu.import("resource://gre/modules/XPCOMUtils.jsm");
-
 const MODE_RDONLY   = 0x01;
 const MODE_WRONLY   = 0x02;
 const MODE_CREATE   = 0x08;
@@ -60,13 +56,7 @@ const ONE_BYTE = 1;
 const ONE_KILOBYTE = 1024 * ONE_BYTE;
 const ONE_MEGABYTE = 1024 * ONE_KILOBYTE;
 
-const DEFAULT_NETWORK_TIMEOUT_DELAY = 5;
-
-const CDATA_START = "<![CDATA[";
-const CDATA_END = "]]>";
-const CDATA_ESCAPED_END = CDATA_END + "]]&gt;" + CDATA_START;
-
-var Log4Moz = {
+let Log4Moz = {
   Level: {
     Fatal:  70,
     Error:  60,
@@ -88,119 +78,6 @@ var Log4Moz = {
     }
   },
 
-  /**
-   * Get a stack trace for the current call stack, which is useful to report
-   * when logging certain problems.
-   *
-   * Note: the stack trace won't include the call to this method, although it
-   * will report the caller.
-   */
-  getStackTrace: function() {
-    let stack;
-
-    try {
-      // Do something guaranteed to throw an exception with a call stack.
-      throw new Error();
-    }
-    catch(ex) {
-      stack = ex.stack.split("\n");
-
-      // Remove the entries for the throw and the getStackTrace call.
-      stack.shift();
-      stack.shift();
-
-      // Explicitly label anonymous functions (lines starting with open paren).
-      stack = stack.map(function(v) v.replace(/^\(/, '{anonymous}('));
-
-      stack = stack.join("\n");
-    }
-
-    return stack;
-  },
-
-  /**
-   * Create a logger and configure it with dump and console appenders as
-   * specified by prefs based on the logger name.
-   *
-   * E.g., if the loggername is foo, then look for prefs
-   *   foo.logging.console
-   *   foo.logging.dump
-   *
-   * whose values can be empty: no logging of that type; or any of
-   * 'Fatal', 'Error', 'Warn', 'Info', 'Config', 'Debug', 'Trace', 'All',
-   * in which case the logging level for each appender will be set accordingly
-   *
-   * Parameters:
-   *
-   * @param loggername The name of the logger
-   * @param level (optional) the level of the logger itself
-   * @param consoleLevel (optional) the level of the console appender
-   * @param dumpLevel (optional) the level of the dump appender
-   *
-   * As described above, well-named prefs override the last two parameters
-   **/
-
-  getConfiguredLogger: function(loggername, level, consoleLevel, dumpLevel) {
-    let log = Log4Moz.repository.getLogger(loggername);
-    if (log._configured)
-      return log
-
-    let formatter = new Log4Moz.BasicFormatter();
-
-    consoleLevel = consoleLevel || -1;
-    dumpLevel = dumpLevel || -1;
-    let branch = Cc["@mozilla.org/preferences-service;1"].
-                 getService(Ci.nsIPrefService).getBranch(loggername + ".logging.");
-    if (branch)
-    {
-      try {
-        // figure out if event-driven indexing should be enabled...
-        let consoleLevelString = branch.getCharPref("console");
-        if (consoleLevelString) {
-          // capitalize to fit with Log4Moz.Level expectations
-          consoleLevelString =  consoleLevelString.charAt(0).toUpperCase() +
-             consoleLevelString.substr(1).toLowerCase();
-          consoleLevel = (consoleLevelString == 'None') ?
-                          100 : Log4Moz.Level[consoleLevelString];
-        }
-      } catch (ex) {
-      }
-      try {
-        let dumpLevelString = branch.getCharPref("dump");
-        if (dumpLevelString) {
-          // capitalize to fit with Log4Moz.Level expectations
-          dumpLevelString =  dumpLevelString.charAt(0).toUpperCase() +
-             dumpLevelString.substr(1).toLowerCase();
-          dumpLevel = (dumpLevelString == 'None') ?
-                       100 : Log4Moz.Level[dumpLevelString];
-        }
-      } catch (ex) {
-      }
-    }
-
-    if (consoleLevel != 100) {
-      if (consoleLevel == -1)
-        consoleLevel = Log4Moz.Level.Error;
-      let capp = new Log4Moz.ConsoleAppender(formatter);
-      capp.level = consoleLevel;
-      log.addAppender(capp);
-    }
-
-    if (dumpLevel != 100) {
-      if (dumpLevel == -1)
-        dumpLevel = Log4Moz.Level.Error;
-      let dapp = new Log4Moz.DumpAppender(formatter);
-      dapp.level = dumpLevel;
-      log.addAppender(dapp);
-    }
-
-    log.level = level || Math.min(consoleLevel, dumpLevel);
-
-    log._configured = true;
-
-    return log;
-  },
-
   get repository() {
     delete Log4Moz.repository;
     Log4Moz.repository = new LoggerRepository();
@@ -217,15 +94,12 @@ var Log4Moz = {
 
   get Formatter() { return Formatter; },
   get BasicFormatter() { return BasicFormatter; },
-  get XMLFormatter() { return XMLFormatter; },
-  get JSONFormatter() { return JSONFormatter; },
+
   get Appender() { return Appender; },
   get DumpAppender() { return DumpAppender; },
   get ConsoleAppender() { return ConsoleAppender; },
   get FileAppender() { return FileAppender; },
-  get SocketAppender() { return SocketAppender; },
   get RotatingFileAppender() { return RotatingFileAppender; },
-  get ThrowingAppender() { return ThrowingAppender; },
 
   // Logging helper:
   // let logger = Log4Moz.repository.getLogger("foo");
@@ -267,42 +141,18 @@ var Log4Moz = {
   }
 };
 
-function LoggerContext() {
-  this._started = this.lastStateChange = Date.now();
-  this._state = "started";
-}
-LoggerContext.prototype = {
-  _jsonMe: true,
-  _id: "unknown",
-  setState: function LoggerContext_state(aState) {
-    this._state = aState;
-    this._lastStateChange = Date.now();
-    return this;
-  },
-  finish: function LoggerContext_finish() {
-    this._finished = Date.now();
-    this._state = "finished";
-    return this;
-  },
-  toString: function LoggerContext_toString() {
-    return "[Context: " + this._id + " state: " + this._state + "]";
-  }
-};
-
 
 /*
  * LogMessage
  * Encapsulates a single log event's data
  */
-function LogMessage(loggerName, level, messageObjects){
+function LogMessage(loggerName, level, message){
   this.loggerName = loggerName;
-  this.messageObjects = messageObjects;
+  this.message = message;
   this.level = level;
   this.time = Date.now();
 }
 LogMessage.prototype = {
-  QueryInterface: XPCOMUtils.generateQI([Ci.nsISupports]),
-
   get levelDesc() {
     if (this.level in Log4Moz.Level.Desc)
       return Log4Moz.Level.Desc[this.level];
@@ -311,7 +161,7 @@ LogMessage.prototype = {
 
   toString: function LogMsg_toString(){
     return "LogMessage [" + this.time + " " + this.level + " " +
-      this.messageObjects + "]";
+      this.message + "]";
   }
 };
 
@@ -321,21 +171,15 @@ LogMessage.prototype = {
  */
 
 function Logger(name, repository) {
-  this._init(name, repository);
+  if (!repository)
+    repository = Log4Moz.repository;
+  this._name = name;
+  this.children = [];
+  this.ownAppenders = [];
+  this.appenders = [];
+  this._repository = repository;
 }
 Logger.prototype = {
-  _init: function Logger__init(name, repository) {
-    if (!repository)
-      repository = Log4Moz.repository;
-    this._name = name;
-    this._appenders = [];
-    this._repository = repository;
-  },
-
-  QueryInterface: XPCOMUtils.generateQI([Ci.nsISupports]),
-
-  parent: null,
-
   get name() {
     return this._name;
   },
@@ -353,67 +197,97 @@ Logger.prototype = {
     this._level = level;
   },
 
-  _appenders: null,
-  get appenders() {
-    if (!this.parent)
-      return this._appenders;
-    return this._appenders.concat(this.parent.appenders);
+  _parent: null,
+  get parent() this._parent,
+  set parent(parent) {
+    if (this._parent == parent) {
+      return;
+    }
+    // Remove ourselves from parent's children
+    if (this._parent) {
+      let index = this._parent.children.indexOf(this);
+      if (index != -1) {
+        this._parent.children.splice(index, 1);
+      }
+    }
+    this._parent = parent;
+    parent.children.push(this);
+    this.updateAppenders();
+  },
+
+  updateAppenders: function updateAppenders() {
+    if (this._parent) {
+      let notOwnAppenders = this._parent.appenders.filter(function(appender) {
+        return this.ownAppenders.indexOf(appender) == -1;
+      }, this);
+      this.appenders = notOwnAppenders.concat(this.ownAppenders);
+    } else {
+      this.appenders = this.ownAppenders.slice();
+    }
+
+    // Update children's appenders.
+    for (let i = 0; i < this.children.length; i++) {
+      this.children[i].updateAppenders();
+    }
   },
 
   addAppender: function Logger_addAppender(appender) {
-    for (let i = 0; i < this._appenders.length; i++) {
-      if (this._appenders[i] == appender)
-        return;
-    }
-    this._appenders.push(appender);
-  },
-
-  _nextContextId: 0,
-  newContext: function Logger_newContext(objWithProps) {
-    if (!("_id" in objWithProps))
-      objWithProps._id = this._name + ":" + (++this._nextContextId);
-    objWithProps.__proto__ = LoggerContext.prototype;
-    objWithProps._isContext = true;
-    LoggerContext.call(objWithProps);
-    return objWithProps;
-  },
-
-  log: function Logger_log(message) {
-    if (this.level > message.level)
+    if (this.ownAppenders.indexOf(appender) != -1) {
       return;
+    }
+    this.ownAppenders.push(appender);
+    this.updateAppenders();
+  },
+
+  removeAppender: function Logger_removeAppender(appender) {
+    let index = this.ownAppenders.indexOf(appender);
+    if (index == -1) {
+      return;
+    }
+    this.ownAppenders.splice(index, 1);
+    this.updateAppenders();
+  },
+
+  log: function Logger_log(level, string) {
+    if (this.level > level)
+      return;
+
+    // Hold off on creating the message object until we actually have
+    // an appender that's responsible.
+    let message;
     let appenders = this.appenders;
     for (let i = 0; i < appenders.length; i++){
-      appenders[i].append(message);
+      let appender = appenders[i];
+      if (appender.level > level)
+        continue;
+
+      if (!message)
+        message = new LogMessage(this._name, level, string);
+
+      appender.append(message);
     }
   },
 
-  fatal: function Logger_fatal() {
-    this.log(new LogMessage(this._name, Log4Moz.Level.Fatal,
-                            Array.prototype.slice.call(arguments)));
+  fatal: function Logger_fatal(string) {
+    this.log(Log4Moz.Level.Fatal, string);
   },
-  error: function Logger_error() {
-    this.log(new LogMessage(this._name, Log4Moz.Level.Error,
-                            Array.prototype.slice.call(arguments)));
-   },
-  warn: function Logger_warn() {
-    this.log(new LogMessage(this._name, Log4Moz.Level.Warn,
-                            Array.prototype.slice.call(arguments)));
-   },
-  info: function Logger_info() {
-    this.log(new LogMessage(this._name, Log4Moz.Level.Info,
-                            Array.prototype.slice.call(arguments)));
-   },
-  config: function Logger_config() {
-    this.log(new LogMessage(this._name, Log4Moz.Level.Config,
-                            Array.prototype.slice.call(arguments)));
-   },
-  debug: function Logger_debug() {
-    this.log(new LogMessage(this._name, Log4Moz.Level.Debug,
-                            Array.prototype.slice.call(arguments)));
-   },
-  trace: function Logger_trace() {
-    this.log(new LogMessage(this._name, Log4Moz.Level.Trace,
-                            Array.prototype.slice.call(arguments)));
+  error: function Logger_error(string) {
+    this.log(Log4Moz.Level.Error, string);
+  },
+  warn: function Logger_warn(string) {
+    this.log(Log4Moz.Level.Warn, string);
+  },
+  info: function Logger_info(string) {
+    this.log(Log4Moz.Level.Info, string);
+  },
+  config: function Logger_config(string) {
+    this.log(Log4Moz.Level.Config, string);
+  },
+  debug: function Logger_debug(string) {
+    this.log(Log4Moz.Level.Debug, string);
+  },
+  trace: function Logger_trace(string) {
+    this.log(Log4Moz.Level.Trace, string);
   }
 };
 
@@ -424,8 +298,6 @@ Logger.prototype = {
 
 function LoggerRepository() {}
 LoggerRepository.prototype = {
-  QueryInterface: XPCOMUtils.generateQI([Ci.nsISupports]),
-
   _loggers: {},
 
   _rootLogger: null,
@@ -436,10 +308,9 @@ LoggerRepository.prototype = {
     }
     return this._rootLogger;
   },
-  // FIXME: need to update all parent values if we do this
-  //set rootLogger(logger) {
-  //  this._rootLogger = logger;
-  //},
+  set rootLogger(logger) {
+    throw "Cannot change the root logger";
+  },
 
   _updateParents: function LogRep__updateParents(name) {
     let pieces = name.split('.');
@@ -471,8 +342,6 @@ LoggerRepository.prototype = {
   },
 
   getLogger: function LogRep_getLogger(name) {
-    if (!name)
-      name = this.getLogger.caller.name;
     if (name in this._loggers)
       return this._loggers[name];
     this._loggers[name] = new Logger(name, this);
@@ -490,11 +359,10 @@ LoggerRepository.prototype = {
 // Abstract formatter
 function Formatter() {}
 Formatter.prototype = {
-  QueryInterface: XPCOMUtils.generateQI([Ci.nsISupports]),
   format: function Formatter_format(message) {}
 };
 
-// FIXME: should allow for formatting the whole string, not just the date
+// Basic formatter that doesn't do anything fancy
 function BasicFormatter(dateFormat) {
   if (dateFormat)
     this.dateFormat = dateFormat;
@@ -502,87 +370,11 @@ function BasicFormatter(dateFormat) {
 BasicFormatter.prototype = {
   __proto__: Formatter.prototype,
 
-  _dateFormat: null,
-
-  get dateFormat() {
-    if (!this._dateFormat)
-      this._dateFormat = "%Y-%m-%d %H:%M:%S";
-    return this._dateFormat;
-  },
-
-  set dateFormat(format) {
-    this._dateFormat = format;
-  },
-
   format: function BF_format(message) {
-    let date = new Date(message.time);
-    let messageString = [
-      ((typeof(mo) == "object") ? mo.toString() : mo) for each
-      ([,mo] in Iterator(message.messageObjects))].join(" ");
-    return date.toLocaleFormat(this.dateFormat) + "\t" +
-      message.loggerName + "\t" + message.levelDesc + "\t" +
-      messageString + "\n";
+    return message.time + "\t" + message.loggerName + "\t" + message.levelDesc 
+           + "\t" + message.message + "\n";
   }
 };
-
-/*
- * XMLFormatter
- * Format like log4j's XMLLayout.  The intent is that you can hook this up to
- * a SocketAppender and point them at a Chainsaw GUI running with an
- * XMLSocketReceiver running.  Then your output comes out in Chainsaw.
- * (Chainsaw is log4j's GUI that displays log output with niceties such as
- * filtering and conditional coloring.)
- */
-
-function XMLFormatter() {}
-XMLFormatter.prototype = {
-  __proto__: Formatter.prototype,
-
-  format: function XF_format(message) {
-    let cdataEscapedMessage =
-      [((typeof(mo) == "object") ? mo.toString() : mo) for each
-       ([,mo] in Iterator(message.messageObjects))]
-        .join(" ")
-        .replace(CDATA_END, CDATA_ESCAPED_END, "g");
-    return "<log4j:event logger='" + message.loggerName + "' " +
-                        "level='" + message.levelDesc + "' thread='unknown' " +
-                        "timestamp='" + message.time + "'>" +
-      "<log4j:message><![CDATA[" + cdataEscapedMessage + "]]></log4j:message>" +
-      "</log4j:event>";
-  }
-};
-
-function JSONFormatter() {
-}
-JSONFormatter.prototype = {
-  __proto__: Formatter.prototype,
-
-  format: function JF_format(message) {
-    let origMessageObjects = message.messageObjects;
-    message.messageObjects = [];
-    let reProto = [];
-    for each (let [, messageObject] in Iterator(origMessageObjects)) {
-      if (messageObject)
-        if (messageObject._jsonMe) {
-          message.messageObjects.push(messageObject);
-          // temporarily strip the prototype to avoid JSONing the impl.
-          reProto.push([messageObject, messageObject.__proto__]);
-          messageObject.__proto__ = undefined;
-        }
-        else
-          message.messageObjects.push(messageObject.toString());
-      else
-        message.messageObjects.push(messageObject);
-    }
-    let encoded = JSON.stringify(message) + "\r\n";
-    message.msgObjects = origMessageObjects;
-    for each (let [,objectAndProtoPair] in Iterator (reProto)) {
-      objectAndProtoPair[0].__proto__ = objectAndProtoPair[1];
-    }
-    return encoded;
-  }
-};
-
 
 /*
  * Appenders
@@ -595,15 +387,10 @@ function Appender(formatter) {
   this._formatter = formatter? formatter : new BasicFormatter();
 }
 Appender.prototype = {
-  QueryInterface: XPCOMUtils.generateQI([Ci.nsISupports]),
-
-  _level: Log4Moz.Level.All,
-  get level() { return this._level; },
-  set level(level) { this._level = level; },
+  level: Log4Moz.Level.All,
 
   append: function App_append(message) {
-    if(this._level <= message.level)
-      this.doAppend(this._formatter.format(message));
+    this.doAppend(this._formatter.format(message));
   },
   toString: function App_toString() {
     return this._name + " [level=" + this._level +
@@ -663,7 +450,6 @@ function FileAppender(file, formatter) {
 }
 FileAppender.prototype = {
   __proto__: Appender.prototype,
-
   __fos: null,
   get _fos() {
     if (!this.__fos)
@@ -672,10 +458,19 @@ FileAppender.prototype = {
   },
 
   openStream: function FApp_openStream() {
-    this.__fos = Cc["@mozilla.org/network/file-output-stream;1"].
-      createInstance(Ci.nsIFileOutputStream);
-    let flags = MODE_WRONLY | MODE_CREATE | MODE_APPEND;
-    this.__fos.init(this._file, flags, PERMS_FILE, 0);
+    try {
+      let __fos = Cc["@mozilla.org/network/file-output-stream;1"].
+        createInstance(Ci.nsIFileOutputStream);
+      let flags = MODE_WRONLY | MODE_CREATE | MODE_APPEND;
+      __fos.init(this._file, flags, PERMS_FILE, 0);
+
+      this.__fos = Cc["@mozilla.org/intl/converter-output-stream;1"]
+            .createInstance(Ci.nsIConverterOutputStream);
+      this.__fos.init(__fos, "UTF-8", 4096,
+            Ci.nsIConverterInputStream.DEFAULT_REPLACEMENT_CHARACTER);
+    } catch(e) {
+      dump("Error opening stream:\n" + e);
+    }
   },
 
   closeStream: function FApp_closeStream() {
@@ -693,7 +488,7 @@ FileAppender.prototype = {
     if (message === null || message.length <= 0)
       return;
     try {
-      this._fos().write(message, message.length);
+      this._fos.writeString(message);
     } catch(e) {
       dump("Error writing file:\n" + e);
     }
@@ -701,7 +496,11 @@ FileAppender.prototype = {
 
   clear: function FApp_clear() {
     this.closeStream();
-    this._file.remove(false);
+    try {
+      this._file.remove(false);
+    } catch (e) {
+      // XXX do something?
+    }
   }
 };
 
@@ -731,11 +530,12 @@ RotatingFileAppender.prototype = {
       return;
     try {
       this.rotateLogs();
-      this._fos.write(message, message.length);
+      FileAppender.prototype.doAppend.call(this, message);
     } catch(e) {
-      dump("Error writing file:\n" + e);
+      dump("Error writing file:" + e + "\n");
     }
   },
+
   rotateLogs: function RFApp_rotateLogs() {
     if(this._file.exists() &&
        this._file.fileSize < this._maxSize)
@@ -755,132 +555,5 @@ RotatingFileAppender.prototype = {
       cur.moveTo(cur.parent, cur.leafName + ".1");
 
     // Note: this._file still points to the same file
-  }
-};
-
-/*
- * SocketAppender
- * Logs via TCP to a given host and port.  Attempts to automatically reconnect
- * when the connection drops or cannot be initially re-established.  Connection
- * attempts will happen at most every timeoutDelay seconds (has a sane default
- * if left blank).  Messages are dropped when there is no connection.
- */
-
-function SocketAppender(host, port, formatter, timeoutDelay) {
-  this._name = "SocketAppender";
-  this._host = host;
-  this._port = port;
-  this._formatter = formatter? formatter : new BasicFormatter();
-  this._timeout_delay = timeoutDelay || DEFAULT_NETWORK_TIMEOUT_DELAY;
-
-  this._socketService = Cc["@mozilla.org/network/socket-transport-service;1"]
-                          .getService(Ci.nsISocketTransportService);
-  this._mainThread =
-    Cc["@mozilla.org/thread-manager;1"].getService().mainThread;
-}
-SocketAppender.prototype = {
-  __proto__: Appender.prototype,
-
-  __nos: null,
-  get _nos() {
-    if (!this.__nos)
-      this.openStream();
-    return this.__nos;
-  },
-  _nextCheck: 0,
-  openStream: function SApp_openStream() {
-    let now = Date.now();
-    if (now <= this._nextCheck) {
-      return;
-    }
-    this._nextCheck = now + this._timeout_delay * 1000;
-    try {
-      this._transport = this._socketService.createTransport(
-        null, 0, // default socket type
-        this._host, this._port,
-        null); // no proxy
-      this._transport.setTimeout(Ci.nsISocketTransport.TIMEOUT_CONNECT,
-                                 this._timeout_delay);
-      // do not set a timeout for TIMEOUT_READ_WRITE. The timeout is not
-      //  entirely intuitive; your socket will time out if no one reads or
-      //  writes to the socket within the timeout.  That, as you can imagine,
-      //  is not what we want.
-      this._transport.setEventSink(this, this._mainThread);
-
-      let outputStream = this._transport.openOutputStream(
-        0, // neither blocking nor unbuffered operation is desired
-        0, // default buffer size is fine
-        0 // default buffer count is fine
-        );
-
-      let uniOutputStream = Cc["@mozilla.org/intl/converter-output-stream;1"]
-                              .createInstance(Ci.nsIConverterOutputStream);
-      uniOutputStream.init(outputStream, "utf-8", 0, 0x0000);
-
-      this.__nos = uniOutputStream;
-    } catch (ex) {
-      dump("Unexpected SocketAppender connection problem: " +
-           ex.fileName + ":" + ex.lineNumber + ": " + ex + "\n");
-    }
-  },
-
-  closeStream: function SApp_closeStream() {
-    if (!this._transport)
-      return;
-    try {
-      this._connected = false;
-      this._transport = null;
-      let nos = this.__nos;
-      this.__nos = null;
-      nos.close();
-    } catch(e) {
-      // this shouldn't happen, but no one cares
-    }
-  },
-
-  doAppend: function SApp_doAppend(message) {
-    if (message === null || message.length <= 0)
-      return;
-    try {
-      let nos = this._nos;
-      if (nos)
-        nos.writeString(message);
-    } catch(e) {
-      if (this._transport && !this._transport.isAlive()) {
-        this.closeStream();
-      }
-    }
-  },
-
-  clear: function SApp_clear() {
-    this.closeStream();
-  },
-
-  /* nsITransportEventSink */
-  onTransportStatus: function SApp_onTransportStatus(aTransport, aStatus,
-      aProgress, aProgressMax) {
-    if (aStatus == 0x804b0004) // STATUS_CONNECTED_TO is not a constant.
-      this._connected = true;
-  },
-};
-
-/**
- * Throws an exception whenever it gets a message.  Intended to be used in
- * automated testing situations where the code would normally log an error but
- * not die in a fatal manner.
- */
-function ThrowingAppender(thrower, formatter) {
-  this._name = "ThrowingAppender";
-  this._formatter = formatter? formatter : new BasicFormatter();
-  this._thrower = thrower;
-}
-ThrowingAppender.prototype = {
-  __proto__: Appender.prototype,
-
-  doAppend: function TApp_doAppend(message) {
-    if (this._thrower)
-      this._thrower(message);
-    else
-      throw message;
   }
 };

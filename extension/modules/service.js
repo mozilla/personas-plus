@@ -110,7 +110,17 @@ var PersonaService = {
 
     get _log() {
         delete this._log;
-        return this._log = Log4Moz.getConfiguredLogger("PersonaService");
+        let logger = Log4Moz.repository.getLogger("PersonaService");
+        let formatter = new Log4Moz.BasicFormatter();
+
+        let capp = new Log4Moz.ConsoleAppender(formatter);
+        capp.level = Log4Moz.Level["Error"];
+        logger.addAppender(capp);
+
+        let dapp = new Log4Moz.DumpAppender(formatter);
+        dapp.level = Log4Moz.Level["Error"];
+        logger.addAppender(dapp);
+        return this._log = logger;
     },
 
 
@@ -360,10 +370,13 @@ var PersonaService = {
             appABI: xulRuntime.XPCOMABI
         };
 
-        //dump("params: " + [name + "=" + encodeURIComponent(params[name]) for (name in params)].join("&") + "\n");
+        let paramArry = [];
+        for (name in params) {
+            paramArry.push(name + "=" + encodeURIComponent(params[name]));
+        }
 
         let url = this.getURL("featured-feed") +
-            "?" + [name + "=" + encodeURIComponent(params[name]) for (name in params)].join("&");
+            "?" + paramArry.join("&");
         this._makeRequest(url, this.onDataLoadComplete.bind(this));
     },
 
@@ -710,7 +723,6 @@ var PersonaService = {
      * manager is available
      */
     _notifyPersonaChanged: function(aPersona) {
-        this._log.debug("_notifyPersonaChanged:\n" + Log4Moz.getStackTrace());
         if (LightweightThemeManager) {
             if (aPersona && aPersona.custom && LightweightThemeManager.setLocalTheme)
                 LightweightThemeManager.setLocalTheme(aPersona);
