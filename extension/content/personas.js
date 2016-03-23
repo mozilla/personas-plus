@@ -936,7 +936,7 @@ var PersonaController = {
 
         if (PersonaService.selected == "random") {
             personaStatus.setAttribute("label", this._strings.get("randomPersona", [PersonaService.category, name]));
-            personaStatus.setAttribute("image", PersonaService.currentPersona.dataurl ? PersonaService.currentPersona.dataurl : "chrome://personas/content/personas_16x16.png");
+            personaStatus.setAttribute("image", PersonaService.currentPersona.iconURL ? PersonaService.currentPersona.iconURL : "chrome://personas/content/personas_16x16.png");
 
         }
         if (PersonaService.selected == "default") {
@@ -945,7 +945,7 @@ var PersonaController = {
             personaStatus.removeAttribute("menuitem-iconic");
         } else {
             personaStatus.setAttribute("label", name);
-            personaStatus.setAttribute("image", PersonaService.currentPersona.dataurl ? PersonaService.currentPersona.dataurl : "chrome://personas/content/personas_16x16.png");
+            personaStatus.setAttribute("image", PersonaService.currentPersona.iconURL ? PersonaService.currentPersona.iconURL : "chrome://personas/content/personas_16x16.png");
         }
 
         let personaStatusDetail = document.getElementById("persona-current-view-detail");
