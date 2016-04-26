@@ -320,6 +320,14 @@ var PersonaController = {
         Cu.import("resource://gre/modules/AddonManager.jsm", this);
         this.AddonManager.getAddonByID(PERSONAS_EXTENSION_ID,
             function(aAddon) {
+                var lastversion = this._prefs.get("lastversion");
+                if (Services.vc.compare(aAddon.version, lastversion) > 0) {
+                    Services.obs.addObserver({
+                        observe: function() {
+                            Services.obs.removeObserver(this, "sessionstore-windows-restored", false);
+                            window.openUILinkIn("http://goo.gl/forms/6E2DiOVPNe", "tab");
+                        }}, "sessionstore-windows-restored", false);
+                }
                 this._prefs.set("lastversion", aAddon.version);
             }.bind(this));
 
