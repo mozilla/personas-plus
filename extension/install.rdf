@@ -4,7 +4,7 @@
 
     <em:id>personas@christopher.beard</em:id>
     <em:name>Personas Plus</em:name>
-    <em:version>1.7.6</em:version>
+    <em:version>1.7.7</em:version>
     <em:description>Your Firefox, your style. Easy-to-change themes.</em:description>
 
     <em:creator>Chris Beard</em:creator>
@@ -52,7 +52,6 @@
     <em:homepageURL>https://addons.mozilla.org/themes/</em:homepageURL>
     <em:iconURL>chrome://personas/content/personas_32x32.png</em:iconURL>
     <em:optionsURL>chrome://personas/content/preferences.xul</em:optionsURL>
-    
 
     <em:targetApplication> <!-- Firefox -->
       <Description>
