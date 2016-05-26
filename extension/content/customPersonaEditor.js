@@ -97,7 +97,7 @@ var CustomPersonaEditor = {
   },
 
   get _blankImage() {
-    return "data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAAAICVAEAOw=="
+    return "https://addons.mozilla.org/static/img/blank.gif"
   },
 
   customPersona: null,
