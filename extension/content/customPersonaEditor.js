@@ -97,7 +97,7 @@ var CustomPersonaEditor = {
   },
 
   get _blankImage() {
-    return "data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAAAICVAEAOw=="
+    return "resource://personas/content/blank.gif"
   },
 
   customPersona: null,
