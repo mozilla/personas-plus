@@ -46,30 +46,30 @@
 
 /* Anchor the image to the top-right corner of the window. */
 #messengerWindow[persona] {
-  -moz-appearance: none;
-  background-repeat: no-repeat;
-  background-position: top right;
+  -moz-appearance: none !important;
+  background-repeat: no-repeat !important;
+  background-position: top right !important;
 }
 
 /* Make the toolbox and search input transparent so the image shines through them. */
 #messengerWindow[persona] toolbar {
-  -moz-appearance: none;
-  background-color: transparent;
+  -moz-appearance: none !important;
+  background-color: transparent !important;
   /*background-image: none !important;*/
 }
 
 #messengerWindow[persona] #nav-bar {
-  -moz-appearance: none;
-  background-image: none; 
-  background-color: transparent;
+  -moz-appearance: none !important;
+  background-image: none !important; 
+  background-color: transparent !important;
 }
 
 /* Gray out the window slightly when it's not active. */
 #messengerWindow[persona]:not([active="true"]) > #mail-toolbox > toolbar {
-  -moz-appearance: none;
-  background-color: transparent; 
-  border-bottom-color: inherit;
-  border-top-color: inherit;
+  -moz-appearance: none !important;
+  background-color: transparent !important; 
+  border-bottom-color: inherit !important;
+  border-top-color: inherit !important;
 }
 
 
@@ -81,30 +81,30 @@
 #messengerWindow[persona] #searchbar,
 #messengerWindow[persona] #mail-bar3 > toolbaritem > menulist /* View and Folder menus */
 {
-  opacity: 0.8;
+  opacity: 0.8 !important;
 }
 
 #messengerWindow[persona] toolbarbutton.bookmark-item {
-  -moz-appearance: none;
-  background-color: transparent;
+  -moz-appearance: none !important;
+  background-color: transparent !important;
 }
 
 #messengerWindow[persona] .findbar-find-next,
 #messengerWindow[persona] .findbar-find-previous,
 #messengerWindow[persona] .findbar-highlight {
-  background: url("chrome://personas/skin/white-gray-gradient.png") repeat-x top center;
+  background: url("chrome://personas/skin/white-gray-gradient.png") repeat-x top center !important;
   color: inherit !important;
 }
 
 #messengerWindow[persona] .findbar-container > toolbarbutton:not([disabled]):hover:active,
 #messengerWindow[persona] .findbar-container > hbox > toolbarbutton:not([disabled]):hover:active {
-  background-image: url("chrome://personas/skin/white-gray-gradient-active.png");
+  background-image: url("chrome://personas/skin/white-gray-gradient-active.png") !important;
   color: inherit !important;
 }
 
 #messengerWindow[persona] .findbar-container > toolbarbutton[disabled],
 #messengerWindow[persona] .findbar-container > hbox > toolbarbutton[disabled] {
-  opacity: 0.5;
+  opacity: 0.5 !important;
 }
 
 
@@ -117,8 +117,8 @@
 }
 
 #status-bar[persona] #FindToolbar {
-  border-top-width: 1px;
-  border-top-color: transparent;
+  border-top-width: 1px !important;
+  border-top-color: transparent !important;
 }
 
 
@@ -129,7 +129,7 @@
 #messengerWindow[persona] .toolbarbutton-text,
 #messengerWindow[persona] .tab-text,
 #status-bar[persona] statusbar {
-  text-shadow: none;
+  text-shadow: none !important;
 }
 
 
@@ -137,31 +137,31 @@
 /* Style the tab bar. */
 
 #messengerWindow[persona] .tabmail-tabs {
-  -moz-appearance: none;
-  background-color: transparent;
+  -moz-appearance: none !important;
+  background-color: transparent !important;
   background-image: none !important;
 }
 
 #messengerWindow[persona]:not([active="true"]) .tabmail-strip {
-  opacity: 0.8; 
+  opacity: 0.8 !important; 
 }
 
 #messengerWindow[persona] .tabmail-strip {
-  -moz-appearance: none;
+  -moz-appearance: none !important;
   /*background-image: url(chrome://personas/skin/tabmail-tabs-bkgnd.png) !important;*/
-  background-color: transparent; 
+  background-color: transparent !important; 
   background-image: none !important;
 }
 
 #messengerWindow[persona] .tabmail-tab {
-  /*opacity: 0.6;*/
+  /*opacity: 0.6 !important;*/
   /*color: black !important;*/
 }
 
 #messengerWindow[persona] .tabmail-tab[selected="true"],
 #messengerWindow[persona] .tabmail-tab:hover {
-  /*background-color: none;*/
-  /*opacity: 0.6;*/
+  /*background-color: none !important;*/
+  /*opacity: 0.6 !important;*/
 }
 
 #messengerWindow[persona] .tab-text,
@@ -170,39 +170,39 @@
 }
 
 #messengerWindow[persona] .tabmail-tab {
-  -moz-appearance: none;
-  -moz-border-radius: 0 0 6px 6px;
-  color: #222;
-  -moz-box-pack: center;
-  -moz-box-align: center;
-  margin-bottom: 1px;
-  -moz-margin-end: 1px;
-  padding: 0 5px;
-  border-style: none solid solid;
-  border-width: 3px;
-  -moz-border-right-colors: rgba(0, 0, 0, .08) rgba(0, 0, 0, .17) rgba(180, 180, 180, .29);
-  -moz-border-bottom-colors: rgba(0, 0, 0, .08) rgba(0, 0, 0, .17) rgba(180, 180, 180, .29);
-  -moz-border-left-colors: rgba(0, 0, 0, .08) rgba(0, 0, 0, .17) rgba(180, 180, 180, .29);
-  -moz-background-clip: padding;
+  -moz-appearance: none !important;
+  -moz-border-radius: 0 0 6px 6px !important;
+  color: #222 !important;
+  -moz-box-pack: center !important;
+  -moz-box-align: center !important;
+  margin-bottom: 1px !important;
+  -moz-margin-end: 1px !important;
+  padding: 0 5px !important;
+  border-style: none solid solid !important;
+  border-width: 3px !important;
+  -moz-border-right-colors: rgba(0, 0, 0, .08) rgba(0, 0, 0, .17) rgba(180, 180, 180, .29) !important;
+  -moz-border-bottom-colors: rgba(0, 0, 0, .08) rgba(0, 0, 0, .17) rgba(180, 180, 180, .29) !important;
+  -moz-border-left-colors: rgba(0, 0, 0, .08) rgba(0, 0, 0, .17) rgba(180, 180, 180, .29) !important;
+  -moz-background-clip: padding !important;
   min-width: 1px !important;
-  text-align: center;
-  height: 24px;
+  text-align: center !important;
+  height: 24px !important;
   background-image: none !important;
 }
 
 #messengerWindow[persona] .tabmail-tab:not([selected="true"]) {
   background-image: url(chrome://personas/skin/tabmail-tabs-bkgnd.png) !important;
-  /*background-image: url(chrome://browser/skin/tabmail/tab-bkgnd.png);*/
+  /*background-image: url(chrome://browser/skin/tabmail/tab-bkgnd.png) !important;*/
   /*background-image: none !important;*/
 }
 
 #messengerWindow[persona] .tabmail-tab[selected="true"] {
-  -moz-user-focus: normal;
-  padding: 0 6px 1px;
-  border-width: 2px;
-  -moz-border-left-colors: rgba(0, 0, 0, .1) rgba(0, 0, 0, .2);
-  -moz-border-bottom-colors: rgba(0, 0, 0, .1) rgba(0, 0, 0, .2);
-  -moz-border-right-colors: rgba(0, 0, 0, .1) rgba(0, 0, 0, .2);
+  -moz-user-focus: normal !important;
+  padding: 0 6px 1px !important;
+  border-width: 2px !important;
+  -moz-border-left-colors: rgba(0, 0, 0, .1) rgba(0, 0, 0, .2) !important;
+  -moz-border-bottom-colors: rgba(0, 0, 0, .1) rgba(0, 0, 0, .2) !important;
+  -moz-border-right-colors: rgba(0, 0, 0, .1) rgba(0, 0, 0, .2) !important;
   background-color: transparent !important;
   background-image: none !important;
 }
@@ -218,8 +218,8 @@
  * change the overall height of the toolbar. */
 
 #status-bar[persona], #status-bar[persona] > hbox, #status-bar[persona] statusbarpanel {
-  -moz-appearance: none; /* undo -moz-appearance: statusbarpanel */
+  -moz-appearance: none !important; /* undo -moz-appearance: statusbarpanel */
 
-  background-repeat: no-repeat;
+  background-repeat: no-repeat !important;
   border: 0px solid transparent;
 }

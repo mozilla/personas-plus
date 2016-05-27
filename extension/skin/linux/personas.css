@@ -46,8 +46,8 @@
  * because it doesn't look good on Mac, which also doesn't seem to respect
  * the -moz-image-region rule, so we only show it on Windows and Linux. */
 #personas-menu {
-  list-style-image: url("chrome://personas/content/personas_16x16.png");
-  -moz-image-region: rect(0, 16px, 16px, 0px);
+  list-style-image: url("chrome://personas/content/personas_16x16.png") !important;
+  -moz-image-region: rect(0, 16px, 16px, 0px) !important;
 }
 
 
@@ -55,15 +55,15 @@
 /* Header */
 
 #main-window[persona] {
-  -moz-appearance: none;
+  -moz-appearance: none !important;
 }
 
 #main-window[persona] #navigator-toolbox toolbar {
-  -moz-appearance: none;
+  -moz-appearance: none !important;
 }
 
 #main-window[persona] #navigator-toolbox toolbarbutton {
-  -moz-appearance: none;
+  -moz-appearance: none !important;
 }
 
 
@@ -73,7 +73,7 @@
 #main-window[persona] #urlbar,
 #main-window[persona] #searchbar,
 #main-window[persona] .tabbrowser-tab {
-  opacity: 0.8;
+  opacity: 0.8 !important;
 }
 
 
@@ -81,14 +81,14 @@
 /* Footer */
 
 #browser-bottombox[persona] #status-bar {
-  border-left: none;
-  border-bottom: none;
-  border-right: none;
+  border-left: none !important;
+  border-bottom: none !important;
+  border-right: none !important;
 }
 
 #browser-bottombox[persona] #FindToolbar {
-  border-top-width: 1px;
-  border-top-color: transparent;
+  border-top-width: 1px !important;
+  border-top-color: transparent !important;
   -moz-border-top-colors: transparent !important;
 }
 
@@ -97,16 +97,16 @@
  * its own background color and border, so we have to turn them off separately.
  */
 #browser-bottombox[persona] statusbarpanel {
-  -moz-appearance: none; /* undo -moz-appearance: statusbarpanel */
+  -moz-appearance: none !important; /* undo -moz-appearance: statusbarpanel */
 
   /* These rules prevent horizontal jumping, as -moz-appearance: statusbarpanel
    * apparently creates hidden left-right (or perhaps there's margin or padding;
    * there's no way to know with -moz-appearance because Gecko doesn't expose
    * the results of applying OS-specific style via that rule). */
-  border-left: 2px solid transparent;
-  border-right: 2px solid transparent;
+  border-left: 2px solid transparent !important;
+  border-right: 2px solid transparent !important;
 
   /* These rules prevent top-bottom jumping. */
-  border-bottom: 2px solid transparent;
-  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent !important;
+  border-top: 2px solid transparent !important;
 }

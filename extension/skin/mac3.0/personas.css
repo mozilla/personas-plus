@@ -43,13 +43,13 @@
 /* Header */
 
 #main-window[persona] {
-  -moz-appearance: none;
+  -moz-appearance: none !important;
 }
 
 #main-window[persona] #navigator-toolbox toolbar {
-  -moz-appearance: none;
-  background-color: transparent;
-  background-image: none; 
+  -moz-appearance: none !important;
+  background-color: transparent !important;
+  background-image: none !important; 
 }
 
 #main-window[persona] #nav-bar {
@@ -59,8 +59,8 @@
    * To prevent that jump, we remove the top and bottom borders, matching their
    * state in the default theme with -moz-appearance: -moz-mac-unified-toolbar.
    */
-  border-top: none;
-  border-bottom: none;
+  border-top: none !important;
+  border-bottom: none !important;
 }
 
 #main-window[persona] #PersonalToolbar {
@@ -72,21 +72,21 @@
    * -moz-border-bottom-colors to transparent, but we set them both anyway
    * just in case.
    */
-  border-top-color: transparent;
-  border-bottom-color: transparent;
-  -moz-border-bottom-colors: transparent;
+  border-top-color: transparent !important;
+  border-bottom-color: transparent !important;
+  -moz-border-bottom-colors: transparent !important;
 }
 
 /* Gray out the window slightly when it's not active. */
 #main-window[persona]:not([active="true"]) > #navigator-toolbox > toolbar,
 #main-window[persona]:not([active="true"]) > #navigator-toolbox > #nav-bar,
 #main-window[persona]:not([active="true"]) > #navigator-toolbox > #PersonalToolbar {
-  -moz-appearance: none;
-  background-image: none; 
-  background-color: transparent; 
-  border-top-color: transparent;
-  border-bottom-color: transparent;
-  -moz-border-bottom-colors: transparent;
+  -moz-appearance: none !important;
+  background-image: none !important; 
+  background-color: transparent !important; 
+  border-top-color: transparent !important;
+  border-bottom-color: transparent !important;
+  -moz-border-bottom-colors: transparent !important;
 }
 
 /* Change the toolbarbutton icons for the default toolbarbuttons when a persona
@@ -110,7 +110,7 @@
 #main-window[persona] #copy-button,
 #main-window[persona] #paste-button,
 #main-window[persona] #back-forward-dropmarker {
-  list-style-image: url("chrome://personas/skin/Toolbar.png");
+  list-style-image: url("chrome://personas/skin/Toolbar.png") !important;
 }
 
 /* The Home button gets styled specially when placed on the Bookmarks Toolbar.
@@ -118,35 +118,35 @@
  * that.  So here we only apply the persona-specific style when the button
  * is not a bookmark item. */
 #main-window[persona] #home-button:not(.bookmark-item) {
-  list-style-image: url("chrome://personas/skin/Toolbar.png");
+  list-style-image: url("chrome://personas/skin/Toolbar.png") !important;
 }
 
 /* Eliminate text shadows from toolbarbutton and tab text so it doesn't create
  * an unnatural color stroke on the bottom half of the text. */
 #main-window[persona] .toolbarbutton-text-shadow,
 #main-window[persona] .tab-text-shadow {
-  display: none;
+  display: none !important;
 }
 
 #main-window[persona] .tabbrowser-tabs {
-  -moz-appearance: none;
-  background-image: none; 
-  background-color: transparent;
+  -moz-appearance: none !important;
+  background-image: none !important; 
+  background-color: transparent !important;
 }
 
 #main-window[persona] .tabbrowser-strip {
-  -moz-appearance: none;
-  background-image: url(chrome://personas/skin/tabbrowser-tabs-bkgnd.png);
-  background-color: transparent; 
+  -moz-appearance: none !important;
+  background-image: url(chrome://personas/skin/tabbrowser-tabs-bkgnd.png) !important;
+  background-color: transparent !important; 
 }
 
 #main-window[persona] .tabbrowser-tab {
-  /*opacity: 0.6;*/
+  /*opacity: 0.6 !important;*/
 }
 
 #main-window[persona] .tabbrowser-tab[selected="true"],
 #main-window[persona] .tabbrowser-tab:hover {
-  opacity: 0.8;
+  opacity: 0.8 !important;
 }
 
 #main-window[persona] .tabbrowser-tab:not([selected="true"]),
@@ -159,34 +159,34 @@
 /* Make some elements a little transparent so the persona flavors their look. */
 #main-window[persona] #urlbar,
 #main-window[persona] #searchbar {
-  opacity: 0.8;
+  opacity: 0.8 !important;
 }
 
 #main-window[persona] .toolbarbutton-1, #back-forward-dropmarker {
-  /*opacity: 0.9;*/
+  /*opacity: 0.9 !important;*/
 }
 
 #main-window[persona] toolbarbutton.bookmark-item {
-  -moz-appearance: none;
-  background-color: transparent;
+  -moz-appearance: none !important;
+  background-color: transparent !important;
 }
 
 #main-window[persona] .findbar-find-next,
 #main-window[persona] .findbar-find-previous,
 #main-window[persona] .findbar-highlight {
-  background: url("chrome://personas/skin/white-gray-gradient.png") repeat-x top center;
+  background: url("chrome://personas/skin/white-gray-gradient.png") repeat-x top center !important;
   color: inherit !important;
 }
 
 #main-window[persona] .findbar-container > toolbarbutton:not([disabled]):hover:active,
 #main-window[persona] .findbar-container > hbox > toolbarbutton:not([disabled]):hover:active {
-  background-image: url("chrome://personas/skin/white-gray-gradient-active.png");
+  background-image: url("chrome://personas/skin/white-gray-gradient-active.png") !important;
   color: inherit !important;
 }
 
 #main-window[persona] .findbar-container > toolbarbutton[disabled],
 #main-window[persona] .findbar-container > hbox > toolbarbutton[disabled] {
-  opacity: 0.5;
+  opacity: 0.5 !important;
 }
 
 
@@ -199,6 +199,6 @@
 }
 
 #browser-bottombox[persona] #FindToolbar {
-  border-top-width: 1px;
-  border-top-color: transparent;
+  border-top-width: 1px !important;
+  border-top-color: transparent !important;
 }

@@ -43,8 +43,8 @@
  * because it doesn't look good on Mac, which also doesn't seem to respect
  * the -moz-image-region rule, so we only show it on Windows and Linux. */
 #personas-menu {
-  list-style-image: url("chrome://personas/content/personas_16x16.png");
-  -moz-image-region: rect(0, 16px, 16px, 0px);
+  list-style-image: url("chrome://personas/content/personas_16x16.png") !important;
+  -moz-image-region: rect(0, 16px, 16px, 0px) !important;
 }
 
 
@@ -52,13 +52,13 @@
 /* Header */
 
 #messengerWindow[persona] {
-  -moz-appearance: none;
-  background-repeat: no-repeat;
-  background-position: top right;
+  -moz-appearance: none !important;
+  background-repeat: no-repeat !important;
+  background-position: top right !important;
 }
 
 #messengerWindow[persona] toolbar {
-  -moz-appearance: none;
+  -moz-appearance: none !important;
 }
 
 /* Make some elements translucent so the persona flavors their appearance. */
@@ -67,7 +67,7 @@
 #messengerWindow[persona] .tabs-alltabs-box,
 #messengerWindow[persona] #mail-bar3 > toolbaritem > menulist /* View and Folder menus */
 {
-  opacity: 0.8;
+  opacity: 0.8 !important;
 }
 
 #messengerWindow[persona] #tabmail, .tabmail-tabs {
@@ -94,8 +94,8 @@
  * change the overall height of the toolbar. */
 
 #status-bar[persona], #status-bar[persona] > hbox, #status-bar[persona] statusbarpanel {
-  -moz-appearance: none; /* undo -moz-appearance: statusbarpanel */
+  -moz-appearance: none !important; /* undo -moz-appearance: statusbarpanel */
 
-  background-repeat: no-repeat;
-  border: 0px solid transparent;
+  background-repeat: no-repeat !important;
+  border: 0px solid transparent !important;
 }
