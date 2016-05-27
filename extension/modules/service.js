@@ -62,6 +62,8 @@ Cu.import("resource://personas/modules/Observers.js");
 Cu.import("resource://personas/modules/Preferences.js");
 Cu.import("resource://personas/modules/StringBundle.js");
 Cu.import("resource://personas/modules/URI.js");
+try{var console = (Cu.import("resource://gre/modules/Console.jsm", {})).console;}
+catch(error){var console = (Cu.import("resource://gre/modules/"+"devtools"+"/Console.jsm", {})).console;}
 
 const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
 
@@ -82,6 +84,7 @@ var PersonaService = {
                 return fn.apply(this, arguments);
             } catch (e) {
                 Cu.reportError(e);
+				console.log(e);
             }
         };
     },
