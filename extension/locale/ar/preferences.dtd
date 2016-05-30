@@ -1,0 +1,8 @@
+<!ENTITY preferences.title "تفضيلات بيرسوناز">
+<!ENTITY generalSettings.label "عــام">
+<!ENTITY previewEnabled.label "عرض معاينة عن الاختيار من القائمة">
+<!ENTITY displaySettings.label "العرض">
+<!ENTITY useTextColor.label "Use text color">
+<!ENTITY useAccentColor.label "Use accent color">
+<!ENTITY advancedSettings.label "متقدم">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

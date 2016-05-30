@@ -1,0 +1,8 @@
+<!ENTITY preferences.title "Personas-asetukset">
+<!ENTITY generalSettings.label "Yleiset">
+<!ENTITY previewEnabled.label "Näytä esikatselu, kun teemaan kohdistetaan valikossa">
+<!ENTITY displaySettings.label "Näyttö">
+<!ENTITY useTextColor.label "Käytä tekstin väriä">
+<!ENTITY useAccentColor.label "Käytä aksentin väriä">
+<!ENTITY advancedSettings.label "Lisäasetukset">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

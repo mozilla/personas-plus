@@ -1,0 +1,8 @@
+<!ENTITY preferences.title "Tùy chỉnh Personas">
+<!ENTITY generalSettings.label "Tổng quát">
+<!ENTITY previewEnabled.label "Cho xem thử khi rê chuột chọn trên trình đơn">
+<!ENTITY displaySettings.label "Hiển thị">
+<!ENTITY useTextColor.label "Dùng màu chữ">
+<!ENTITY useAccentColor.label "Dùng màu nhấn">
+<!ENTITY advancedSettings.label "Nâng cao">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

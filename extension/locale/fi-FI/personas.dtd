@@ -1,0 +1,20 @@
+<!ENTITY personas_app_title "Personas">
+<!ENTITY useDefaultPersona.label "Oletus">
+<!ENTITY preferences.label "Asetukset…">
+<!ENTITY viewDirectory.label "Siirry galleriaan">
+<!ENTITY customPersona.label "Mukautettu Persona">
+<!ENTITY customName.label "Nimi:">
+<!ENTITY header.label "Yläosa:">
+<!ENTITY selectBackground.label "Selaa…">
+<!ENTITY footer.label "Alaosa:">
+<!ENTITY textColorPicker.label "Tekstin väri:">
+<!ENTITY accentColorPicker.label "Aksentin väri:">
+<!ENTITY useDefaultColor.label "Käytä oletusta">
+<!ENTITY okButton.label "OK">
+<!ENTITY contextHomePage.label "Kotisivu">
+<!ENTITY contextPreferences.label "Asetukset">
+<!ENTITY contextEdit.label "Muokkaa">
+<!ENTITY contextApply.label "Käytä">
+<!ENTITY usePersona.label "Käytä Personaa">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Käytä tätä Personaa">
