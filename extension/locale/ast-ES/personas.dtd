@@ -1,0 +1,20 @@
+<!ENTITY personas_app_title "Personas">
+<!ENTITY useDefaultPersona.label "Predetermináu">
+<!ENTITY preferences.label "Preferencies">
+<!ENTITY viewDirectory.label "Ver Gallería">
+<!ENTITY customPersona.label "Personalizar Persona">
+<!ENTITY customName.label "Nome:">
+<!ENTITY header.label "Testera">
+<!ENTITY selectBackground.label "Restolar...">
+<!ENTITY footer.label "Footer:">
+<!ENTITY textColorPicker.label "Color de testu:">
+<!ENTITY accentColorPicker.label "Accent Color:">
+<!ENTITY useDefaultColor.label "Usar predetermináu">
+<!ENTITY okButton.label "OK">
+<!ENTITY contextHomePage.label "Páxina d'aniciu">
+<!ENTITY contextPreferences.label "Axustes">
+<!ENTITY contextEdit.label "Editar">
+<!ENTITY contextApply.label "Aplicar">
+<!ENTITY usePersona.label "Usar Persona">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Usar esta Persona">

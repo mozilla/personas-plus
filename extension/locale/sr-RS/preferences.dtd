@@ -1,0 +1,8 @@
+<!ENTITY preferences.title "Personas подешавања">
+<!ENTITY generalSettings.label "Општа">
+<!ENTITY previewEnabled.label "Прикажи преглед приликом бирања из менија">
+<!ENTITY displaySettings.label "Приказ">
+<!ENTITY useTextColor.label "Користи боју текста">
+<!ENTITY useAccentColor.label "Користи боју нагласка">
+<!ENTITY advancedSettings.label "Напредно">
+<!ENTITY enableCustomMenu.label "Enable custom personas">

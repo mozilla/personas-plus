@@ -1,0 +1,8 @@
+<!ENTITY preferences.title "Nastavitve Personas">
+<!ENTITY generalSettings.label "Splošno">
+<!ENTITY previewEnabled.label "Ob izbiri iz menija prikaži predogled">
+<!ENTITY displaySettings.label "Prikaži">
+<!ENTITY useTextColor.label "Uporabi barvo besedila">
+<!ENTITY useAccentColor.label "Uporabi barvo poudarka">
+<!ENTITY advancedSettings.label "Napredno">
+<!ENTITY enableCustomMenu.label "Omogoči persone po meri">
