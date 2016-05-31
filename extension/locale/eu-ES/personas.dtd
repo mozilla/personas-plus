@@ -1,6 +1,3 @@
-<!ENTITY personas_app_title "Personas">
-<!ENTITY useDefaultPersona.label "Lehentsia">
-<!ENTITY preferences.label "Hobespenak…">
 <!ENTITY viewDirectory.label "Ikusi galeria…">
 <!ENTITY customPersona.label "Pertsonalizatutako Persona">
 <!ENTITY customName.label "Izena:">
@@ -13,8 +10,6 @@
 <!ENTITY okButton.label "Ados">
 <!ENTITY contextHomePage.label "Etxe orrialdea">
 <!ENTITY contextPreferences.label "Ezarpenak">
-<!ENTITY contextEdit.label "Editatu">
-<!ENTITY contextApply.label "Ezarri">
 <!ENTITY usePersona.label "Use Persona">
 <!ENTITY usePersona.accesskey "P">
 <!ENTITY usePersona.tooltip "Use this Persona">

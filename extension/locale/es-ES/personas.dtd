@@ -1,6 +1,3 @@
-<!ENTITY personas_app_title "Personas">
-<!ENTITY useDefaultPersona.label "Predeterminado">
-<!ENTITY preferences.label "Preferencias">
 <!ENTITY viewDirectory.label "Ver Galería">
 <!ENTITY customPersona.label "Persona personalizada">
 <!ENTITY customName.label "Nombre:">
@@ -13,8 +10,6 @@
 <!ENTITY okButton.label "OK">
 <!ENTITY contextHomePage.label "Página de inicio">
 <!ENTITY contextPreferences.label "Conguraciones">
-<!ENTITY contextEdit.label "Editar">
-<!ENTITY contextApply.label "Aplicar">
 <!ENTITY usePersona.label "Utilizar Persona">
 <!ENTITY usePersona.accesskey "P">
 <!ENTITY usePersona.tooltip "Utilice esta Persona">

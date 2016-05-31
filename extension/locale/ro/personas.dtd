@@ -1,6 +1,3 @@
-<!ENTITY personas_app_title "Personas">
-<!ENTITY useDefaultPersona.label "Predefinită">
-<!ENTITY preferences.label "Opțiuni">
 <!ENTITY viewDirectory.label "Vizualizează galeria">
 <!ENTITY customPersona.label "Personalizare temă">
 <!ENTITY customName.label "Denumire:">
@@ -13,8 +10,6 @@
 <!ENTITY okButton.label "Ieșire">
 <!ENTITY contextHomePage.label "Pagină inițială">
 <!ENTITY contextPreferences.label "Configurare">
-<!ENTITY contextEdit.label "Editează">
-<!ENTITY contextApply.label "Aplică">
 <!ENTITY usePersona.label "Folosește tema">
 <!ENTITY usePersona.accesskey "F">
 <!ENTITY usePersona.tooltip "Folosește această temă">

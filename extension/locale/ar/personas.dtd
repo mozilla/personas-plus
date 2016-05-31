@@ -1,6 +1,3 @@
-<!ENTITY personas_app_title "Personas">
-<!ENTITY useDefaultPersona.label "افتراضي">
-<!ENTITY preferences.label "التفضيلات">
 <!ENTITY viewDirectory.label "View Gallery">
 <!ENTITY customPersona.label "Custom Persona">
 <!ENTITY customName.label "الاسم:">
@@ -13,8 +10,6 @@
 <!ENTITY okButton.label "موافق">
 <!ENTITY contextHomePage.label "الصفحة الرئيسية">
 <!ENTITY contextPreferences.label "الإعدادات">
-<!ENTITY contextEdit.label "عدّل">
-<!ENTITY contextApply.label "طبّق">
 <!ENTITY usePersona.label "Use Persona">
 <!ENTITY usePersona.accesskey "P">
 <!ENTITY usePersona.tooltip "Use this Persona">

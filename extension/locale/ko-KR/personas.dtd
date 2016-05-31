@@ -1,6 +1,3 @@
-<!ENTITY personas_app_title "Personas">
-<!ENTITY useDefaultPersona.label "기본">
-<!ENTITY preferences.label "환경설정...">
 <!ENTITY viewDirectory.label "목록 보기…">
 <!ENTITY customPersona.label "사용자 Persona">
 <!ENTITY customName.label "이름:">
@@ -13,8 +10,6 @@
 <!ENTITY okButton.label "확인">
 <!ENTITY contextHomePage.label "홈 페이지">
 <!ENTITY contextPreferences.label "설정">
-<!ENTITY contextEdit.label "편집">
-<!ENTITY contextApply.label "적용">
 <!ENTITY usePersona.label "Persona 사용">
 <!ENTITY usePersona.accesskey "P">
 <!ENTITY usePersona.tooltip "이 Persona 사용">

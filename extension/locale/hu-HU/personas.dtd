@@ -1,6 +1,3 @@
-<!ENTITY personas_app_title "Personas">
-<!ENTITY useDefaultPersona.label "Alapértelmezett">
-<!ENTITY preferences.label "Beállítások…">
 <!ENTITY viewDirectory.label "Könyvtár megtekintése…">
 <!ENTITY customPersona.label "Egyéni Persona">
 <!ENTITY customName.label "Név:">
@@ -13,8 +10,6 @@
 <!ENTITY okButton.label "OK">
 <!ENTITY contextHomePage.label "Kezdőlap">
 <!ENTITY contextPreferences.label "Beállítások">
-<!ENTITY contextEdit.label "Szerkesztés">
-<!ENTITY contextApply.label "Alkalmaz">
 <!ENTITY usePersona.label "Persona használata">
 <!ENTITY usePersona.accesskey "P">
 <!ENTITY usePersona.tooltip "Persona használata">

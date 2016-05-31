@@ -1,6 +1,3 @@
-<!ENTITY personas_app_title "Personas">
-<!ENTITY useDefaultPersona.label "Standert">
-<!ENTITY preferences.label "Foarkarren...">
 <!ENTITY viewDirectory.label "Toan map...">
 <!ENTITY customPersona.label "Eigen Persona">
 <!ENTITY customName.label "Namme:">
@@ -13,8 +10,6 @@
 <!ENTITY okButton.label "OK">
 <!ENTITY contextHomePage.label "Thússide">
 <!ENTITY contextPreferences.label "Ynstellings">
-<!ENTITY contextEdit.label "Bewurkje">
-<!ENTITY contextApply.label "Tapasse">
 <!ENTITY usePersona.label "Use Persona">
 <!ENTITY usePersona.accesskey "P">
 <!ENTITY usePersona.tooltip "Use this Persona">

@@ -1,6 +1,3 @@
-<!ENTITY personas_app_title "පුද්ගල සැකසුම">
-<!ENTITY useDefaultPersona.label "සාමාන්‍ය">
-<!ENTITY preferences.label "අභිමත">
 <!ENTITY viewDirectory.label "ගැලරිය පෙන්වන්න">
 <!ENTITY customPersona.label "සකස් කරන්න ලද පුද්ගල සැකසුම">
 <!ENTITY customName.label "නම">
@@ -13,8 +10,6 @@
 <!ENTITY okButton.label "හරි">
 <!ENTITY contextHomePage.label "මුල් පිටුව">
 <!ENTITY contextPreferences.label "සැකසුම්">
-<!ENTITY contextEdit.label "වෙනස් කරන්න">
-<!ENTITY contextApply.label "යොදන්න">
 <!ENTITY usePersona.label "Use Persona">
 <!ENTITY usePersona.accesskey "P">
 <!ENTITY usePersona.tooltip "Use this Persona">

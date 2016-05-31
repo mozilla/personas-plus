@@ -1,6 +1,3 @@
-<!ENTITY personas_app_title "Personas">
-<!ENTITY useDefaultPersona.label "Výchozí">
-<!ENTITY preferences.label "Nastavení...">
 <!ENTITY viewDirectory.label "Zobrazit galerii...">
 <!ENTITY customPersona.label "Vlastní">
 <!ENTITY customName.label "Název:">
@@ -13,8 +10,6 @@
 <!ENTITY okButton.label "OK">
 <!ENTITY contextHomePage.label "Domovská stránka">
 <!ENTITY contextPreferences.label "Nastavení">
-<!ENTITY contextEdit.label "Upravit">
-<!ENTITY contextApply.label "Použít">
 <!ENTITY usePersona.label "Use Persona">
 <!ENTITY usePersona.accesskey "P">
 <!ENTITY usePersona.tooltip "Use this Persona">

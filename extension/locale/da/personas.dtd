@@ -1,6 +1,3 @@
-<!ENTITY personas_app_title "Personas">
-<!ENTITY useDefaultPersona.label "Standard">
-<!ENTITY preferences.label "Indstillinger">
 <!ENTITY viewDirectory.label "Vis galleri">
 <!ENTITY customPersona.label "Tilpas Persona">
 <!ENTITY customName.label "Navn:">
@@ -13,8 +10,6 @@
 <!ENTITY okButton.label "OK">
 <!ENTITY contextHomePage.label "Hjemmeside">
 <!ENTITY contextPreferences.label "Indstillinger">
-<!ENTITY contextEdit.label "Rediger">
-<!ENTITY contextApply.label "Anvend">
 <!ENTITY usePersona.label "Brug Persona">
 <!ENTITY usePersona.accesskey "u">
 <!ENTITY usePersona.tooltip "Brug denne Persona">
