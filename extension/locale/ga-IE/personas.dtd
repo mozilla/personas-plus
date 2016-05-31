@@ -1,6 +1,3 @@
-<!ENTITY personas_app_title "Pearsantachtaí">
-<!ENTITY useDefaultPersona.label "Réamhshocrú">
-<!ENTITY preferences.label "Sainroghanna">
 <!ENTITY viewDirectory.label "Féach ar an nGailearaí">
 <!ENTITY customPersona.label "Pearsantacht Shaincheaptha">
 <!ENTITY customName.label "Ainm:">
@@ -13,8 +10,6 @@
 <!ENTITY okButton.label "OK">
 <!ENTITY contextHomePage.label "Leathanach Baile">
 <!ENTITY contextPreferences.label "Socruithe">
-<!ENTITY contextEdit.label "Eagar">
-<!ENTITY contextApply.label "Cuir i bhFeidhm">
 <!ENTITY usePersona.label "Úsáid Pearsantacht">
 <!ENTITY usePersona.accesskey "P">
 <!ENTITY usePersona.tooltip "Úsáid an Phearsantacht seo">

@@ -1,6 +1,3 @@
-<!ENTITY personas_app_title "Одела">
-<!ENTITY useDefaultPersona.label "Подразумевана">
-<!ENTITY preferences.label "Подешавања...">
 <!ENTITY viewDirectory.label "Прикажи галерију...">
 <!ENTITY customPersona.label "Прилагођено одело">
 <!ENTITY customName.label "Назив:">
@@ -13,8 +10,6 @@
 <!ENTITY okButton.label "У реду">
 <!ENTITY contextHomePage.label "Матична страна">
 <!ENTITY contextPreferences.label "Подешавања">
-<!ENTITY contextEdit.label "Уреди">
-<!ENTITY contextApply.label "Примени">
 <!ENTITY usePersona.label "Користи одело">
 <!ENTITY usePersona.accesskey "О">
 <!ENTITY usePersona.tooltip "Користи ово одело">

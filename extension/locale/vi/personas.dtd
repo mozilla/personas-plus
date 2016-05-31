@@ -1,6 +1,3 @@
-<!ENTITY personas_app_title "Personas">
-<!ENTITY useDefaultPersona.label "Mặc định">
-<!ENTITY preferences.label "Tùy chỉnh">
 <!ENTITY viewDirectory.label "Xem trang Trưng bày">
 <!ENTITY customPersona.label "Persona Tùy biến">
 <!ENTITY customName.label "Tên:">
@@ -13,8 +10,6 @@
 <!ENTITY okButton.label "OK">
 <!ENTITY contextHomePage.label "Trang chủ">
 <!ENTITY contextPreferences.label "Thiết lập">
-<!ENTITY contextEdit.label "Chỉnh sửa">
-<!ENTITY contextApply.label "Áp dụng">
 <!ENTITY usePersona.label "Use Persona">
 <!ENTITY usePersona.accesskey "P">
 <!ENTITY usePersona.tooltip "Use this Persona">

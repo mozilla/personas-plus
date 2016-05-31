@@ -1,6 +1,3 @@
-<!ENTITY personas_app_title "Kaukės">
-<!ENTITY useDefaultPersona.label "Numatytoji">
-<!ENTITY preferences.label "Nustatymai">
 <!ENTITY viewDirectory.label "Žiūrėti galeriją">
 <!ENTITY customPersona.label "Pasirinktinė kaukė">
 <!ENTITY customName.label "Pavadinimas:">
@@ -13,8 +10,6 @@
 <!ENTITY okButton.label "Gerai">
 <!ENTITY contextHomePage.label "Namų puslapis">
 <!ENTITY contextPreferences.label "Nustatymai">
-<!ENTITY contextEdit.label "Redaguoti">
-<!ENTITY contextApply.label "Taikyti">
 <!ENTITY usePersona.label "Naudoti kaukę">
 <!ENTITY usePersona.accesskey "N">
 <!ENTITY usePersona.tooltip "Naudoti šią kaukę">

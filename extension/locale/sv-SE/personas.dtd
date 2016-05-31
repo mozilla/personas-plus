@@ -1,6 +1,3 @@
-<!ENTITY personas_app_title "Personas">
-<!ENTITY useDefaultPersona.label "Standard">
-<!ENTITY preferences.label "Inställningar">
 <!ENTITY viewDirectory.label "Visa Directory">
 <!ENTITY customPersona.label "Anpassd Persona">
 <!ENTITY customName.label "Namn:">
@@ -13,8 +10,6 @@
 <!ENTITY okButton.label "OK">
 <!ENTITY contextHomePage.label "Hemsidda">
 <!ENTITY contextPreferences.label "Inställningar">
-<!ENTITY contextEdit.label "Hantera">
-<!ENTITY contextApply.label "Verkställ">
 <!ENTITY usePersona.label "Använd Persona">
 <!ENTITY usePersona.accesskey "P">
 <!ENTITY usePersona.tooltip "Använd denna Persona">

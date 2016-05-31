@@ -39,6 +39,8 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+var EXPORTED_SYMBOLS = ["PersonaController"];
+
 // Generic modules get imported into the persona controller rather than
 // the global namespace after the controller definition below so they don't
 // conflict with modules with the same names imported by other extensions.
@@ -52,6 +54,14 @@ if (typeof Cr == "undefined")
     var Cr = Components.results;
 if (typeof Cu == "undefined")
     var Cu = Components.utils;
+
+Components.utils.import("resource://gre/modules/Services.jsm");
+
+try {
+    var console = (Cu.import("resource://gre/modules/Console.jsm", {})).console;
+} catch (error) {
+    var console = (Cu.import("resource://gre/modules/" + "devtools" + "/Console.jsm", {})).console;
+}
 
 // It's OK to import the service module into the global namespace because its
 // exported symbols all contain the word "persona" (f.e. PersonaService).
@@ -91,24 +101,20 @@ var PersonaController = {
             new this.StringBundle("chrome://branding/locale/brand.properties");
     },
 
-    get _menu() {
-        delete this._menu;
-        return this._menu = document.getElementById("personas-menu");
+    get_menu(document) {
+        return document.getElementById("personas-menu");
     },
 
-    get _menuButton() {
-        delete this._menuButton;
-        return this._menuButton = document.getElementById("personas-selector-button");
+    get_menuButton(document) {
+        return document.getElementById("personas-selector-button");
     },
 
-    get _menuPopup() {
-        delete this._menuPopup;
-        return this._menuPopup = document.getElementById("personas-selector-menu");
+    get_menuPopup(document) {
+        return document.getElementById("personas-selector-menu");
     },
 
-    get _toolbarButton() {
-        delete this._toolbarButton;
-        return this._toolbarButton = document.getElementById("personas-toolbar-button");
+    get_toolbarButton(document) {
+        return document.getElementById("personas-toolbar-button");
     },
 
     get _sessionStore() {
@@ -117,25 +123,23 @@ var PersonaController = {
             .getService(Ci.nsISessionStore);
     },
 
-    get _header() {
-        delete this._header;
+    get_header(document) {
         switch (PersonaService.appInfo.ID) {
             case PersonaService.THUNDERBIRD_ID:
-                return this._header = document.getElementById("messengerWindow");
+                return document.getElementById("messengerWindow");
             case PersonaService.FIREFOX_ID:
-                return this._header = document.getElementById("main-window");
+                return document.getElementById("main-window");
             default:
                 throw "unknown application ID " + PersonaService.appInfo.ID;
         }
     },
 
-    get _footer() {
-        delete this._footer;
+    get_footer(document) {
         switch (PersonaService.appInfo.ID) {
             case PersonaService.THUNDERBIRD_ID:
-                return this._footer = document.getElementById("status-bar");
+                return document.getElementById("status-bar");
             case PersonaService.FIREFOX_ID:
-                return this._footer = document.getElementById("browser-bottombox");
+                return document.getElementById("browser-bottombox");
             default:
                 throw "unknown application ID " + PersonaService.appInfo.ID;
         }
@@ -175,7 +179,9 @@ var PersonaController = {
      */
     _escapeURLForCSS: function(url) url.replace(/[(),\s'"]/g, "\$&"),
 
-    openURLInTab: function(url) {
+    openURLInTab: function(url, event) {
+        var document = event.currentTarget.ownerDocument;
+        var window = document.defaultView;
         switch (PersonaService.appInfo.ID) {
             case PersonaService.THUNDERBIRD_ID:
                 // Thunderbird's "openTab" implementation for the "contentTab" mode
@@ -244,7 +250,7 @@ var PersonaController = {
                     this._sessionStore.getWindowValue(window, "persona")) {
                     this._applyPersona(JSON.parse(
                         this._sessionStore.getWindowValue(window, "persona")
-                    ));
+                    ), window.document);
                 }
                 break;
             case "personas:persona:changed":
@@ -253,18 +259,18 @@ var PersonaController = {
                     if (this._sessionStore.getWindowValue(window, "persona")) {
                         this._applyPersona(JSON.parse(
                             this._sessionStore.getWindowValue(window, "persona")
-                        ));
+                        ), window.document);
                     } else {
-                        this._applyDefault();
+                        this._applyDefault(window.document);
                     }
                     // Pan-window personas are enabled
                 } else {
                     if (PersonaService.previewingPersona) {
-                        this._applyPersona(PersonaService.previewingPersona);
+                        this._applyPersona(PersonaService.previewingPersona, window.document);
                     } else if (PersonaService.selected == "default") {
-                        this._applyDefault();
+                        this._applyDefault(window.document);
                     } else {
-                        this._applyPersona(PersonaService.currentPersona);
+                        this._applyPersona(PersonaService.currentPersona, window.document);
                     }
                     break;
                 }
@@ -279,7 +285,7 @@ var PersonaController = {
             case "ResetPersona":
                 let doc = aEvent.originalTarget.ownerDocument;
                 if (Services.perms.testPermission(doc.documentURIObject, "install") == Services.perms.ALLOW_ACTION)
-                    this.checkPrivateBrowsing();
+                    this.checkPrivateBrowsing(doc);
                 break;
             case "CheckPersonas":
                 this.onCheckPersonasFromContent(aEvent);
@@ -300,7 +306,15 @@ var PersonaController = {
     //**************************************************************************//
     // Initialization & Destruction
 
-    startUp: function() {
+    startUp: function(window) {
+
+        var document = window.document;
+
+        this.addToolbarButton(window);
+        this.addToolsMenu(window);
+
+        var menuButton = this.get_menuButton(document);
+
         // Set the label for the tooltip that informs users when personas data
         // is unavailable.
         // FIXME: make this a DTD entity rather than a properties string.
@@ -326,7 +340,8 @@ var PersonaController = {
                         observe: function() {
                             Services.obs.removeObserver(this, "sessionstore-windows-restored", false);
                             window.openUILinkIn("http://goo.gl/forms/6E2DiOVPNe", "tab");
-                        }}, "sessionstore-windows-restored", false);
+                        }
+                    }, "sessionstore-windows-restored", false);
                 }
                 this._prefs.set("lastversion", aAddon.version);
             }.bind(this));
@@ -337,23 +352,27 @@ var PersonaController = {
         if (PersonaService.appInfo.ID == PersonaService.FIREFOX_ID) {
             let addonBar = window.document.getElementById("addon-bar");
             if (addonBar) {
-                this._menuButton.setAttribute("hidden", true);
+                menuButton.setAttribute("hidden", true);
 
                 if (!this._prefs.get("toolbarButtonInstalled")) {
-                    this._installToolbarButton(addonBar);
+                    //this._installToolbarButton(addonBar);
                     this._prefs.set("toolbarButtonInstalled", true);
                 }
             }
         }
     },
 
-    shutDown: function() {
+    shutDown: function(window) {
+        var document = window.document;
         document.removeEventListener("SelectPersona", this, false);
         document.removeEventListener("PreviewPersona", this, false);
         document.removeEventListener("ResetPersona", this, false);
         document.removeEventListener("CheckPersonas", this, false);
         document.removeEventListener("AddFavoritePersona", this, false);
         document.removeEventListener("RemoveFavoritePersona", this, false);
+
+        this.removeToolbarButton(window);
+        this.removeToolsMenu(window);
     },
 
     _installToolbarButton: function(aToolbar) {
@@ -385,35 +404,37 @@ var PersonaController = {
     //**************************************************************************//
     // Appearance Updates
 
-    _applyPersona: function(persona) {
+    _applyPersona: function(persona, document) {
+        var header = this.get_header(document);
+        var footer = this.get_footer(document);
 
         // Style header and footer
-        this._header.setAttribute("persona", persona.id);
-        this._footer.setAttribute("persona", persona.id);
+        header.setAttribute("persona", persona.id);
+        footer.setAttribute("persona", persona.id);
 
         // First try to obtain the images from the cache
         let images = PersonaService.getCachedPersonaImages(persona);
         if (images && images.header && images.footer) {
-            this._header.style.backgroundImage = "url(" + images.header + ")";
-            this._footer.style.backgroundImage = "url(" + images.footer + ")";
+            header.style.backgroundImage = "url(" + images.header + ")";
+            footer.style.backgroundImage = "url(" + images.footer + ")";
         }
         // Else set them from their original source
         else {
             // Use the URI module to resolve the possibly relative URI to an absolute one.
             let headerURI = this.URI.get(persona.headerURL || persona.header,
                 null, null);
-            this._header.style.backgroundImage = "url(" + this._escapeURLForCSS(headerURI.spec) + ")";
+            header.style.backgroundImage = "url(" + this._escapeURLForCSS(headerURI.spec) + ")";
             // Use the URI module to resolve the possibly relative URI to an absolute one.
             let footerURI = this.URI.get(persona.footerURL || persona.footer,
                 null, null);
-            this._footer.style.backgroundImage = "url(" + this._escapeURLForCSS(footerURI.spec) + ")";
+            footer.style.backgroundImage = "url(" + this._escapeURLForCSS(footerURI.spec) + ")";
         }
 
         // Style the text color.
         if (this._prefs.get("useTextColor")) {
             // FIXME: fall back on the default text color instead of "black".
             let textColor = persona.textcolor || "black";
-            this._header.style.color = textColor;
+            header.style.color = textColor;
             for (let i = 0; i < document.styleSheets.length; i++) {
                 let styleSheet = document.styleSheets[i];
                 if (styleSheet.href == "chrome://personas/content/overlay.css") {
@@ -518,7 +539,7 @@ var PersonaController = {
                 active = "";
                 inactive = "";
             }
-            this._setTitlebarColors(general, active, inactive);
+            this._setTitlebarColors(general, active, inactive, document);
         }
 
         // Opacity overrides (firefox only)
@@ -555,14 +576,17 @@ var PersonaController = {
 
     },
 
-    _applyDefault: function() {
+    _applyDefault: function(document) {
+        var header = this.get_header(document);
+        var footer = this.get_footer(document);
+
         // Reset the header.
-        this._header.removeAttribute("persona");
-        this._header.style.backgroundImage = "";
+        header.removeAttribute("persona");
+        header.style.backgroundImage = "";
 
         // Reset the footer.
-        this._footer.removeAttribute("persona");
-        this._footer.style.backgroundImage = "";
+        footer.removeAttribute("persona");
+        footer.style.backgroundImage = "";
 
         // Reset the text color.
         for (let i = 0; i < document.styleSheets.length; i++) {
@@ -573,30 +597,33 @@ var PersonaController = {
                 break;
             }
         }
-        this._header.style.color = "";
+        header.style.color = "";
 
         // Reset the titlebar color.
         if (this._prefs.get("useAccentColor")) {
-            this._setTitlebarColors("", "", "");
+            this._setTitlebarColors("", "", "", document);
         }
     },
 
-    _setTitlebarColors: function(general, active, inactive) {
+    _setTitlebarColors: function(general, active, inactive, document) {
+        var window = document.defaultView;
+        var header = this.get_header(document);
+
         // Titlebar colors only have an effect on Mac.
         if (PersonaService.appInfo.OS != "Darwin")
             return;
 
         let changed = false;
 
-        if (general != this._header.getAttribute("titlebarcolor")) {
+        if (general != header.getAttribute("titlebarcolor")) {
             document.documentElement.setAttribute("titlebarcolor", general);
             changed = true;
         }
-        if (active != this._header.getAttribute("activetitlebarcolor")) {
+        if (active != header.getAttribute("activetitlebarcolor")) {
             document.documentElement.setAttribute("activetitlebarcolor", active);
             changed = true;
         }
-        if (inactive != this._header.getAttribute("inactivetitlebarcolor")) {
+        if (inactive != header.getAttribute("inactivetitlebarcolor")) {
             document.documentElement.setAttribute("inactivetitlebarcolor", inactive);
             changed = true;
         }
@@ -625,7 +652,8 @@ var PersonaController = {
      * Checks if the current window is in private browsing mode, and shows
      * an alert warning that personas will not work, if so.
      */
-    checkPrivateBrowsing: function() {
+    checkPrivateBrowsing: function(document) {
+        var window = document.defaultView;
         if (typeof PrivateBrowsingUtils !== "undefined" &&
             PrivateBrowsingUtils.isWindowPrivate(window)) {
 
@@ -660,6 +688,9 @@ var PersonaController = {
      *        the SelectPersona DOM event
      */
     onSelectPersona: PersonaService.wrap(function(event) {
+        var document = event.currentTarget.ownerDocument;
+        var window = document.defaultView;
+
         let node = event.target;
 
         if (!node.hasAttribute("persona"))
@@ -678,11 +709,11 @@ var PersonaController = {
                 // per-window mode. We'll add a new type property when we support
                 // other types of selectable personas, such as "random".
                 case "default":
-                    this._applyDefault();
+                    this._applyDefault(document);
                     this._sessionStore.setWindowValue(window, "persona", "default");
                     break;
                 default:
-                    this._applyPersona(JSON.parse(persona));
+                    this._applyPersona(JSON.parse(persona), document);
                     this._sessionStore.setWindowValue(window, "persona", persona);
                     break;
             }
@@ -708,6 +739,8 @@ var PersonaController = {
     }),
 
     onPreviewPersona: PersonaService.wrap(function(event) {
+        var document = event.currentTarget.ownerDocument;
+        var window = document.defaultView;
         if (!this._prefs.get("previewEnabled"))
             return;
 
@@ -723,10 +756,10 @@ var PersonaController = {
             // onResetPersona reset it.
             switch (persona) {
                 case "default":
-                    this._applyDefault();
+                    this._applyDefault(document);
                     break;
                 default:
-                    this._applyPersona(persona);
+                    this._applyPersona(persona, document);
                     break;
             }
         } else {
@@ -750,6 +783,8 @@ var PersonaController = {
     },
 
     onResetPersona: PersonaService.wrap(function(event) {
+        var document = event.currentTarget.ownerDocument;
+        var window = document.defaultView;
         if (!this._prefs.get("previewEnabled"))
             return;
 
@@ -791,13 +826,15 @@ var PersonaController = {
         event.target.setAttribute("personas", "true");
     }),
 
-    onSelectPreferences: PersonaService.wrap(function() {
+    onSelectPreferences: PersonaService.wrap(function(event) {
+        var document = event.currentTarget.ownerDocument;
+        var window = document.defaultView;
         window.openDialog('chrome://personas/content/preferences.xul', '',
             'chrome,titlebar,toolbar,centerscreen');
     }),
 
-    onEditCustomPersona: PersonaService.wrap(function() {
-        this.openURLInTab("chrome://personas/content/customPersonaEditor.xul");
+    onEditCustomPersona: PersonaService.wrap(function(event) {
+        this.openURLInTab("chrome://personas/content/customPersonaEditor.xul", event);
     }),
 
     /**
@@ -880,46 +917,62 @@ var PersonaController = {
     // Popup Construction
 
     onMenuButtonMouseDown: PersonaService.wrap(function(event) {
+        var document = event.currentTarget.ownerDocument;
+        var menuButton = this.get_menuButton(document);
+        var menuPopup = this.get_menuPopup(document);
+
         // If the menu popup isn't on the menu button, then move the popup
         // onto the button so the popup appears when the user clicks it.
         // We'll move the popup back onto the Personas menu in the Tools menu
         // when the popup hides.
         // FIXME: remove this workaround once bug 461899 is fixed.
-        if (this._menuPopup.parentNode != this._menuButton)
-            this._menuButton.appendChild(this._menuPopup);
+        if (menuPopup.parentNode != menuButton)
+            menuButton.appendChild(menuPopup);
     }),
 
     onToolbarButtonMouseDown: PersonaService.wrap(function(event) {
+        var document = event.currentTarget.ownerDocument;
+        var toolbarButton = this.get_toolbarButton(document);
+        var menuPopup = this.get_menuPopup(document);
+
         // If the menu popup isn't on the toolbar button, then move the popup
         // onto the button so the popup appears when the user clicks it.
         // We'll move the popup back onto the Personas menu in the Tools menu
         // when the popup hides.
         // FIXME: remove this workaround once bug 461899 is fixed.
-        if (this._menuPopup.parentNode != this._toolbarButton)
-            this._toolbarButton.appendChild(this._menuPopup);
+        if (menuPopup.parentNode != toolbarButton)
+            toolbarButton.appendChild(menuPopup);
     }),
 
     onPopupShowing: PersonaService.wrap(function(event) {
-        if (event.target == this._menuPopup)
-            this._rebuildMenu();
+        var document = event.currentTarget.ownerDocument;
+        var menuPopup = this.get_menuPopup(document);
+
+        if (event.target == menuPopup)
+            this._rebuildMenu(document, menuPopup);
 
         return true;
     }),
 
     onPopupHiding: PersonaService.wrap(function(event) {
-        if (event.target == this._menuPopup) {
+        var document = event.currentTarget.ownerDocument;
+        var menuPopup = this.get_menuPopup(document);
+
+        var menu = this.get_menu(document);
+        if (event.target == menuPopup) {
             // If the menu popup isn't on the Personas menu in the Tools menu,
             // then move the popup back onto that menu so the popup appears when
             // the user selects it.  We'll move the popup back onto the menu button
             // in onMenuButtonMouseDown when the user clicks on the menu button.
-            if (this._menuPopup.parentNode != this._menu) {
-                this._menuPopup.parentNode.removeAttribute("open");
-                this._menu.appendChild(this._menuPopup);
+            if (menuPopup.parentNode != menu) {
+                menuPopup.parentNode.removeAttribute("open");
+                menu.appendChild(menuPopup);
             }
         }
     }),
 
-    _rebuildMenu: function() {
+    _rebuildMenu: function(document, menuPopup) {
+
         // If we don't have personas data, we won't be able to fully build the menu,
         // and we'll display a message to that effect in tooltips over the parts
         // of the menu that are data-dependent (the Most Popular, New, and
@@ -934,7 +987,7 @@ var PersonaController = {
 
         // Remove everything between the two separators.
         while (openingSeparator.nextSibling && openingSeparator.nextSibling != closingSeparator)
-            this._menuPopup.removeChild(openingSeparator.nextSibling);
+            menuPopup.removeChild(openingSeparator.nextSibling);
 
         // Update the item that identifies the current persona.
         let personaStatus = document.getElementById("persona-current");
@@ -959,7 +1012,7 @@ var PersonaController = {
         let personaStatusDetail = document.getElementById("persona-current-view-detail");
         personaStatusDetail.setAttribute("disabled", PersonaService.currentPersona.detailURL ? "false" : "true");
         personaStatusDetail.setAttribute("label", this._strings.get("viewDetail"));
-        personaStatusDetail.setAttribute("oncommand", "PersonaController.openURLInTab(this.getAttribute('href'))");
+        personaStatusDetail.addEventListener("command", PersonaController.viewDetailListener, true);
         personaStatusDetail.setAttribute("href", PersonaService.currentPersona.detailURL);
 
         let personaStatusDesigner = document.getElementById("persona-current-view-designer");
@@ -974,7 +1027,7 @@ var PersonaController = {
             personaStatusDesigner.removeAttribute("collapsed");
             let designerLabel = persona.author || persona.username;
             personaStatusDesigner.setAttribute("label", this._strings.get("viewDesigner", [designerLabel]));
-            personaStatusDesigner.setAttribute("oncommand", "PersonaController.openURLInTab(this.getAttribute('href'))");
+            personaStatusDesigner.addEventListener("command", PersonaController.viewDesignerListener, true);
             personaStatusDesigner.setAttribute("href", persona.authorURL);
         }
 
@@ -997,13 +1050,13 @@ var PersonaController = {
             } else if (!PersonaService.favorites) {
                 let item = popupmenu.appendChild(document.createElement("menuitem"));
                 item.setAttribute("label", this._strings.get("favoritesSignIn"));
-                item.setAttribute("oncommand", "PersonaController.openURLInTab(this.getAttribute('href'))");
+                item.addEventListener("command", PersonaController.favoritesSignInListener, true);
                 item.setAttribute("href", PersonaService.getURL("favorites-browse"));
             } else {
                 let favorites = PersonaService.favorites;
                 if (favorites.length) {
                     for each(let persona in favorites)
-                    popupmenu.appendChild(this._createPersonaItem(persona));
+                    popupmenu.appendChild(this._createPersonaItem(persona, document));
                     popupmenu.appendChild(document.createElement("menuseparator"));
 
                     // Disable random from favorites menu item if per-window
@@ -1014,18 +1067,18 @@ var PersonaController = {
                         // item.setAttribute("type", "checkbox");
                         item.setAttribute("checked", (PersonaService.selected == "randomFavorite"));
                         item.setAttribute("autocheck", "false");
-                        item.setAttribute("oncommand", "PersonaController.toggleFavoritesRotation()");
+                        item.addEventListener("command", PersonaController.useRandomPersonaInListener, true);
                     }
                 }
 
                 // go to my favorites menu item
                 let item = popupmenu.appendChild(document.createElement("menuitem"));
                 item.setAttribute("label", this._strings.get("favoritesGoTo"));
-                item.setAttribute("oncommand", "PersonaController.openURLInTab(this.getAttribute('href'))");
+                item.addEventListener("command", PersonaController.favoritesGoToListener, true);
                 item.setAttribute("href", PersonaService.getURL("favorites-browse"));
             }
 
-            this._menuPopup.insertBefore(menu, closingSeparator);
+            menuPopup.insertBefore(menu, closingSeparator);
         }
 
         // Create the "Recently Selected" menu.
@@ -1036,12 +1089,12 @@ var PersonaController = {
 
             let recentPersonas = PersonaService.getRecentPersonas();
             for each(let persona in recentPersonas) {
-                popupmenu.appendChild(this._createPersonaItem(persona));
+                popupmenu.appendChild(this._createPersonaItem(persona, document));
             }
 
             menu.appendChild(popupmenu);
-            this._menuPopup.insertBefore(menu, closingSeparator);
-            this._menuPopup.insertBefore(document.createElement("menuseparator"), closingSeparator);
+            menuPopup.insertBefore(menu, closingSeparator);
+            menuPopup.insertBefore(document.createElement("menuseparator"), closingSeparator);
         }
 
         // Create the Featured menu.
@@ -1052,20 +1105,20 @@ var PersonaController = {
             if (PersonaService.personas) {
                 let popupmenu = document.createElement("menupopup");
                 for each(let persona in PersonaService.personas.featured)
-                popupmenu.appendChild(this._createPersonaItem(persona));
+                popupmenu.appendChild(this._createPersonaItem(persona, document));
 
                 // Create an item that picks a random persona from the category.
                 // Disable random from category menu item if per-window
                 // personas are enabled.
                 if (!this._prefs.get("perwindow")) {
                     popupmenu.appendChild(document.createElement("menuseparator"));
-                    popupmenu.appendChild(this._createRandomItem(this._strings.get("featured"), "featured"));
+                    popupmenu.appendChild(this._createRandomItem(this._strings.get("featured"), "featured", document));
                 }
 
                 // Create an item that links to the gallery for this category.
                 popupmenu.appendChild(
                     this._createViewMoreItem(this._strings.get("featured"),
-                        "featured"));
+                        "featured", document));
 
                 menu.appendChild(popupmenu);
             } else {
@@ -1073,7 +1126,7 @@ var PersonaController = {
                 menu.setAttribute("tooltip", "personasDataUnavailableTooltip");
             }
 
-            this._menuPopup.insertBefore(menu, closingSeparator);
+            menuPopup.insertBefore(menu, closingSeparator);
         }
 
         // Update the Custom menu. Custom personas unavailable in per-window
@@ -1087,7 +1140,7 @@ var PersonaController = {
         }
     },
 
-    _createPersonaItem: function(persona) {
+    _createPersonaItem: function(persona, document) {
         let item = document.createElement("menuitem");
         let theme = PersonaService.getPersonaJSON(persona);
 
@@ -1106,7 +1159,9 @@ var PersonaController = {
             PersonaService.currentPersona &&
             PersonaService.currentPersona.id == persona.id));
         item.setAttribute("autocheck", "false");
-        item.setAttribute("oncommand", "PersonaController.onSelectPersona(event)");
+        item.addEventListener("command", function(event) {
+            PersonaController.onSelectPersona(event)
+        }, true);
         item.setAttribute("recent", persona.recent ? "true" : "false");
         item.setAttribute("persona", JSON.stringify(theme));
         item.addEventListener("DOMMenuItemActive", function(evt) {
@@ -1119,12 +1174,15 @@ var PersonaController = {
         return item;
     },
 
-    _createViewMoreItem: function(category, categoryId) {
+    _createViewMoreItem: function(category, categoryId, document) {
+
         let item = document.createElement("menuitem");
 
         item.setAttribute("class", "menuitem-iconic");
         item.setAttribute("label", this._strings.get("viewMoreFrom", [category]));
-        item.setAttribute("oncommand", "PersonaController.openURLInTab(this.getAttribute('href'))");
+        item.addEventListener("command", function(event) {
+            PersonaController.openURLInTab(this.getAttribute('href'), event)
+        }, true);
 
         if (categoryId == "featured") {
             item.setAttribute("href", PersonaService.getURL("browse", {
@@ -1135,12 +1193,15 @@ var PersonaController = {
         return item;
     },
 
-    _createRandomItem: function(aCategoryName, aCategory) {
+    _createRandomItem: function(aCategoryName, aCategory, document) {
+
         let item = document.createElement("menuitem");
 
         item.setAttribute("class", "menuitem-iconic");
         item.setAttribute("label", this._strings.get("useRandomPersona", [aCategoryName]));
-        item.setAttribute("oncommand", "PersonaController.onSelectPersona(event)");
+        item.addEventListener("command", function(event) {
+            PersonaController.onSelectPersona(event)
+        }, true);
         item.setAttribute("persona", "random");
         item.setAttribute("category", aCategory || aCategoryName);
 
@@ -1153,7 +1214,233 @@ var PersonaController = {
         } else {
             PersonaService.selected = "current";
         }
+    },
+
+    widgetCreated: false,
+    viewDetailListener: function(event) {
+        PersonaController.openURLInTab(this.getAttribute('href'), event);
+    },
+    viewDesignerListener: function(event) {
+        PersonaController.openURLInTab(this.getAttribute('href'), event);
+    },
+    favoritesSignInListener: function(event) {
+        PersonaController.openURLInTab(this.getAttribute('href'), event);
+    },
+    useRandomPersonaInListener: function(event) {
+        PersonaController.toggleFavoritesRotation();
+    },
+    favoritesGoToListener: function(event) {
+        PersonaController.openURLInTab(this.getAttribute('href'), event);
+    },
+    dtd: function(entity_string) {
+        var path = "chrome://personas/locale/personas_bootstrap.properties";
+        var overlayProperties = Cc["@mozilla.org/intl/stringbundle;1"].getService(Ci.nsIStringBundleService).createBundle(path);
+        return overlayProperties.GetStringFromName(entity_string.replace(/^(&)/, "").replace(/(;)$/, ""));
+    },
+    createToolbarButton: function(document) {
+        var toolbarbutton = document.createElement('toolbarbutton');
+        //toolbarbutton.setAttribute("onmousedown", "PersonaController.onToolbarButtonMouseDown();");
+        toolbarbutton.addEventListener("mousedown", function(event) {
+            var window = event.currentTarget.ownerDocument.defaultView;
+            PersonaController.onToolbarButtonMouseDown(event);
+        }, true);
+        toolbarbutton.setAttribute("label", this.dtd("&personas_app_title;"));
+        toolbarbutton.setAttribute("type", "menu");
+        toolbarbutton.setAttribute("id", "personas-toolbar-button"); //personas-toolbar-button
+        toolbarbutton.setAttribute("class", (PersonaService.appInfo.ID != PersonaController.SEAMONKEY_ID) ? "toolbarbutton-1" : "toolbarbutton-1 seamonkey");
+        return toolbarbutton;
+    },
+    addToolbarButton: function(window) {
+        var document = window.document;
+        if (window.CustomizableUI) {
+            if (!PersonaController.widgetCreated) {
+                window.CustomizableUI.createWidget({
+                    type: 'custom',
+                    defaultArea: window.CustomizableUI.AREA_NAVBAR,
+                    id: "personas-toolbar-button",
+                    onBuild: function(aDocument) {
+                        return PersonaController.createToolbarButton(aDocument);
+                    }
+                });
+            }
+            PersonaController.widgetCreated = true;
+            if (!PersonaController._prefs.get("tbplaced")) PersonaController.placeToolbarButton(window);
+        } else {
+            var toolbarbutton = PersonaController.createToolbarButton(document);
+            (document.getElementById("navigator-toolbox") || document.getElementById("mail-toolbox")).palette.appendChild(toolbarbutton);
+            //PersonaController.placeToolbarButton(window,toolbarbutton);
+            if (PersonaService.appInfo.ID != "{8de7fcbb-c55c-4fbe-bfc5-fc555c87dbc4}") PersonaController.placeToolbarButton(window, toolbarbutton);
+            else {
+                window.setTimeout(function() {
+                    PersonaController.placeToolbarButton(window, toolbarbutton);
+                }, 1000)
+            }
+        }
+        window.addEventListener("aftercustomization", PersonaController.afterCustomization, false);
+    },
+    removeToolbarButton: function(window) {
+        if (window.CustomizableUI) {
+            window.CustomizableUI.destroyWidget("personas-toolbar-button");
+        } else {
+            var document = window.document;
+            var buttonId = "personas-toolbar-button";
+            var button = document.getElementById(buttonId);
+            button.parentNode.removeChild(button);
+        }
+        window.removeEventListener("aftercustomization", PersonaController.afterCustomization, false);
+        PersonaController.widgetCreated = false;
+    },
+    placeToolbarButton: function(window, toolbarbutton) {
+        if (!PersonaController._prefs.get("tbinsert")) return;
+        var document = window.document;
+        if (window.CustomizableUI) {
+            window.CustomizableUI.addWidgetToArea("personas-toolbar-button", window.CustomizableUI.AREA_NAVBAR, 5);
+            PersonaController._prefs.set("tbplaced", true);
+        } else {
+            var toolbar = document.querySelector("[currentset^='" + toolbarbutton.id + ",'],[currentset*='," + toolbarbutton.id +
+                ",'],[currentset$='," + toolbarbutton.id + "']");
+            if (toolbar) {
+                var currentset = toolbar.getAttribute("currentset").split(",");
+                var i = currentset.indexOf(toolbarbutton.id) + 1;
+                var before = null;
+                while (i < currentset.length && !(before = document.getElementById(currentset[i]))) i++;
+                toolbar.insertItem(toolbarbutton.id, before, null, false);
+            } else {
+                var navbar = (document.getElementById("nav-bar") || document.getElementById("mail-bar3") || document.getElementById("msgToolbar"));
+                navbar.insertItem(toolbarbutton.id, null, null, false);
+            }
+            if (!document.getElementById(toolbarbutton.id))(toolbar || navbar).insertItem(toolbarbutton.id, null, null, false);
+        }
+    },
+    afterCustomization: function(event) {
+        var window = event.currentTarget;
+        var document = window.document;
+        var ythdprefsinstance = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+        if (!document.getElementById("personas-toolbar-button") || document.getElementById("personas-toolbar-button").parentNode.id == "BrowserToolbarPalette") ythdprefsinstance.setBoolPref("extensions.personas.tbinsert", false);
+        else ythdprefsinstance.setBoolPref("extensions.personas.tbinsert", true);
+    },
+    addToolsMenu: function(window) {
+        var document = window.document;
+        var windowtype = window.document.documentElement.getAttribute("windowtype");
+
+        var tooltip = document.createElement('tooltip');
+        tooltip.setAttribute("id", "personasDataUnavailableTooltip");
+        document.getElementById("mainPopupSet").appendChild(tooltip);
+
+        var personasmenu = document.createElement('menu');
+        if (windowtype == "navigator:browser") personasmenu.setAttribute("insertafter", "menu_openAddons");
+        else if (windowtype == "mail:3pane") personasmenu.setAttribute("insertafter", "addonsManager");
+        else personasmenu.setAttribute("insertafter", "menu_openAddons");
+        personasmenu.setAttribute("label", this.dtd("&personas_app_title;"));
+        personasmenu.setAttribute("class", "menu-iconic");
+        personasmenu.setAttribute("id", "personas-menu");
+
+        var personasselectormenu = document.createElement('menupopup');
+        personasselectormenu.addEventListener("popuphiding", function(event) {
+            PersonaController.onPopupHiding(event)
+        }, true);
+        personasselectormenu.addEventListener("popupshowing", function(event) {
+            return PersonaController.onPopupShowing(event)
+        }, true);
+        personasselectormenu.setAttribute("id", "personas-selector-menu");
+        personasmenu.appendChild(personasselectormenu);
+
+        var personacurrent = document.createElement('menu');
+        personacurrent.setAttribute("class", "menu-iconic");
+        personacurrent.setAttribute("id", "persona-current");
+        personasselectormenu.appendChild(personacurrent);
+
+        var personacurrentcontextmenu = document.createElement('menupopup');
+        personacurrentcontextmenu.setAttribute("id", "persona-current-context-menu");
+        personacurrent.appendChild(personacurrentcontextmenu);
+
+        var personacurrentviewdetail = document.createElement('menuitem');
+        personacurrentviewdetail.setAttribute("id", "persona-current-view-detail");
+        personacurrentcontextmenu.appendChild(personacurrentviewdetail);
+
+        var personacurrentviewdesigner = document.createElement('menuitem');
+        personacurrentviewdesigner.setAttribute("id", "persona-current-view-designer");
+        personacurrentcontextmenu.appendChild(personacurrentviewdesigner);
+
+        var personasopeningseparator = document.createElement('menuseparator');
+        personasopeningseparator.setAttribute("id", "personasOpeningSeparator");
+        personasselectormenu.appendChild(personasopeningseparator);
+
+        var personasclosingseparator = document.createElement('menuseparator');
+        personasclosingseparator.setAttribute("hidden", "true");
+        personasclosingseparator.setAttribute("id", "personasClosingSeparator");
+        personasselectormenu.appendChild(personasclosingseparator);
+
+        var personaspluscustommenu = document.createElement('menu');
+        personaspluscustommenu.setAttribute("id", "personas-plus-custom-menu");
+        personasselectormenu.appendChild(personaspluscustommenu);
+
+        var personaspluscustomcontextmenu = document.createElement('menupopup');
+        personaspluscustomcontextmenu.setAttribute("id", "personas-plus-custom-context-menu");
+        personaspluscustommenu.appendChild(personaspluscustomcontextmenu);
+
+        var personaspluscustommenuapply = document.createElement('menuitem');
+        personaspluscustommenuapply.addEventListener("command", function(event) {
+            PersonaController.onSelectPersona(event)
+        }, true);
+        personaspluscustommenuapply.setAttribute("persona", "custom");
+        personaspluscustommenuapply.setAttribute("label", this.dtd("&contextApply.label;"));
+        personaspluscustommenuapply.setAttribute("id", "personas-plus-custom-menu-apply");
+        personaspluscustomcontextmenu.appendChild(personaspluscustommenuapply);
+
+        var menuitem = document.createElement('menuitem');
+        menuitem.addEventListener("command", function(event) {
+            PersonaController.onEditCustomPersona(event)
+        }, true);
+        menuitem.setAttribute("label", this.dtd("&contextEdit.label;"));
+        personaspluscustomcontextmenu.appendChild(menuitem);
+
+        var menuseparator = document.createElement('menuseparator');
+        personasselectormenu.appendChild(menuseparator);
+
+        var defaultpersona = document.createElement('menuitem');
+        defaultpersona.addEventListener("command", function(event) {
+            PersonaController.onSelectPersona(event)
+        }, true);
+        defaultpersona.setAttribute("autocheck", "false");
+        defaultpersona.setAttribute("type", "checkbox");
+        defaultpersona.setAttribute("persona", "default");
+        defaultpersona.setAttribute("label", this.dtd("&useDefaultPersona.label;"));
+        defaultpersona.setAttribute("id", "defaultPersona");
+        personasselectormenu.appendChild(defaultpersona);
+
+        var menuseparator_0 = document.createElement('menuseparator');
+        personasselectormenu.appendChild(menuseparator_0);
+
+        var menuitem_0 = document.createElement('menuitem');
+        menuitem_0.addEventListener("command", function(event) {
+            PersonaController.onSelectPreferences(event)
+        }, true);
+        menuitem_0.setAttribute("label", this.dtd("&preferences.label;"));
+        personasselectormenu.appendChild(menuitem_0);
+
+        (document.getElementById("menu_ToolsPopup") || document.getElementById("taskPopup")).appendChild(personasmenu);
+
+        var personasselectorbutton = document.createElement('statusbarpanel');
+        personasselectorbutton.setAttribute("id", "personas-selector-button");
+        personasselectorbutton.addEventListener("mousedown", function(event) {
+            PersonaController.onMenuButtonMouseDown(event)
+        }, true);
+        personasselectorbutton.setAttribute("insertbefore", "statusbar-display");
+        if (windowtype == "navigator:browser") personasselectorbutton.setAttribute("insertbefore", "statusbar-display");
+        else if (windowtype == "mail:3pane") personasselectorbutton.setAttribute("insertbefore", "addonsManager");
+        else personasselectorbutton.setAttribute("insertbefore", "statusbar-display");
+        personasselectorbutton.setAttribute("class", "statusbarpanel-menu-iconic");
+        if (document.getElementById("status-bar")) document.getElementById("status-bar").appendChild(personasselectorbutton);
+
+    },
+    removeToolsMenu: function(window) {
+        var document = window.document;
+        document.getElementById("personasDataUnavailableTooltip").parentNode.removeChild(document.getElementById("personasDataUnavailableTooltip"));
+        document.getElementById("personas-menu").parentNode.removeChild(document.getElementById("personas-menu"));
+        document.getElementById("personas-selector-button").parentNode.removeChild(document.getElementById("personas-selector-button"));
     }
+
 };
 
 // Import generic modules into the persona controller rather than
@@ -1170,10 +1457,3 @@ Cu.import("resource://personas/modules/URI.js", PersonaController);
 try {
     Cu.import("resource://gre/modules/LightweightThemeManager.jsm", PersonaController);
 } catch (e) {}
-
-window.addEventListener("load", PersonaService.wrap(function(e) {
-    PersonaController.startUp(e)
-}), false);
-window.addEventListener("unload", PersonaService.wrap(function(e) {
-    PersonaController.shutDown(e)
-}), false);

@@ -6,7 +6,7 @@
     <em:name>Personas Plus</em:name>
     <em:version>1.7.7</em:version>
     <em:description>Your Firefox, your style. Easy-to-change themes.</em:description>
-
+    <em:bootstrap>true</em:bootstrap>
     <em:creator>Chris Beard</em:creator>
     <em:contributor>Myk Melez</em:contributor>
     <em:contributor>Huang Yaoquan</em:contributor>

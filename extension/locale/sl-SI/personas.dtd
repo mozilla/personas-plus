@@ -1,6 +1,3 @@
-<!ENTITY personas_app_title "Personas">
-<!ENTITY useDefaultPersona.label "Privzeto">
-<!ENTITY preferences.label "Nastavitve">
 <!ENTITY viewDirectory.label "Pokaži galerijo">
 <!ENTITY customPersona.label "Persona po meri">
 <!ENTITY customName.label "Ime:">
@@ -13,8 +10,6 @@
 <!ENTITY okButton.label "V redu">
 <!ENTITY contextHomePage.label "Domača stran">
 <!ENTITY contextPreferences.label "Nastavitve">
-<!ENTITY contextEdit.label "Uredi">
-<!ENTITY contextApply.label "Uveljavi">
 <!ENTITY usePersona.label "Uporabi persono">
 <!ENTITY usePersona.accesskey "U">
 <!ENTITY usePersona.tooltip "Uporabi to persono">

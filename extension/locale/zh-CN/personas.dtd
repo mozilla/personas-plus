@@ -1,6 +1,3 @@
-<!ENTITY personas_app_title "Personas">
-<!ENTITY useDefaultPersona.label "使用默认风格">
-<!ENTITY preferences.label "选项…">
 <!ENTITY viewDirectory.label "查看目录…">
 <!ENTITY customPersona.label "定制炫彩风格">
 <!ENTITY customName.label "名称:">
@@ -13,8 +10,6 @@
 <!ENTITY okButton.label "确定">
 <!ENTITY contextHomePage.label "主页">
 <!ENTITY contextPreferences.label "设置">
-<!ENTITY contextEdit.label "编辑">
-<!ENTITY contextApply.label "应用">
 <!ENTITY usePersona.label "使用炫彩风格">
 <!ENTITY usePersona.accesskey "P">
 <!ENTITY usePersona.tooltip "使用这款炫彩风格">

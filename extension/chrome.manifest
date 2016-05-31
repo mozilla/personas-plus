@@ -1,11 +1,3 @@
-overlay chrome://browser/content/browser.xul                chrome://personas/content/personas.xul    application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}
-overlay chrome://messenger/content/messenger.xul            chrome://personas/content/messenger.xul   application={3550f703-e582-4d05-9a08-453d09bdfdc6}
-
-# Register a resource: protocol alias so we can refer to files in this package
-# with URLs of the form resource://personas/path/to/file,
-# f.e. resource://personas/modules/service.js.
-resource personas   ./
-
 content  personas             content/
 
 # Register skins for various combinations of application (Firefox, Thunderbird),
@@ -26,12 +18,6 @@ skin  personas  classic/1.0  skin/linux/thunderbird/ application={3550f703-e582-
 skin  personas  classic/1.0  skin/winxp/thunderbird/ application={3550f703-e582-4d05-9a08-453d09bdfdc6}                      os=WINNT   osversion<6
 skin  personas  classic/1.0  skin/vista/thunderbird/ application={3550f703-e582-4d05-9a08-453d09bdfdc6}                      os=WINNT   osversion>=6
 skin  personas  classic/1.0  skin/mac/thunderbird/   application={3550f703-e582-4d05-9a08-453d09bdfdc6}                      os=Darwin
-
-# Choose default stylesheet for customPersonaEditor.xul according to application (Firefox, Thunderbird).
-style chrome://personas/content/customPersonaEditor.xul chrome://browser/skin/    application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}
-style chrome://personas/content/customPersonaEditor.xul chrome://messenger/skin/  application={3550f703-e582-4d05-9a08-453d09bdfdc6}
-
-style chrome://global/content/customizeToolbar.xul  chrome://personas/content/personas.css  application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}
 
 # localizations in alphabetical order
 #
@@ -96,3 +82,13 @@ locale   personas   uk-UA       locale/uk-UA/
 locale   personas   vi          locale/vi/
 locale   personas   zh-CN       locale/zh-CN/
 locale   personas   zh-TW       locale/zh-TW/
+locale   personas   ar          locale/ar/
+locale   personas   ast-ES      locale/ast-ES/
+locale   personas   de-DE       locale/de-DE/
+locale   personas   el-GR       locale/el-GR/
+locale   personas   eu-ES       locale/eu-ES/
+locale   personas   fi-FI       locale/fi-FI/
+locale   personas   pt-PT       locale/pt-PT/
+locale   personas   sl-SI       locale/sl-SI/
+locale   personas   sr-RS       locale/sr-RS/
+locale   personas   vi-VN       locale/vi-VN/

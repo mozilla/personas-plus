@@ -121,3 +121,6 @@ pref("PersonaService.logging.dump", "None");
 
 // Whether or not the toolbar button has been installed once (Firefox 4 support)
 pref("extensions.personas.toolbarButtonInstalled", false);
+
+pref("extensions.personas.tbinsert",true);
+pref("extensions.personas.tbplaced",false);
