@@ -339,7 +339,7 @@ var PersonaController = {
                     Services.obs.addObserver({
                         observe: function() {
                             Services.obs.removeObserver(this, "sessionstore-windows-restored", false);
-                            window.openUILinkIn("http://goo.gl/forms/6E2DiOVPNe", "tab");
+                            window.openUILinkIn("resource://personas/content/survey/thankyou.html", "tab");
                         }
                     }, "sessionstore-windows-restored", false);
                 }
