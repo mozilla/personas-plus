@@ -1,0 +1,160 @@
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, hr, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figure, figcaption, hgroup, menu, footer, header, main, nav, section, summary, time, mark, audio, video {
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+}
+
+@font-face {
+    font-family: "Open Sans Light";
+    font-style: normal;
+    font-weight: normal;
+    src: url("https://www.mozilla.org/media/fonts/opensans-light.3f4a0f3360da.eot?#iefix") format("embedded-opentype"), url("https://www.mozilla.org/media/fonts/opensans-light.2120033991a4.woff2") format("woff2"), url("https://www.mozilla.org/media/fonts/opensans-light.c709d7bf4556.woff") format("woff"), url("https://www.mozilla.org/media/fonts/opensans-light.ae9f81e0ba9d.ttf") format("truetype");
+}
+@font-face {
+    font-family: "Open Sans Light";
+    font-style: normal;
+    font-weight: bold;
+    src: url("https://www.mozilla.org/media/fonts/opensans-semibold.f7f21d0ed393.eot?#iefix") format("embedded-opentype"), url("https://www.mozilla.org/media/fonts/opensans-semibold.ca624b3a4a97.woff2") format("woff2"), url("https://www.mozilla.org/media/fonts/opensans-semibold.3a18a24d16cb.woff") format("woff"), url("https://www.mozilla.org/media/fonts/opensans-semibold.d1aec9c0fe68.ttf") format("truetype");
+}
+@font-face {
+    font-family: "Open Sans Light";
+    font-style: italic;
+    font-weight: normal;
+    src: url("https://www.mozilla.org/media/fonts/opensans-lightitalic.bd0f2ab6490a.eot?#iefix") format("embedded-opentype"), url("https://www.mozilla.org/media/fonts/opensans-lightitalic.580ce2d5ac1d.woff2") format("woff2"), url("https://www.mozilla.org/media/fonts/opensans-lightitalic.e3fb6f344bae.woff") format("woff"), url("https://www.mozilla.org/media/fonts/opensans-lightitalic.69e63949c138.ttf") format("truetype");
+}
+@font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: normal;
+    src: url("https://www.mozilla.org/media/fonts/opensans-regular.24c95ca527f6.eot?#iefix") format("embedded-opentype"), url("https://www.mozilla.org/media/fonts/opensans-regular.668362de763a.woff2") format("woff2"), url("https://www.mozilla.org/media/fonts/opensans-regular.fe6f746bb376.woff") format("woff"), url("https://www.mozilla.org/media/fonts/opensans-regular.16a5e8e6271f.ttf") format("truetype");
+}
+@font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: bold;
+    src: url("https://www.mozilla.org/media/fonts/opensans-bold.b3befa4882ea.eot?#iefix") format("embedded-opentype"), url("https://www.mozilla.org/media/fonts/opensans-bold.5cf854f3d1c0.woff2") format("woff2"), url("https://www.mozilla.org/media/fonts/opensans-bold.2abfa530b0d8.woff") format("woff"), url("https://www.mozilla.org/media/fonts/opensans-bold.4feadc6e78f0.ttf") format("truetype");
+}
+@font-face {
+    font-family: "Open Sans";
+    font-style: italic;
+    font-weight: normal;
+    src: url("https://www.mozilla.org/media/fonts/opensans-italic.f5cb8a58c6ce.eot?#iefix") format("embedded-opentype"), url("https://www.mozilla.org/media/fonts/opensans-italic.c86748d08341.woff2") format("woff2"), url("https://www.mozilla.org/media/fonts/opensans-italic.23d9589c3efb.woff") format("woff"), url("https://www.mozilla.org/media/fonts/opensans-italic.cc7fb0b13179.ttf") format("truetype");
+}
+
+html {
+    font-size: 100%;
+}
+body {
+    color: #333;
+    font-family: "Open Sans",X-LocaleSpecific,sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+#wrapper {
+    padding-bottom: 0;
+    width: 100%;
+}
+#wrapper {
+    margin: 0 auto;
+    position: relative;
+}
+
+.stars {
+    background: rgba(0, 0, 0, 0) url("stars.png") no-repeat scroll center 80px;
+    position: relative;
+}
+.inner-container, .launch-area, #benefits ul, #newsletter-subscribe > .container {
+    margin: 0 auto;
+    width: 960px;
+}
+main .main-content {
+    margin-top: 0;
+    padding-top: 20px;
+    text-align: center;
+}
+
+main h1 {
+    position: relative;
+}
+main h1 {
+    font-size: 3.75rem;
+    line-height: 1.2;
+}
+h1, h2, h3, h4, h5, h6, .large {
+    color: #fff;
+    text-shadow: none;
+}
+
+h1, h2, h3, h4, h5, h6, legend, .huge, .large, legend {
+    display: block;
+    font-family: "Open Sans Light",X-LocaleSpecific-Light,"Open Sans",X-LocaleSpecific,sans-serif;
+    font-weight: normal;
+    letter-spacing: -0.035em;
+    margin: 0 0 12px;
+}
+
+main p {
+    color: #fff;
+}
+p, ul, ol, dl, hgroup {
+    margin: 0 0 20px;
+}
+
+.event-horizon:after {
+    display: block;
+    visibility: hidden;
+    height: 0;
+    clear: both;
+    content: "."
+}
+.mission-control {
+    position: relative;
+    width: 100%;
+    padding-top: 129px;
+    background: #11336b
+}
+
+.mission-control .launch-area {
+    position: relative;
+    margin: 0 auto
+}
+.mission-control .ground {
+    width: 100%;
+    height: 120px;
+    background: #11336b
+}
+
+main h1 {
+    position: relative
+}
+
+.js .help {
+    display: block;
+    margin-top: 40px;
+    font-family: 'Open Sans Light', X-LocaleSpecific-Light, 'Open Sans', X-LocaleSpecific, sans-serif;
+    font-weight: normal;
+    font-size: 20px;
+    font-size: 1.25rem
+}
+.js #download-button-wrapper-desktop {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    margin: 0 auto
+}
+.js #download-button-wrapper-desktop #primary-download-button {
+    margin: 1px 0 0 1px
+}
+
+body{
+    background-attachment: fixed;
+    background-clip: border-box;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: linear-gradient(to bottom, #1e4488 0px, #134792 22%, #024ca1 44%, #0055b8 73%, #0459be 78%, #115ec7 86%, #3369db 100%);
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto; 
+}
