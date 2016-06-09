@@ -1363,7 +1363,7 @@ var PersonaService = {
         if (uri.host != this.addonsHost)
             return;
 
-        if (endsWith(uri.filePath, "/users/logout") || aRequest.requestMethod == "POST" && endsWith(uri.filePath, "/users/login"))
+        if (endsWith(uri.filePath, "/users/logout") || aRequest.requestMethod == "POST" && endsWith(uri.filePath, "/users/login") || endsWith(uri.filePath, "/api/v3/accounts/authenticate/"))
             this.refreshFavorites();
     },
 
