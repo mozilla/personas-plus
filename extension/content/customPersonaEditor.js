@@ -99,6 +99,10 @@ var CustomPersonaEditor = {
   get _blankImage() {
     return "resource://personas/content/blank.gif"
   },
+  
+  get ex_blankImage() {
+    return "data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAAAICVAEAOw=="
+  },
 
   customPersona: null,
 
@@ -143,7 +147,14 @@ var CustomPersonaEditor = {
 
   _restore: function() {
     try {
-      this.customPersona = JSON.parse(this._prefs.get("custom"));
+      var custom = JSON.parse(this._prefs.get("custom"));
+      if(custom.headerURL == this.ex_blankImage) {
+        custom.headerURL = this._blankImage
+      }
+      if(custom.footerURL == this.ex_blankImage) {
+        custom.footerURL = this._blankImage
+      }
+      this.customPersona = custom;
       this.customPersona.custom = true;
     }
     catch(ex) {
@@ -164,9 +175,9 @@ var CustomPersonaEditor = {
     // FIXME: This is a workaround for bug 532741, where the LightweightThemeManager
     // needs a header and footer to be specified in order to preview the persona.
     // Remove the blank image info from the textboxes
-    if (this._header.value == this._blankImage)
+    if (this._header.value == this._blankImage || this._header.value == this.ex_blankImage)
       this._header.value = "";
-    if (this._footer.value == this._blankImage)
+    if (this._footer.value == this._blankImage || this._footer.value == this.ex_blankImage)
       this._footer.value = "";
 
     PersonaService.previewPersona(this.customPersona);
@@ -243,14 +254,14 @@ var CustomPersonaEditor = {
     PersonaService.changeToPersona(this.customPersona);
     switch (PersonaService.appInfo.ID) {
       case PersonaService.THUNDERBIRD_ID:
-	Cc['@mozilla.org/appshell/window-mediator;1'].
+    Cc['@mozilla.org/appshell/window-mediator;1'].
         getService(Ci.nsIWindowMediator).
         getMostRecentWindow("mail:3pane").
         document.getElementById("tabmail").
         removeCurrentTab();
         break;
       case PersonaService.FIREFOX_ID:
- 	window.close();
+    window.close();
         break;
       default:
         throw "unknown application ID " + PersonaService.appInfo.ID;
