@@ -101,19 +101,19 @@ var PersonaController = {
             new this.StringBundle("chrome://branding/locale/brand.properties");
     },
 
-    get_menu(document) {
+    get_menu: function(document) {
         return document.getElementById("personas-menu");
     },
 
-    get_menuButton(document) {
+    get_menuButton: function(document) {
         return document.getElementById("personas-selector-button");
     },
 
-    get_menuPopup(document) {
+    get_menuPopup: function(document) {
         return document.getElementById("personas-selector-menu");
     },
 
-    get_toolbarButton(document) {
+    get_toolbarButton: function(document) {
         return document.getElementById("personas-toolbar-button");
     },
 
@@ -123,7 +123,7 @@ var PersonaController = {
             .getService(Ci.nsISessionStore);
     },
 
-    get_header(document) {
+    get_header: function(document) {
         switch (PersonaService.appInfo.ID) {
             case PersonaService.THUNDERBIRD_ID:
                 return document.getElementById("messengerWindow");
@@ -134,7 +134,7 @@ var PersonaController = {
         }
     },
 
-    get_footer(document) {
+    get_footer: function(document) {
         switch (PersonaService.appInfo.ID) {
             case PersonaService.THUNDERBIRD_ID:
                 return document.getElementById("status-bar");
