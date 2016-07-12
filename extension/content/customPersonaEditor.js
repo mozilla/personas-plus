@@ -264,7 +264,7 @@ var CustomPersonaEditor = {
  	window.close();
         break;
       case PersonaService.SEAMONKEY_ID:
-    window.close();
+        window.close();
         break;
       default:
         throw "unknown application ID " + PersonaService.appInfo.ID;

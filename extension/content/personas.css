@@ -59,11 +59,6 @@
   height: auto !important;
 }
 
-#personas-toolbar-button {
-  list-style-image: url("chrome://personas/content/personas_16x16.png");
-  -moz-image-region: rect(0, 16px, 16px, 0px);
-}
-
 #personas-selector-button[buttonover="true"],
 #personas-selector-button:hover,
 #personas-toolbar-button[buttonover="true"],
@@ -100,13 +95,13 @@
   -moz-image-region: rect(0, 30px, 30px, 0px);  
 }
 
-toolbar[iconsize="small"] #personas-toolbar-button.seamonkey {
+toolbar[iconsize="small"] #personas-toolbar-button.seamonkey, toolbar[iconsize="small"] #personas-toolbar-button.seamonkey:hover, toolbar[iconsize="small"] #personas-toolbar-button.seamonkey:hover:active {
   list-style-image: url("chrome://personas/content/personas_20x20.png");
 }
 
 #personas-menu.seamonkey {
-  list-style-image: url("chrome://personas/content/personas_16x16.png") !important;
-  -moz-image-region: rect(0, 16px, 16px, 0px) !important;
+  list-style-image: url("chrome://personas/content/personas_16x16.png");
+  -moz-image-region: rect(0, 16px, 16px, 0px);
 }
 
 /**
