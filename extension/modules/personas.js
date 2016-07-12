@@ -1247,7 +1247,7 @@ var PersonaController = {
         toolbarbutton.setAttribute("label", this.dtd("&personas_app_title;"));
         toolbarbutton.setAttribute("type", "menu");
         toolbarbutton.setAttribute("id", "personas-toolbar-button"); //personas-toolbar-button
-        toolbarbutton.setAttribute("class", (PersonaService.appInfo.ID != PersonaController.SEAMONKEY_ID) ? "toolbarbutton-1" : "toolbarbutton-1 seamonkey");
+        toolbarbutton.setAttribute("class", (PersonaService.appInfo.ID != PersonaService.SEAMONKEY_ID) ? "toolbarbutton-1" : "toolbarbutton-1 seamonkey");
         return toolbarbutton;
     },
     addToolbarButton: function(window) {
@@ -1332,7 +1332,7 @@ var PersonaController = {
         else if (windowtype == "mail:3pane") personasmenu.setAttribute("insertafter", "addonsManager");
         else personasmenu.setAttribute("insertafter", "menu_openAddons");
         personasmenu.setAttribute("label", this.dtd("&personas_app_title;"));
-        personasmenu.setAttribute("class", "menu-iconic");
+        personasmenu.setAttribute("class", (PersonaService.appInfo.ID != PersonaService.SEAMONKEY_ID) ? "menu-iconic" : "menu-iconic seamonkey");
         personasmenu.setAttribute("id", "personas-menu");
 
         var personasselectormenu = document.createElement('menupopup');
