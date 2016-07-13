@@ -1268,13 +1268,7 @@ var PersonaController = {
         } else {
             var toolbarbutton = PersonaController.createToolbarButton(document);
             (document.getElementById("navigator-toolbox") || document.getElementById("mail-toolbox")).palette.appendChild(toolbarbutton);
-            //PersonaController.placeToolbarButton(window,toolbarbutton);
-            if (PersonaService.appInfo.ID != "{8de7fcbb-c55c-4fbe-bfc5-fc555c87dbc4}") PersonaController.placeToolbarButton(window, toolbarbutton);
-            else {
-                window.setTimeout(function() {
-                    PersonaController.placeToolbarButton(window, toolbarbutton);
-                }, 1000)
-            }
+            PersonaController.placeToolbarButton(window,toolbarbutton);
         }
         window.addEventListener("aftercustomization", PersonaController.afterCustomization, false);
     },
