@@ -137,12 +137,6 @@ var PersonaService = {
 
         // Observe quit so we can destroy ourselves.
         Observers.add("quit-application", this.onQuitApplication, this);
-        // Observe the "cookie-changed" topic to load the favorite personas when
-        // the user signs in.
-        if (false)
-        // Skip this for now, since AMO session cookies are not currently
-        // cooperative
-            Observers.add("cookie-changed", this.onCookieChanged, this);
         // Observe the "lightweight-theme-changed" to sync the add-on with the
         // lightweight theme manager.
         Observers.add("lightweight-theme-changed",
@@ -254,7 +248,6 @@ var PersonaService = {
     },
 
     _destroy: function() {
-        Observers.remove("cookie-changed", this.onCookieChanged, this);
         Observers.remove("lightweight-theme-changed",
             this.onLightweightThemeChanged, this);
         Observers.remove("http-on-examine-response", this.onHTTPResponse, this);
@@ -1330,27 +1323,6 @@ var PersonaService = {
         }
         return null;
     },
-
-    /**
-     * Monitors changes in cookies. If the modified cookie is the Personas session
-     * cookie, then the favorites are refreshed (if the user is signed in).
-     * @param aCookie The cookie that has been added, changed or removed.
-     */
-    onCookieChanged: function(aCookie, aChange) {
-        if (aCookie instanceof Ci.nsICookie) {
-            if (aCookie.name == "sessionid" && (aCookie.host == this.addonsHost ||
-                    aCookie.host == "." + this.addonsHost)) {
-                if (aCookie.value == this._cookieValue)
-                    return;
-                this._cookieValue = aCookie.value;
-                this.refreshFavorites();
-            }
-        } else if (aCookie instanceof Ci.nsIArray) {
-            for (let enum_ = aCookie.enumerate(); enum_.hasMoreElements();)
-                this.onCookieChanged(enum_.getNext());
-        }
-    },
-    _cookieValue: null,
 
     /**
      * Monitors HTTP responses so that we can heuristically detect logins
