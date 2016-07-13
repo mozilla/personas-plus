@@ -101,19 +101,19 @@ var PersonaController = {
             new this.StringBundle("chrome://branding/locale/brand.properties");
     },
 
-    get_menu(document) {
+    get_menu: function(document) {
         return document.getElementById("personas-menu");
     },
 
-    get_menuButton(document) {
+    get_menuButton: function(document) {
         return document.getElementById("personas-selector-button");
     },
 
-    get_menuPopup(document) {
+    get_menuPopup: function(document) {
         return document.getElementById("personas-selector-menu");
     },
 
-    get_toolbarButton(document) {
+    get_toolbarButton: function(document) {
         return document.getElementById("personas-toolbar-button");
     },
 
@@ -123,7 +123,7 @@ var PersonaController = {
             .getService(Ci.nsISessionStore);
     },
 
-    get_header(document) {
+    get_header: function(document) {
         switch (PersonaService.appInfo.ID) {
             case PersonaService.THUNDERBIRD_ID:
                 return document.getElementById("messengerWindow");
@@ -134,7 +134,7 @@ var PersonaController = {
         }
     },
 
-    get_footer(document) {
+    get_footer: function(document) {
         switch (PersonaService.appInfo.ID) {
             case PersonaService.THUNDERBIRD_ID:
                 return document.getElementById("status-bar");
@@ -1247,7 +1247,7 @@ var PersonaController = {
         toolbarbutton.setAttribute("label", this.dtd("&personas_app_title;"));
         toolbarbutton.setAttribute("type", "menu");
         toolbarbutton.setAttribute("id", "personas-toolbar-button"); //personas-toolbar-button
-        toolbarbutton.setAttribute("class", (PersonaService.appInfo.ID != PersonaController.SEAMONKEY_ID) ? "toolbarbutton-1" : "toolbarbutton-1 seamonkey");
+        toolbarbutton.setAttribute("class", (PersonaService.appInfo.ID != PersonaService.SEAMONKEY_ID) ? "toolbarbutton-1" : "toolbarbutton-1 seamonkey");
         return toolbarbutton;
     },
     addToolbarButton: function(window) {
@@ -1332,7 +1332,7 @@ var PersonaController = {
         else if (windowtype == "mail:3pane") personasmenu.setAttribute("insertafter", "addonsManager");
         else personasmenu.setAttribute("insertafter", "menu_openAddons");
         personasmenu.setAttribute("label", this.dtd("&personas_app_title;"));
-        personasmenu.setAttribute("class", "menu-iconic");
+        personasmenu.setAttribute("class", (PersonaService.appInfo.ID != PersonaService.SEAMONKEY_ID) ? "menu-iconic" : "menu-iconic seamonkey");
         personasmenu.setAttribute("id", "personas-menu");
 
         var personasselectormenu = document.createElement('menupopup');
