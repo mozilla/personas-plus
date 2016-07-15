@@ -4,5 +4,3 @@
 <!ENTITY displaySettings.label "Отображение">
 <!ENTITY useTextColor.label "Использовать цвет текста">
 <!ENTITY useAccentColor.label "Использовать цвет строки заголовка">
-<!ENTITY advancedSettings.label "Дополнительные">
-<!ENTITY enableCustomMenu.label "Enable custom personas">

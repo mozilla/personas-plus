@@ -1123,12 +1123,10 @@ var PersonaController = {
         // Update the Custom menu. Custom personas unavailable in per-window
         // personas mode.
         let customMenu = document.getElementById("personas-plus-custom-menu");
-        customMenu.hidden = this._prefs.get("perwindow") || !this._prefs.get("showCustomMenu");
-        if (!customMenu.hidden) {
-            let name = PersonaService.customPersona &&
-                PersonaService.customPersona.name ? PersonaService.customPersona.name : this._strings.get("customPersona");
-            customMenu.setAttribute("label", name);
-        }
+        customMenu.disabled = this._prefs.get("perwindow")
+        let menuName = PersonaService.customPersona &&
+            PersonaService.customPersona.name ? PersonaService.customPersona.name : this._strings.get("customPersona");
+        customMenu.setAttribute("label", menuName);
     },
 
     _createPersonaItem: function(persona, document) {

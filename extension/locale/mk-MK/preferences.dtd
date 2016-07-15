@@ -4,5 +4,3 @@
 <!ENTITY displaySettings.label "Изглед">
 <!ENTITY useTextColor.label "Користи боја на текст">
 <!ENTITY useAccentColor.label "Користи акцент боја">
-<!ENTITY advancedSettings.label "Напредно">
-<!ENTITY enableCustomMenu.label "Enable custom personas">

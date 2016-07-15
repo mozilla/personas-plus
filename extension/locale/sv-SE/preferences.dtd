@@ -4,5 +4,3 @@
 <!ENTITY displaySettings.label "Display">
 <!ENTITY useTextColor.label "Använd textfärg">
 <!ENTITY useAccentColor.label "Använd accent färg">
-<!ENTITY advancedSettings.label "Advancerat">
-<!ENTITY enableCustomMenu.label "Enable custom personas">

@@ -4,5 +4,3 @@
 <!ENTITY displaySettings.label "Näyttö">
 <!ENTITY useTextColor.label "Käytä tekstin väriä">
 <!ENTITY useAccentColor.label "Käytä aksentin väriä">
-<!ENTITY advancedSettings.label "Lisäasetukset">
-<!ENTITY enableCustomMenu.label "Enable custom personas">

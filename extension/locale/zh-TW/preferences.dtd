@@ -4,5 +4,3 @@
 <!ENTITY displaySettings.label "顯示">
 <!ENTITY useTextColor.label "使用文字色彩">
 <!ENTITY useAccentColor.label "使用強調色彩">
-<!ENTITY advancedSettings.label "進階">
-<!ENTITY enableCustomMenu.label "Enable custom personas">
