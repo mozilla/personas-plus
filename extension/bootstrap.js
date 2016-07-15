@@ -51,7 +51,7 @@ var PersonasPlusBootstrapAddon = {
         this.setupBrowserUI();
         this.addWindowListener();
         this.addAddonSkinCSS();
-        if (reason == ADDON_ENABLE) {
+        if (reason == ADDON_ENABLE || reason == ADDON_INSTALL) {
             // modules that come with Firefox
             Cu.import("resource://gre/modules/XPCOMUtils.jsm");
             // LightweightThemeManager may not be not available (Firefox < 3.6 or Thunderbird)
@@ -74,9 +74,10 @@ var PersonasPlusBootstrapAddon = {
         this.tearBrowserUI();
         this.removeWindowListener();
         this.removeAddonSkinCSS();
+        PersonaController.onQuitApplicationByShutDown();
         Cu.unload("resource://personas/modules/personas.js");
         this.requestRemovePrerequisites(data);
-        if (reason == ADDON_DISABLE) {
+        if (reason == ADDON_DISABLE || reason == ADDON_UNINSTALL) {
             // modules that come with Firefox
             Cu.import("resource://gre/modules/XPCOMUtils.jsm");
             // LightweightThemeManager may not be not available (Firefox < 3.6 or Thunderbird)
