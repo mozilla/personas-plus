@@ -1424,6 +1424,10 @@ var PersonaController = {
         document.getElementById("personasDataUnavailableTooltip").parentNode.removeChild(document.getElementById("personasDataUnavailableTooltip"));
         document.getElementById("personas-menu").parentNode.removeChild(document.getElementById("personas-menu"));
         document.getElementById("personas-selector-button").parentNode.removeChild(document.getElementById("personas-selector-button"));
+    },
+    onQuitApplicationByShutDown: function() {
+        PersonaService.onQuitApplication();
+        Components.utils.unload("resource://personas/modules/service.js");
     }
 
 };
