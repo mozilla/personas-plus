@@ -821,6 +821,9 @@ var PersonaService = {
             } else
                 this.resetPersona();
         }
+        else{
+            this.changeToDefaultPersona();
+        }
     },
 
     /**
