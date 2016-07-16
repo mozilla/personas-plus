@@ -4,5 +4,3 @@
 <!ENTITY displaySettings.label "표시">
 <!ENTITY useTextColor.label "글자 색상 사용">
 <!ENTITY useAccentColor.label "강조 색상 사용">
-<!ENTITY advancedSettings.label "고급">
-<!ENTITY enableCustomMenu.label "Enable custom personas">

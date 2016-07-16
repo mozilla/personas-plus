@@ -4,5 +4,3 @@
 <!ENTITY displaySettings.label "Görüntüle">
 <!ENTITY useTextColor.label "Metin rengini kullan">
 <!ENTITY useAccentColor.label "Vurgu rengi kullan">
-<!ENTITY advancedSettings.label "Gelişmiş">
-<!ENTITY enableCustomMenu.label "Enable custom personas">

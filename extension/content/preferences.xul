@@ -56,7 +56,6 @@
       <preference id="preview" name="extensions.personas.previewEnabled" type="bool"/>
       <preference id="textcolor" name="extensions.personas.useTextColor" type="bool"/>
       <preference id="accentcolor" name="extensions.personas.useAccentColor" type="bool"/>
-      <preference id="custommenu" name="extensions.personas.showCustomMenu" type="bool"/>
     </preferences>
 
     <groupbox>
@@ -73,13 +72,6 @@
       </hbox>
       <hbox align="center">
         <checkbox label="&useAccentColor.label;" preference="accentcolor"/>
-      </hbox>
-    </groupbox>
-
-    <groupbox>
-      <caption label="&advancedSettings.label;"/>
-      <hbox align="center">
-        <checkbox label="&enableCustomMenu.label;" preference="custommenu"/>
       </hbox>
     </groupbox>
 

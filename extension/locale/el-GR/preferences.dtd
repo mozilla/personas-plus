@@ -4,5 +4,3 @@
 <!ENTITY displaySettings.label "Εμφάνιση">
 <!ENTITY useTextColor.label "Χρήση χρώματος κειμένου">
 <!ENTITY useAccentColor.label "Χρήση χρώματος accent">
-<!ENTITY advancedSettings.label "Για προχωρημένους">
-<!ENTITY enableCustomMenu.label "Enable custom personas">
