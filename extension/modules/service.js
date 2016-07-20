@@ -615,7 +615,7 @@ var PersonaService = {
             FileUtils.writeFile(path, "favorites.json", JSON.stringify(val));
         else {
             path.append("favorites.json");
-            OS.File.remove(path.spec);
+            if(path.exists()) OS.File.remove(path.spec);
         }
     },
 
