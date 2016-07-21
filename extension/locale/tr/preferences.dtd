@@ -1,6 +1,3 @@
 <!ENTITY preferences.title "Personas Seçenekleri">
 <!ENTITY generalSettings.label "Genel">
 <!ENTITY previewEnabled.label "Menüden seçerken önizlemeyi göster">
-<!ENTITY displaySettings.label "Görüntüle">
-<!ENTITY useTextColor.label "Metin rengini kullan">
-<!ENTITY useAccentColor.label "Vurgu rengi kullan">

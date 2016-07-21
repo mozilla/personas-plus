@@ -1,6 +1,3 @@
 <!ENTITY preferences.title "Kaukių nustatymai">
 <!ENTITY generalSettings.label "Bendra">
 <!ENTITY previewEnabled.label "Renkantis meniu, rodyti peržiūrą">
-<!ENTITY displaySettings.label "Rodyti">
-<!ENTITY useTextColor.label "Naudoti teksto spalvą">
-<!ENTITY useAccentColor.label "Naudoti skirtuko spalvą">

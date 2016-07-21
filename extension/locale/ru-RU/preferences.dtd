@@ -1,6 +1,3 @@
 <!ENTITY preferences.title "Настройки Personas">
 <!ENTITY generalSettings.label "Общие">
 <!ENTITY previewEnabled.label "Показывать превью при выборе из меню">
-<!ENTITY displaySettings.label "Отображение">
-<!ENTITY useTextColor.label "Использовать цвет текста">
-<!ENTITY useAccentColor.label "Использовать цвет строки заголовка">

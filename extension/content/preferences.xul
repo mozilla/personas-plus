@@ -65,16 +65,6 @@
       </hbox>
     </groupbox>
 
-    <groupbox>
-      <caption label="&displaySettings.label;"/>
-      <hbox align="center">
-        <checkbox label="&useTextColor.label;" preference="textcolor"/>
-      </hbox>
-      <hbox align="center">
-        <checkbox label="&useAccentColor.label;" preference="accentcolor"/>
-      </hbox>
-    </groupbox>
-
   </prefpane>
 
 </prefwindow>

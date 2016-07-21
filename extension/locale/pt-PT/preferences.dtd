@@ -1,8 +1,5 @@
 <!ENTITY preferences.title "Preferências">
 <!ENTITY generalSettings.label "Geral">
 <!ENTITY previewEnabled.label "Pré-visualização ao selecionar tema a partir do menu">
-<!ENTITY displaySettings.label "Exibir">
-<!ENTITY useTextColor.label "Cor do texto">
-<!ENTITY useAccentColor.label "Cor acentuada">
 <!ENTITY advancedSettings.label "Avançado">
 <!ENTITY enableCustomMenu.label "Habilitar personas personalizadas">
