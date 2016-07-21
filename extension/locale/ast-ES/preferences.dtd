@@ -1,6 +1,3 @@
 <!ENTITY preferences.title "Personas Preferences">
 <!ENTITY generalSettings.label "General">
 <!ENTITY previewEnabled.label "Show preview when selecting from menu">
-<!ENTITY displaySettings.label "Display">
-<!ENTITY useTextColor.label "Use text color">
-<!ENTITY useAccentColor.label "Use accent color">

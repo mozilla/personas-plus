@@ -1,8 +1,5 @@
 <!ENTITY preferences.title "העדפות Personas">
 <!ENTITY generalSettings.label "כללי">
 <!ENTITY previewEnabled.label "הצגת תצוגה מקדימה בבחירה מהתפריט">
-<!ENTITY displaySettings.label "תצוגה">
-<!ENTITY useTextColor.label "שימוש בצבע טקסט">
-<!ENTITY useAccentColor.label "שימוש בצבע מודגש">
 <!ENTITY advancedSettings.label "מתקדם">
 <!ENTITY enableCustomMenu.label "אפשור פרסונות (personas) מותאמות אישית">

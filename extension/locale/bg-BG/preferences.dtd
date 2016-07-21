@@ -1,6 +1,3 @@
 <!ENTITY preferences.title "Настройки">
 <!ENTITY generalSettings.label "Общи">
 <!ENTITY previewEnabled.label "Преглед на персона при избор от менюто">
-<!ENTITY displaySettings.label "Визуални">
-<!ENTITY useTextColor.label "Цвят на текст">
-<!ENTITY useAccentColor.label "Цвят на акцент">

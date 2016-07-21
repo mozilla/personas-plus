@@ -1,6 +1,3 @@
 <!ENTITY preferences.title "ペルソナ設定">
 <!ENTITY generalSettings.label "全般">
 <!ENTITY previewEnabled.label "メニューから選択するときにプレビューを表示する">
-<!ENTITY displaySettings.label "表示">
-<!ENTITY useTextColor.label "テキスト色を利用する">
-<!ENTITY useAccentColor.label "強調色を利用する">

@@ -1,8 +1,5 @@
 <!ENTITY preferences.title "Minimotywy – ustawienia">
 <!ENTITY generalSettings.label "Ogólne">
 <!ENTITY previewEnabled.label "Wyświetlaj podgląd po wskazaniu motywu">
-<!ENTITY displaySettings.label "Wyświetlanie">
-<!ENTITY useTextColor.label "Zezwalaj na zmianę koloru tekstu">
-<!ENTITY useAccentColor.label "Zezwalaj na zmianę koloru akcentu">
 <!ENTITY advancedSettings.label "Zaawansowane">
 <!ENTITY enableCustomMenu.label "Aktywuj prywatne minimotywy">

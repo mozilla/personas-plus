@@ -1,6 +1,3 @@
 <!ENTITY preferences.title "Особисті налаштування">
 <!ENTITY generalSettings.label "Загальні">
 <!ENTITY previewEnabled.label "Показати попередній перегляд при виборі з меню">
-<!ENTITY displaySettings.label "Відображення">
-<!ENTITY useTextColor.label "Використовувати колір тексту">
-<!ENTITY useAccentColor.label "Використовувати наголошений колір">

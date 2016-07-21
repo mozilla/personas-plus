@@ -1,6 +1,3 @@
 <!ENTITY preferences.title "Personas 환경설정">
 <!ENTITY generalSettings.label "일반">
 <!ENTITY previewEnabled.label "메뉴에서 선택할 경우 미리보기 표시">
-<!ENTITY displaySettings.label "표시">
-<!ENTITY useTextColor.label "글자 색상 사용">
-<!ENTITY useAccentColor.label "강조 색상 사용">
