@@ -91,7 +91,7 @@ var Observers = {
     // we can make it.  We could index by topic, but we can't index by callback
     // or thisObject, as far as I know, since the keys to JavaScript hashes
     // (a.k.a. objects) can apparently only be primitive values.
-    let [observer] = cache.filter(function(v) v.topic      == topic    &&
+    let [observer] = cache.filter( v => v.topic      == topic    &&
                                               v.callback   == callback &&
                                               v.thisObject == thisObject);
     if (observer) {

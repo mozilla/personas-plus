@@ -70,7 +70,7 @@ Preferences.prototype = {
    */
   get: function(prefName, defaultValue) {
     if (isArray(prefName))
-      return prefName.map(function(v) this.get(v, defaultValue), this);
+      return prefName.map( v => this.get(v, defaultValue), this);
 
     switch (this._prefSvc.getPrefType(prefName)) {
       case Ci.nsIPrefBranch.PREF_STRING:
@@ -337,7 +337,7 @@ Preferences.prototype = {
     // make it.  We could index by fullBranch, but we can't index by callback
     // or thisObject, as far as I know, since the keys to JavaScript hashes
     // (a.k.a. objects) can apparently only be primitive values.
-    let [observer] = observers.filter(function(v) v.prefName   == fullPrefName &&
+    let [observer] = observers.filter( v => v.prefName   == fullPrefName &&
                                                   v.callback   == callback &&
                                                   v.thisObject == thisObject);
 

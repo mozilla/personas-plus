@@ -454,7 +454,7 @@ var PersonaService = {
 
         try {
             var json = JSON.parse(request.responseText)
-                .addons.filter(function(a) a.theme);
+                .addons.filter( a => a.theme);
         } catch (ex) {
             this._log.debug("error parsing favorites data: " + request.responseText.slice(0, 100) + "...");
             return;
@@ -602,7 +602,7 @@ var PersonaService = {
     // The JSON feed of favorite personas retrieved from the server.
     _favorites: null,
 
-    get favorites() this._favorites,
+    get favorites() {return this._favorites;},
     set favorites(val) {
         this._favorites = val;
 
@@ -762,9 +762,9 @@ var PersonaService = {
         let recent = this.getRecentPersonas();
         let favorites = this.favorites;
         let inRecent =
-            (recent && recent.some(function(v) v.id == persona.id));
+            (recent && recent.some( v => v.id == persona.id));
         let inFavorites =
-            (favorites && favorites.some(function(v) v.id == persona.id));
+            (favorites && favorites.some( v => v.id == persona.id));
 
         this.currentPersona = persona;
         this._addPersonaToRecent(persona);
@@ -954,7 +954,7 @@ var PersonaService = {
         // to appear twice on the list).  Afterwards, we'll add the recent persona
         // to the list in a way that makes it the most recent one.
         if (persona.id)
-            personas = personas.filter(function(v) !v.id || v.id != persona.id);
+            personas = personas.filter( v => !v.id || v.id != persona.id);
 
         // Make the new persona the most recent one.
         personas.unshift(persona);
@@ -1051,7 +1051,7 @@ var PersonaService = {
             let cookieHost = cookie.host.replace(/^\./, "");
 
             if (cookie.name == COOKIE_INITIAL_PERSONA &&
-                authorizedHosts.some(function(v) v == cookieHost)) {
+                authorizedHosts.some( v => v == cookieHost)) {
 
                 // There could be more than one "initial_persona" cookie. The cookie
                 // with latest expiration time is selected.

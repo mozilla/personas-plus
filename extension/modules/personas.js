@@ -177,7 +177,7 @@ var PersonaController = {
      * Escape CSS special characters in unquoted URLs,
      * per http://www.w3.org/TR/CSS21/syndata.html#uri.
      */
-    _escapeURLForCSS: function(url) url.replace(/[(),\s'"]/g, "\$&"),
+    _escapeURLForCSS: url => url.replace(/[(),\s'"]/g, "\$&"),
 
     openURLInTab: function(url, event) {
         var document = event.currentTarget.ownerDocument;
@@ -899,7 +899,7 @@ var PersonaController = {
     _authorizeHost: function(aEvent) {
         let host = aEvent.target.ownerDocument.location.hostname;
         let authorizedHosts = this._prefs.get("authorizedHosts").split(/[, ]+/);
-        if (!authorizedHosts.some(function(v) v == host))
+        if (!authorizedHosts.some( v => v == host))
             throw host + " not authorized to modify personas";
     },
 
