@@ -1437,7 +1437,7 @@ var FileUtils = {
             if (!dir.exists() || !dir.isDirectory()) {
                 if (!aDontCreate) {
                     // read and write permissions to owner and group, read-only for others.
-                    dir.create(Ci.nsIFile.DIRECTORY_TYPE, 0774);
+                    dir.create(Ci.nsIFile.DIRECTORY_TYPE, 0o774);
                 }
             }
         } catch (ex) {
