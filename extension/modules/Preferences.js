@@ -216,7 +216,7 @@ Preferences.prototype = {
 
   reset: function(prefName) {
     if (isArray(prefName)) {
-      prefName.map(function(v) this.reset(v), this);
+      prefName.map( v => this.reset(v), this);
       return;
     }
 
