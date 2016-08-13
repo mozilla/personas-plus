@@ -735,6 +735,7 @@ var PersonaService = {
     changeToRandomPersona: function(category) {
         this.category = category;
         this.currentPersona = this._getRandomPersonaFromCategory(category);
+        this._addPersonaToRecent(this.currentPersona);
         this.selected = "random";
         this._prefs.set("persona.lastChanged", new Date().getTime().toString());
         this._notifyPersonaChanged(this.currentPersona);
