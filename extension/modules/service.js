@@ -738,6 +738,22 @@ var PersonaService = {
         this.selected = "random";
         this._prefs.set("persona.lastChanged", new Date().getTime().toString());
         this._notifyPersonaChanged(this.currentPersona);
+
+        let persona = this.currentPersona;
+        // Check whether the persona is in the favorites or the recent lists,
+        // in which case the change-notification should not be shown.
+        let recent = this.getRecentPersonas();
+        let favorites = this.favorites;
+        let inRecent = (recent && recent.some(v => v.id == persona.id));
+        let inFavorites = (favorites && favorites.some(v => v.id == persona.id));
+
+        // Show the notification if the selected persona is not in the favorite or
+        // recent lists, is not a custom persona and its author or username is not null.
+        // In this case we make sure at least one of these two fields is not null
+        // to prevent bug 526788.
+        if (!inRecent && !inFavorites && !persona.custom && (persona.author || persona.username))
+            this._showPersonaChangeNotification();
+
     },
 
     changeToRandomFavoritePersona: function() {
