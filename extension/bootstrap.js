@@ -52,17 +52,13 @@ var PersonasPlusBootstrapAddon = {
         this.addWindowListener();
         this.addAddonSkinCSS();
         if (reason == ADDON_ENABLE || reason == ADDON_INSTALL) {
-            // modules that come with Firefox
-            Cu.import("resource://gre/modules/XPCOMUtils.jsm");
-            // LightweightThemeManager may not be not available (Firefox < 3.6 or Thunderbird)
+            Cu.import("resource://gre/modules/LightweightThemeManager.jsm");
             try {
-                Cu.import("resource://gre/modules/LightweightThemeManager.jsm");
-            } catch (e) {
-                LightweightThemeManager = null;
-            }
-            try {
-                var lastselected0 = PersonasPlusBootstrapAddon.prefsinstance.getCharPref("extensions.personas.lastselected0");
-                LightweightThemeManager.currentTheme = JSON.parse(lastselected0);
+                var selected = PersonasPlusBootstrapAddon.prefsinstance.getCharPref("extensions.personas.selected");
+                if (selected != "default") {
+                    var lastselected0 = PersonasPlusBootstrapAddon.prefsinstance.getCharPref("extensions.personas.lastselected0");
+                    LightweightThemeManager.currentTheme = JSON.parse(lastselected0);
+                }
             } catch (e) {}
         }
     },
@@ -78,20 +74,23 @@ var PersonasPlusBootstrapAddon = {
         Cu.unload("resource://personas/modules/personas.js");
         this.requestRemovePrerequisites(data);
         if (reason == ADDON_DISABLE || reason == ADDON_UNINSTALL) {
-            // modules that come with Firefox
-            Cu.import("resource://gre/modules/XPCOMUtils.jsm");
-            // LightweightThemeManager may not be not available (Firefox < 3.6 or Thunderbird)
-            try {
-                Cu.import("resource://gre/modules/LightweightThemeManager.jsm");
-            } catch (e) {
-                LightweightThemeManager = null;
-            }
-            try {
-                LightweightThemeManager.forgetUsedTheme(LightweightThemeManager.currentTheme.id);
-            } catch (e) {
-                try {
-                    LightweightThemeManager.currentTheme = null;
-                } catch (e) {}
+            if (LightweightThemeManager.currentTheme) {
+                if (LightweightThemeManager.currentTheme.id != "15131") {
+                    var prompt = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+                    if (prompt.confirm(null, "Personas Plus", "Would you like to remove the current theme?")) {
+                        try {
+                            Cu.import("resource://gre/modules/LightweightThemeManager.jsm");
+                            LightweightThemeManager.forgetUsedTheme(LightweightThemeManager.currentTheme.id);
+                        } catch (e) {
+                            try {
+                                LightweightThemeManager.currentTheme = null;
+                            } catch (e) {}
+                        }
+                    }
+                } else {
+                    // Remove Groovy Blue Theme
+                    LightweightThemeManager.forgetUsedTheme("15131");
+                }
             }
         }
     },
@@ -242,25 +241,6 @@ function uninstall(data, reason) {
         .getService(Components.interfaces.nsIPrefService).getBranch("extensions.personas.").deleteBranch("");
     Components.classes["@mozilla.org/intl/stringbundle;1"]
         .getService(Components.interfaces.nsIStringBundleService).flushBundles();
-    const Cc = Components.classes;
-    const Ci = Components.interfaces;
-    const Cr = Components.results;
-    const Cu = Components.utils;
-    // modules that come with Firefox
-    Cu.import("resource://gre/modules/XPCOMUtils.jsm");
-    // LightweightThemeManager may not be not available (Firefox < 3.6 or Thunderbird)
-    try {
-        Cu.import("resource://gre/modules/LightweightThemeManager.jsm");
-    } catch (e) {
-        LightweightThemeManager = null;
-    }
-    try {
-        LightweightThemeManager.forgetUsedTheme(LightweightThemeManager.currentTheme.id);
-    } catch (e) {
-        try {
-            LightweightThemeManager.currentTheme = null;
-        } catch (e) {}
-    }
 }
 
 function startup(data, reason) {
