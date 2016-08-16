@@ -169,8 +169,8 @@ var CustomPersonaEditor = {
     this._header.value = this.customPersona.headerURL || this.customPersona.header || "";
     this._footer.value = this.customPersona.footerURL || this.customPersona.footer || "";
     this._customName.value = this.customPersona.name || "";
-    this._textColorPicker.color = this.customPersona.textcolor || "#000000";
-    this._accentColorPicker.color = this.customPersona.accentcolor || "#C9C9C9";
+    this._textColorPicker.value = this.customPersona.textcolor || "#000000";
+    this._accentColorPicker.value = this.customPersona.accentcolor || "#C9C9C9";
 
     // FIXME: This is a workaround for bug 532741, where the LightweightThemeManager
     // needs a header and footer to be specified in order to preview the persona.
@@ -242,24 +242,24 @@ var CustomPersonaEditor = {
   },
 
   onChangeTextColor: function(aEvent) {
-    this.customPersona.textcolor = this._textColorPicker.color;
+    this.customPersona.textcolor = this._textColorPicker.value;
     PersonaService.resetPersona();
     this._save();
   },
 
   onSetDefaultTextColor: function(aEvent) {
-    this._textColorPicker.color = "#000000";
+    this._textColorPicker.value = "#000000";
     this.onChangeTextColor();
   },
 
   onChangeAccentColor: function(aEvent) {
-    this.customPersona.accentcolor = this._accentColorPicker.color;
+    this.customPersona.accentcolor = this._accentColorPicker.value;
     PersonaService.resetPersona();
     this._save();
   },
 
   onSetDefaultAccentColor: function(aEvent) {
-    this._accentColorPicker.color = "#C9C9C9";
+    this._accentColorPicker.value = "#C9C9C9";
     this.onChangeAccentColor();
   },
 

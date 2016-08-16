@@ -42,6 +42,7 @@
 
 <page id="customPersonaEditor"
       xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+      xmlns:html="http://www.w3.org/1999/xhtml"
       title="Custom Persona"
       align="center"
       onload="CustomPersonaEditor.onLoad()"
@@ -97,8 +98,7 @@
             <label control="textColorPicker" value="&textColorPicker.label;"/>
           </hbox>
           <hbox pack="start">
-            <colorpicker id="textColorPicker" type="button"
-                         onchange="CustomPersonaEditor.onChangeTextColor(event)"/>
+            <html:input type="color" id="textColorPicker" onchange="CustomPersonaEditor.onChangeTextColor(event)"/>
             <button label="&useDefaultColor.label;" oncommand="CustomPersonaEditor.onSetDefaultTextColor();"/>
           </hbox>
         </row>
@@ -107,8 +107,7 @@
             <label control="accentColorPicker" value="&accentColorPicker.label;"/>
           </hbox>
           <hbox pack="start">
-            <colorpicker id="accentColorPicker" type="button"
-                         onchange="CustomPersonaEditor.onChangeAccentColor(event)"/>
+            <html:input type="color" id="accentColorPicker" onchange="CustomPersonaEditor.onChangeAccentColor(event)"/>
             <button label="&useDefaultColor.label;" oncommand="CustomPersonaEditor.onSetDefaultAccentColor();"/>
           </hbox>
         </row>
