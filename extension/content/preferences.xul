@@ -54,8 +54,6 @@
 
     <preferences>
       <preference id="preview" name="extensions.personas.previewEnabled" type="bool"/>
-      <preference id="textcolor" name="extensions.personas.useTextColor" type="bool"/>
-      <preference id="accentcolor" name="extensions.personas.useAccentColor" type="bool"/>
     </preferences>
 
     <groupbox>

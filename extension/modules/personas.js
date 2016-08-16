@@ -421,118 +421,6 @@ var PersonaController = {
             footer.style.backgroundImage = "url(" + this._escapeURLForCSS(footerURI.spec) + ")";
         }
 
-        // Style the text color.
-        if (this._prefs.get("useTextColor")) {
-            // FIXME: fall back on the default text color instead of "black".
-            let textColor = persona.textcolor || "black";
-            header.style.color = textColor;
-            for (let i = 0; i < document.styleSheets.length; i++) {
-                let styleSheet = document.styleSheets[i];
-                if (styleSheet.href == "chrome://personas/content/overlay.css") {
-                    while (styleSheet.cssRules.length > 0)
-                        styleSheet.deleteRule(0);
-
-                    // On Mac we do several things differently:
-                    // 1. make text be regular weight, not bold (not sure why);
-                    // 2. explicitly style the Find toolbar label ("Find:" or
-                    //    "Quick Find:" in en-US) and status message ("Phrase not found"),
-                    //    which otherwise would be custom colors specified in findBar.css
-                    //    (note: we only do this in Firefox);
-                    // 3. style the tab color (Mac tabs are transparent).
-                    // In order to style the Find toolbar text, we have to both explicitly
-                    // reference it (.findbar-find-fast, .findbar-find-status) and make
-                    // the declaration !important to override an !important declaration
-                    // for the status text in findBar.css.
-                    // XXX Isn't |#main-window[persona]| unnecessary in this rule,
-                    // given that the rule is only inserted into the stylesheet when
-                    // a persona is active?
-                    if (PersonaService.appInfo.OS == "Darwin") {
-                        switch (PersonaService.appInfo.ID) {
-                            case PersonaService.FIREFOX_ID:
-                                styleSheet.insertRule(
-                                    "#main-window[persona] .tabbrowser-tab, " +
-                                    "#navigator-toolbox menubar > menu, " +
-                                    "#navigator-toolbox toolbarbutton, " +
-                                    "#browser-bottombox, " +
-                                    ".findbar-find-fast, " +
-                                    ".findbar-find-status, " +
-                                    "#browser-bottombox toolbarbutton " +
-                                    "{ color: inherit; " +
-                                    "font-weight: normal; }",
-                                    0
-                                );
-                                break;
-                            case PersonaService.THUNDERBIRD_ID:
-                                styleSheet.insertRule(
-                                    ".tabmail-tab, " +
-                                    "#mail-toolbox menubar > menu, " +
-                                    "#mail-toolbox toolbarbutton, " +
-                                    "#mail-toolbox toolbaritem > label, " +
-                                    "#status-bar " +
-                                    "{ color: " + textColor + " !important; " +
-                                    "font-weight: normal; }",
-                                    0
-                                );
-                                break;
-                            default:
-                                break;
-                        }
-                    } else {
-                        switch (PersonaService.appInfo.ID) {
-                            case PersonaService.FIREFOX_ID:
-                                styleSheet.insertRule(
-                                    "#navigator-toolbox menubar > menu, " +
-                                    "#navigator-toolbox toolbarbutton, " +
-                                    "#browser-bottombox, " +
-                                    "#browser-bottombox toolbarbutton " +
-                                    "{ color: inherit; }",
-                                    0
-                                );
-                                break;
-                            case PersonaService.THUNDERBIRD_ID:
-                                styleSheet.insertRule(
-                                    "#mail-toolbox menubar > menu, " +
-                                    "#mail-toolbox toolbarbutton, " +
-                                    "#mail-toolbox toolbaritem > label, " +
-                                    "#status-bar " +
-                                    "{ color: " + textColor + "}",
-                                    0
-                                );
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-
-                    // FIXME: figure out what to do about the disabled color.  Maybe we
-                    // should let personas specify it independently and then apply it via
-                    // a rule like this:
-                    // #navigator-toolbox toolbarbutton[disabled="true"],
-                    // #browser-toolbox toolbarbutton[disabled="true"],
-                    // #browser-bottombox toolbarbutton[disabled="true"]
-                    //   { color: #cccccc !important; }
-
-                    // Stop iterating through stylesheets.
-                    break;
-                }
-            }
-        }
-
-        // Style the titlebar with the accent color.
-        if (this._prefs.get("useAccentColor")) {
-            let general, active, inactive;
-            if (persona.accentcolor) {
-                general = persona.accentcolor;
-                active = persona.accentcolor;
-                inactive = persona.accentcolor;
-            } else {
-                general = "";
-                active = "";
-                inactive = "";
-            }
-            this._setTitlebarColors(general, active, inactive, document);
-        }
-
         // Opacity overrides (firefox only)
         if (PersonaService.appInfo.ID == PersonaService.FIREFOX_ID) {
             let overrideOpacity = this._prefs.get("override.opacity");
@@ -590,10 +478,6 @@ var PersonaController = {
         }
         header.style.color = "";
 
-        // Reset the titlebar color.
-        if (this._prefs.get("useAccentColor")) {
-            this._setTitlebarColors("", "", "", document);
-        }
     },
 
     _setTitlebarColors: function(general, active, inactive, document) {
