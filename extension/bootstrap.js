@@ -87,10 +87,9 @@ var PersonasPlusBootstrapAddon = {
                             } catch (e) {}
                         }
                     }
-                } else {
-                    // Remove Groovy Blue Theme
-                    LightweightThemeManager.forgetUsedTheme("15131");
                 }
+                // Remove Groovy Blue Theme in any case at it was installed automatically
+                LightweightThemeManager.forgetUsedTheme("15131");
             }
         }
     },
