@@ -86,14 +86,6 @@ pref("extensions.personas.previewTimeout", 200);
 // User preference to enable/disable preview when hovering over popup items.
 pref("extensions.personas.previewEnabled", true);
 
-// User preference to enable/disable use of the accent color provided
-// by Persona in the feed.
-pref("extensions.personas.useAccentColor", true);
-
-// User preference to enable/disable use of the text color provided
-// by Persona in the feed.
-pref("extensions.personas.useTextColor", true);
-
 // The version of the JSON data feed that this extension expects.
 pref("extensions.personas.data.version", 1);
 

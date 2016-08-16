@@ -145,8 +145,6 @@ var PersonaService = {
         Observers.add("http-on-examine-response",
             this.onHTTPResponse, this);
 
-        this._prefs.observe("useTextColor", this.onUseColorChanged, this);
-        this._prefs.observe("useAccentColor", this.onUseColorChanged, this);
         this._prefs.observe("selected", this.onSelectedModeChanged, this);
         this._prefs.observe("addons-host", this.onAddonsHostChanged, this);
 
@@ -252,8 +250,6 @@ var PersonaService = {
             this.onLightweightThemeChanged, this);
         Observers.remove("http-on-examine-response", this.onHTTPResponse, this);
 
-        this._prefs.ignore("useTextColor", this.onUseColorChanged, this);
-        this._prefs.ignore("useAccentColor", this.onUseColorChanged, this);
         this._prefs.ignore("selected", this.onSelectedModeChanged, this);
         this._prefs.ignore("addons-host", this.onAddonsHostChanged, this);
     },
@@ -1008,14 +1004,6 @@ var PersonaService = {
             else
                 this._prefs.reset("lastselected" + i);
         }
-    },
-
-    onUseColorChanged: function() {
-        // Notify observers that the persona has changed so the change in whether
-        // or not to use the text or accent color will get applied.  The persona
-        // hasn't really changed, but doing this has the desired effect without any
-        // known unwanted side effects.
-        Observers.notify("personas:persona:changed");
     },
 
     previewingPersona: null,
