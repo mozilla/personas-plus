@@ -104,9 +104,6 @@ pref("extensions.personas.revisionID", "282496e84f1d");
 // old fast since they come out so often).
 pref("extensions.personas.channel", "rel");
 
-// Preference to switch per-window personas mode on
-pref("extensions.personas.perwindow", false);
-
 pref("PersonaService.logging.console", "None");
 pref("PersonaService.logging.dump", "None");
 

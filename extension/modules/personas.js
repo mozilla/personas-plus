@@ -240,40 +240,17 @@ var PersonaController = {
     observe: function(subject, topic, data) {
         switch (topic) {
             case "domwindowopened":
-                // Since there's no explicit notification for windows restored from
-                // session store, we use this to apply the per-window persona
-                // (but only if one exists).
-                //
-                // Bug 534669 has been filed for adding SSWindowRestored support.
-                if (this._prefs.get("perwindow") &&
-                    (window.document.documentElement.getAttribute("windowtype") == "navigator:browser") &&
-                    this._sessionStore.getWindowValue(window, "persona")) {
-                    this._applyPersona(JSON.parse(
-                        this._sessionStore.getWindowValue(window, "persona")
-                    ), window.document);
-                }
                 break;
             case "personas:persona:changed":
-                // Per-window personas are enabled
-                if (this._prefs.get("perwindow")) {
-                    if (this._sessionStore.getWindowValue(window, "persona")) {
-                        this._applyPersona(JSON.parse(
-                            this._sessionStore.getWindowValue(window, "persona")
-                        ), window.document);
-                    } else {
-                        this._applyDefault(window.document);
-                    }
-                    // Pan-window personas are enabled
+                // Pan-window personas are enabled
+                if (PersonaService.previewingPersona) {
+                    this._applyPersona(PersonaService.previewingPersona, window.document);
+                } else if (PersonaService.selected == "default") {
+                    this._applyDefault(window.document);
                 } else {
-                    if (PersonaService.previewingPersona) {
-                        this._applyPersona(PersonaService.previewingPersona, window.document);
-                    } else if (PersonaService.selected == "default") {
-                        this._applyDefault(window.document);
-                    } else {
-                        this._applyPersona(PersonaService.currentPersona, window.document);
-                    }
-                    break;
+                    this._applyPersona(PersonaService.currentPersona, window.document);
                 }
+                break;               
         }
     },
 
@@ -573,44 +550,23 @@ var PersonaController = {
 
         let persona = node.getAttribute("persona");
 
-        // We check if the user wants per-window personas
-        if (this._prefs.get("perwindow")) {
-            // Since per-window personas are window-specific, we persist and
-            // set them from here instead instead of going through PersonaService.
-            switch (persona) {
-                // We store the persona in the "persona" window property, and do not
-                // have a seperate type as is the case with pan-window personas. This
-                // is because we currently support only a single type of persona in
-                // per-window mode. We'll add a new type property when we support
-                // other types of selectable personas, such as "random".
-                case "default":
-                    this._applyDefault(document);
-                    this._sessionStore.setWindowValue(window, "persona", "default");
-                    break;
-                default:
-                    this._applyPersona(JSON.parse(persona), document);
-                    this._sessionStore.setWindowValue(window, "persona", persona);
-                    break;
-            }
-            // Usual, pan-window persona mode
-        } else {
-            // The persona attribute is either a JSON string specifying the persona
-            // to apply or a string identifying a special persona (default, random).
-            switch (persona) {
-                case "default":
-                    PersonaService.changeToDefaultPersona();
-                    break;
-                case "random":
-                    PersonaService.changeToRandomPersona(node.getAttribute("category"));
-                    break;
-                case "custom":
-                    PersonaService.changeToPersona(PersonaService.customPersona);
-                    break;
-                default:
-                    PersonaService.changeToPersona(JSON.parse(persona));
-                    break;
-            }
-        }
+        // Usual, pan-window persona mode
+        // The persona attribute is either a JSON string specifying the persona
+        // to apply or a string identifying a special persona (default, random).
+        switch (persona) {
+            case "default":
+                PersonaService.changeToDefaultPersona();
+                break;
+            case "random":
+                PersonaService.changeToRandomPersona(node.getAttribute("category"));
+                break;
+            case "custom":
+                PersonaService.changeToPersona(PersonaService.customPersona);
+                break;
+            default:
+                PersonaService.changeToPersona(JSON.parse(persona));
+                break;
+        }        
     }),
 
     onPreviewPersona: PersonaService.wrap(function(event) {
@@ -625,32 +581,17 @@ var PersonaController = {
         //this._previewPersona(event.target.getAttribute("persona"));
         let persona = JSON.parse(event.target.getAttribute("persona"));
 
-        // We check if the user wants per-window personas
-        if (this._prefs.get("perwindow")) {
-            // We temporarily set the window specific persona here and let
-            // onResetPersona reset it.
-            switch (persona) {
-                case "default":
-                    this._applyDefault(document);
-                    break;
-                default:
-                    this._applyPersona(persona, document);
-                    break;
-            }
-        } else {
-            if (this._resetTimeoutID) {
-                window.clearTimeout(this._resetTimeoutID);
-                this._resetTimeoutID = null;
-            }
-
-            let t = this;
-            let persona = JSON.parse(event.target.getAttribute("persona"));
-            let callback = function() {
-                t._previewPersona(persona)
-            };
-            this._previewTimeoutID =
-                window.setTimeout(callback, this._previewTimeout);
+        if (this._resetTimeoutID) {
+            window.clearTimeout(this._resetTimeoutID);
+            this._resetTimeoutID = null;
         }
+
+        let t = this;
+        let callback = function() {
+            t._previewPersona(persona)
+        };
+        this._previewTimeoutID =
+            window.setTimeout(callback, this._previewTimeout);        
     }),
 
     _previewPersona: function(persona) {
@@ -664,12 +605,6 @@ var PersonaController = {
             return;
 
         //this._resetPersona();
-        // If per-window personas are enabled and there's a valid persona
-        // value set for this window, don't reset.
-        if (this._prefs.get("perwindow") &&
-            this._sessionStore.getWindowValue(window, "persona")) {
-            return;
-        }
 
         if (this._previewTimeoutID) {
             window.clearTimeout(this._previewTimeoutID);
@@ -934,16 +869,12 @@ var PersonaController = {
                     popupmenu.appendChild(this._createPersonaItem(persona, document));
                     popupmenu.appendChild(document.createElement("menuseparator"));
 
-                    // Disable random from favorites menu item if per-window
-                    // personas are enabled
-                    if (!this._prefs.get("perwindow")) {
-                        let item = popupmenu.appendChild(document.createElement("menuitem"));
-                        item.setAttribute("label", this._strings.get("useRandomPersona", [this._strings.get("favorites")]));
-                        // item.setAttribute("type", "checkbox");
-                        item.setAttribute("checked", (PersonaService.selected == "randomFavorite"));
-                        item.setAttribute("autocheck", "false");
-                        item.addEventListener("command", PersonaController.useRandomPersonaInListener, true);
-                    }
+                    let item = popupmenu.appendChild(document.createElement("menuitem"));
+                    item.setAttribute("label", this._strings.get("useRandomPersona", [this._strings.get("favorites")]));
+                    // item.setAttribute("type", "checkbox");
+                    item.setAttribute("checked", (PersonaService.selected == "randomFavorite"));
+                    item.setAttribute("autocheck", "false");
+                    item.addEventListener("command", PersonaController.useRandomPersonaInListener, true);                    
                 }
 
                 // go to my favorites menu item
@@ -983,12 +914,8 @@ var PersonaController = {
                 popupmenu.appendChild(this._createPersonaItem(persona, document));
 
                 // Create an item that picks a random persona from the category.
-                // Disable random from category menu item if per-window
-                // personas are enabled.
-                if (!this._prefs.get("perwindow")) {
-                    popupmenu.appendChild(document.createElement("menuseparator"));
-                    popupmenu.appendChild(this._createRandomItem(this._strings.get("featured"), "featured", document));
-                }
+                popupmenu.appendChild(document.createElement("menuseparator"));
+                popupmenu.appendChild(this._createRandomItem(this._strings.get("featured"), "featured", document));
 
                 // Create an item that links to the gallery for this category.
                 popupmenu.appendChild(
@@ -1007,7 +934,6 @@ var PersonaController = {
         // Update the Custom menu. Custom personas unavailable in per-window
         // personas mode.
         let customMenu = document.getElementById("personas-plus-custom-menu");
-        customMenu.disabled = this._prefs.get("perwindow")
         let menuName = PersonaService.customPersona &&
             PersonaService.customPersona.name ? PersonaService.customPersona.name : this._strings.get("customPersona");
         customMenu.setAttribute("label", menuName);
