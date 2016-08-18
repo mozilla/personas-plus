@@ -228,16 +228,15 @@ var CustomPersonaEditor = {
               if (prompt.confirm(null, "Personas Plus", "Image must be 3000 pixels wide and 200 pixels tall. This image does not meet required specifications.\n\nWould you like to read more about how to create your own background theme?")) {
                   window.open("https://developer.mozilla.org/en-US/Add-ons/Themes/Background", '_blank');
               }
-              return;
+          } else {
+              // A random number is appended to avoid displaying a cached image
+              // after the image has been modified.
+              // See: https://bugzilla.mozilla.org/show_bug.cgi?id=543333
+              control.value = this.customPersona[property] =
+                  fp.fileURL.spec + "?" + Math.floor(Math.random() * 10000);
+              this._save();
           }
       }
-
-      // A random number is appended to avoid displaying a cached image
-      // after the image has been modified.
-      // See: https://bugzilla.mozilla.org/show_bug.cgi?id=543333
-      control.value = this.customPersona[property] =
-        fp.fileURL.spec + "?" + Math.floor(Math.random() * 10000);
-      this._save();
     }
   },
 
