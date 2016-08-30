@@ -216,7 +216,7 @@ var PersonaController = {
                         }
                     }
                     if (!found)
-                        window.openUILinkIn(url, "tab");
+                        tabBrowser.loadOneTab(url, {inBackground: false});
                     break;
                 }
         }
