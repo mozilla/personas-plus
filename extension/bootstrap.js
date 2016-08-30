@@ -74,12 +74,12 @@ var PersonasPlusBootstrapAddon = {
         Cu.unload("resource://personas/modules/personas.js");
         this.requestRemovePrerequisites(data);
         if (reason == ADDON_DISABLE || reason == ADDON_UNINSTALL) {
+            Cu.import("resource://gre/modules/LightweightThemeManager.jsm");
             if (LightweightThemeManager.currentTheme) {
                 if (LightweightThemeManager.currentTheme.id != "15131") {
                     var prompt = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
                     if (prompt.confirm(null, "Personas Plus", "Would you like to remove the current theme?")) {
                         try {
-                            Cu.import("resource://gre/modules/LightweightThemeManager.jsm");
                             LightweightThemeManager.forgetUsedTheme(LightweightThemeManager.currentTheme.id);
                         } catch (e) {
                             try {
