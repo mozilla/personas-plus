@@ -12,6 +12,20 @@ Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 
 var PersonaController = {}
 
+function PersonasPlusStartup() {}
+PersonasPlusStartup.prototype = {
+    classID: Components.ID("{c5ce58af-aacf-4cb2-98c0-44483f7cd89d}"),
+    contractID: "@personasplus/bootstartup;1",
+    classDescription: "PersonasPlus BootStartup",
+    QueryInterface: XPCOMUtils.generateQI([Components.interfaces.nsIObserver, Components.interfaces.nsISupportsWeakReference, Components.interfaces.nsISupports]),
+    get wrappedJSObject() {
+        return (this);
+    },
+    requestRotation: function() {
+        PersonaController.askRotation();
+    }
+}
+
 var WindowListener = {
     setupBrowserUI: function(window, closebar) {
         // Take any steps to add UI or anything to the browser window
@@ -45,6 +59,7 @@ var PersonasPlusBootstrapAddon = {
     STRINGS: [],
     startup: function(data, reason) {
         this.requestAddPrerequisites(data);
+        this.registerComponent();
         this.setDefaultPrefs();
         this.setDefaultLocalizations();
         Cu.import("resource://personas/modules/personas.js");
@@ -72,6 +87,7 @@ var PersonasPlusBootstrapAddon = {
         this.removeAddonSkinCSS();
         PersonaController.onQuitApplicationByShutDown();
         Cu.unload("resource://personas/modules/personas.js");
+        this.unregisterComponent();
         this.requestRemovePrerequisites(data);
         if (reason == ADDON_DISABLE || reason == ADDON_UNINSTALL) {
             Cu.import("resource://gre/modules/LightweightThemeManager.jsm");
@@ -126,6 +142,22 @@ var PersonasPlusBootstrapAddon = {
     removeChromeProtocol: function(data) {
         if (Services.vc.compare(Services.appinfo.platformVersion, "10.0") < 0 && Services.vc.compare(Services.appinfo.platformVersion, "8.0") >= 0)
             Components.manager.removeBootstrappedManifestLocation(data.installPath);
+    },
+    registerComponent: function() {
+        if (XPCOMUtils.generateNSGetFactory) var NSGetFactory = XPCOMUtils.generateNSGetFactory([PersonasPlusStartup]);
+        var componentRegistrar = Components.manager.QueryInterface(Components.interfaces.nsIComponentRegistrar)
+        var contractID = PersonasPlusStartup.prototype.contractID;
+        try {
+            componentRegistrar.unregisterFactory(componentRegistrar.contractIDToCID(contractID), componentRegistrar.getClassObjectByContractID(contractID, Ci.nsISupports));
+        } catch (e) {}
+        var component = PersonasPlusStartup.prototype;
+        var factory = NSGetFactory(component.classID);
+        //Note for Validator: This is safe and used to register a generic component for our add-on.     
+        componentRegistrar.registerFactory(component.classID, component.classDescription, component.contractID, factory);
+    },
+    unregisterComponent: function(reason) {
+        var componentRegistrar = Components.manager.QueryInterface(Components.interfaces.nsIComponentRegistrar);
+        componentRegistrar.unregisterFactory(componentRegistrar.contractIDToCID("@personasplus/bootstartup;1"), componentRegistrar.getClassObjectByContractID("@personasplus/bootstartup;1", Components.interfaces.nsISupports));
     },
     setDefaultPrefs: function() {
         function setDefaultPrefs(name, value) {
