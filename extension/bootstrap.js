@@ -164,7 +164,7 @@ var PersonasPlusBootstrapAddon = {
         var wm = Cc["@mozilla.org/appshell/window-mediator;1"].
         getService(Ci.nsIWindowMediator);
         // Get the list of browser windows already open
-        var windows = wm.getEnumerator("navigator:browser");
+        var windows = wm.getEnumerator(this.getWindowType());
         while (windows.hasMoreElements()) {
             var domWindow = windows.getNext().QueryInterface(Ci.nsIDOMWindow);
             WindowListener.setupBrowserUI(domWindow, false);
@@ -174,11 +174,15 @@ var PersonasPlusBootstrapAddon = {
         var wm = Cc["@mozilla.org/appshell/window-mediator;1"].
         getService(Ci.nsIWindowMediator);
         // Get the list of browser windows already open
-        var windows = wm.getEnumerator("navigator:browser");
+        var windows = wm.getEnumerator(this.getWindowType());
         while (windows.hasMoreElements()) {
             var domWindow = windows.getNext().QueryInterface(Ci.nsIDOMWindow);
             WindowListener.tearDownBrowserUI(domWindow);
         }
+    },
+    getWindowType: function() {
+        if (Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo).ID == "{3550f703-e582-4d05-9a08-453d09bdfdc6}") return "mail:3pane";
+        else return "navigator:browser";
     },
     addWindowListener: function() {
         var wm = Cc["@mozilla.org/appshell/window-mediator;1"].
