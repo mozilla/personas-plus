@@ -66,6 +66,7 @@ var PersonasPlusBootstrapAddon = {
         // When the application is shutting down we normally don't have to clean
         // up any UI changes made
         if (reason == APP_SHUTDOWN) return;
+        var shutdownPromptSentence = this.STRINGS["personas.properties"].GetStringFromName("shutdownPromptSentence");
         this.removeDefaultLocalizations();
         this.tearBrowserUI();
         this.removeWindowListener();
@@ -78,7 +79,7 @@ var PersonasPlusBootstrapAddon = {
             if (LightweightThemeManager.currentTheme) {
                 if (LightweightThemeManager.currentTheme.id != "15131") {
                     var prompt = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-                    if (prompt.confirm(null, "Personas Plus", "Would you like to remove the current theme?")) {
+                    if (prompt.confirm(null, "Personas Plus", shutdownPromptSentence)) {
                         try {
                             LightweightThemeManager.forgetUsedTheme(LightweightThemeManager.currentTheme.id);
                         } catch (e) {
