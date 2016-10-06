@@ -211,6 +211,8 @@ var CustomPersonaEditor = {
     let button = event.target;
     let control = button.previousSibling;
     let property = control.id;
+    let restrictionPromptFirstSentence = this._strings.get("restrictionPromptFirstSentence");
+    let restrictionPromptSecondSentence = this._strings.get("restrictionPromptSecondSentence");    
 
     let fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
     fp.appendFilter("Images", "*.png; *.jpg; *.jpeg");
@@ -225,7 +227,7 @@ var CustomPersonaEditor = {
       img.onload = function() {
           if (img.naturalWidth !== 3000 || img.naturalHeight !== 200) {
               var prompt = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-              if (prompt.confirm(null, "Personas Plus", "Image must be 3000 pixels wide and 200 pixels tall. This image does not meet required specifications.\n\nWould you like to read more about how to create your own background theme?")) {
+              if (prompt.confirm(null, "Personas Plus", restrictionPromptFirstSentence + "\n\n" + restrictionPromptSecondSentence)) {
                   window.open("https://developer.mozilla.org/en-US/Add-ons/Themes/Background", '_blank');
               }
           } else {
