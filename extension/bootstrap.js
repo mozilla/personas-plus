@@ -93,6 +93,24 @@ var PersonasPlusBootstrapAddon = {
                 LightweightThemeManager.forgetUsedTheme("15131");
             }
         }
+        var wm = Cc["@mozilla.org/appshell/window-mediator;1"].getService(Ci.nsIWindowMediator);
+        var windows = wm.getEnumerator(this.getWindowType());
+        while (windows.hasMoreElements()) {
+            var window = windows.getNext().QueryInterface(Ci.nsIDOMWindow);
+            var gBrowser = window.getBrowser();
+            var num = gBrowser.browsers.length;
+            for (var i = 0; i < num; i++) {
+                var b = gBrowser.getBrowserAtIndex(i);
+                var not1 = gBrowser.getNotificationBox(b).getNotificationWithValue("personas-plus-private-browsing-warning");
+                if (not1) {
+                    gBrowser.getNotificationBox(b).removeNotification(not1);
+                }
+                var not2 = gBrowser.getNotificationBox(b).getNotificationWithValue("lwtheme-install-notification");
+                if (not2) {
+                    gBrowser.getNotificationBox(b).removeNotification(not2);
+                }
+            }
+        }        
     },
     requestAddPrerequisites: function(data) {
         this.addResourceProtocol(data);
