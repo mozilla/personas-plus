@@ -234,9 +234,9 @@ var CustomPersonaEditor = {
               // A random number is appended to avoid displaying a cached image
               // after the image has been modified.
               // See: https://bugzilla.mozilla.org/show_bug.cgi?id=543333
-              control.value = this.customPersona[property] =
+              control.value = CustomPersonaEditor.customPersona[property] =
                   fp.fileURL.spec + "?" + Math.floor(Math.random() * 10000);
-              this._save();
+              CustomPersonaEditor._save();
           }
       }
     }
