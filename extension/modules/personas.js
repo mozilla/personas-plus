@@ -865,7 +865,7 @@ var PersonaController = {
             } else {
                 let favorites = PersonaService.favorites;
                 if (favorites.length) {
-                    for each(let persona in favorites)
+                    for (let persona of favorites)
                     popupmenu.appendChild(this._createPersonaItem(persona, document));
                     popupmenu.appendChild(document.createElement("menuseparator"));
 
@@ -894,7 +894,7 @@ var PersonaController = {
             let popupmenu = document.createElement("menupopup");
 
             let recentPersonas = PersonaService.getRecentPersonas();
-            for each(let persona in recentPersonas) {
+            for (let persona of recentPersonas) {
                 popupmenu.appendChild(this._createPersonaItem(persona, document));
             }
 
@@ -910,7 +910,7 @@ var PersonaController = {
 
             if (PersonaService.personas) {
                 let popupmenu = document.createElement("menupopup");
-                for each(let persona in PersonaService.personas.featured)
+                for (let persona of PersonaService.personas.featured)
                 popupmenu.appendChild(this._createPersonaItem(persona, document));
 
                 // Create an item that picks a random persona from the category.
