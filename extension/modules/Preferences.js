@@ -376,7 +376,7 @@ Preferences.prototype = {
                   getService(Ci.nsIPrefService).
                   getBranch(this._prefBranch).
                   QueryInterface(Ci.nsIPrefBranch2);
-    this.__defineGetter__("_prefSvc", function() prefSvc);
+    this.__defineGetter__("_prefSvc", () => prefSvc);
     return this._prefSvc;
   }
 
