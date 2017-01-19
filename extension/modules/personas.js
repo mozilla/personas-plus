@@ -1236,6 +1236,9 @@ var PersonaController = {
     onQuitApplicationByShutDown: function() {
         PersonaService.onQuitApplication();
         Components.utils.unload("resource://personas/modules/service.js");
+    },
+    askRotation: function() {
+        PersonaService._rotatePersona();
     }
 
 };
