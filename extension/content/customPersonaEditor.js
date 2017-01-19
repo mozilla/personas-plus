@@ -213,6 +213,7 @@ var CustomPersonaEditor = {
     let property = control.id;
     let restrictionPromptFirstSentence = this._strings.get("restrictionPromptFirstSentence");
     let restrictionPromptSecondSentence = this._strings.get("restrictionPromptSecondSentence");
+    let restrictDimensions = this._prefs.get("restrictDimensions");
 
     let fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
     fp.appendFilter("Images", "*.png; *.jpg; *.jpeg");
@@ -225,7 +226,7 @@ var CustomPersonaEditor = {
       var img = new Image();
       img.src = fp.fileURL.spec;
       img.onload = function() {
-          if (control.id === "headerURL" && (img.naturalWidth !== 3000 || img.naturalHeight !== 200)) {
+          if (restrictDimensions && control.id === "headerURL" && (img.naturalWidth !== 3000 || img.naturalHeight !== 200)) {
               var prompt = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
               if (prompt.confirm(null, "Personas Plus", restrictionPromptFirstSentence + "\n\n" + restrictionPromptSecondSentence)) {
                   window.open("https://developer.mozilla.org/en-US/Add-ons/Themes/Background", '_blank');

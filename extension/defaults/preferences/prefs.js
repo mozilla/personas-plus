@@ -112,3 +112,6 @@ pref("extensions.personas.toolbarButtonInstalled", false);
 
 pref("extensions.personas.tbinsert",true);
 pref("extensions.personas.tbplaced",false);
+
+// Whether or not the custom persona image dimensions are checked
+pref("extensions.personas.restrictDimensions",true);
