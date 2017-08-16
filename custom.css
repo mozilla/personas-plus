@@ -1,0 +1,9 @@
+#custom-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 250px;
+}
+
+#custom-form:nth-child(8) {
+    grid-column: 1;
+}

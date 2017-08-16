@@ -1,0 +1,38 @@
+{
+  "applications": {
+    "gecko": {
+      "id": "personas@christopher.beard"
+    }
+  },
+
+  "background": {
+    "scripts": ["background.js"]
+  },
+
+  "browser_action": {
+    "default_icon": {
+      "16": "icons/personas_16x16.png",
+      "32": "icons/personas_32x32.png"
+    },
+    "default_title": "Personas Plus",
+    "default_popup": "popup.html",
+    "browser_style": true
+  },
+
+  "default_locale": "en",
+
+  "description": "Your Firefox, your style. Easy-to-change themes.",
+
+  "icons": {
+    "48": "icons/personas_48x48.png",
+    "96": "icons/personas_96x96.png"
+  },
+
+  "manifest_version": 2,
+
+  "name": "Personas Plus",
+
+  "permissions": ["contextMenus", "cookies", "management", "https://addons.mozilla.org/api/*", "theme"],
+
+  "version": "2.0.0a1"
+}
