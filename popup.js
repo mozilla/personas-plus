@@ -50,13 +50,15 @@ async function enablePersona(persona) {
 
 async function getAMOCookie() {
     let amoCookie = await browser.cookies.get({
-        url: 'https://addons.mozilla.org',
-        name: 'api_auth_token'
+        url: "https://addons.mozilla.org",
+        name: "api_auth_token"
     });
     if (amoCookie) {
         return amoCookie;
     } else {
-        browser.tabs.create({url:"https://addons.mozilla.org/firefox/users/login"});
+        browser.tabs.create({
+            url: "https://addons.mozilla.org/firefox/users/login"
+        });
         alert("You need to log in into AMO to access your favorites. A new tab will open that allows you to do so now.");
     }
 }
@@ -85,8 +87,8 @@ async function makeAMORequest(url, auth) {
             return;
         }
         let headers = new Headers();
-        headers.set("Authorization", "Bearer " + cookie.value.replace(/"/g, ''));
-        options.headers = headers
+        headers.set("Authorization", "Bearer " + cookie.value.replace(/"/g, ""));
+        options.headers = headers;
     }
 
     let response = await fetch(url, options);

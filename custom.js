@@ -1,8 +1,8 @@
-document.querySelector('#form-submit').addEventListener('click', (event) => {
-    let backgroundColor = document.querySelector('#accent-color').value;
-    let textColor = document.querySelector('#text-color').value;
+document.querySelector("#form-submit").addEventListener("click", () => {
+    let backgroundColor = document.querySelector("#accent-color").value;
+    let textColor = document.querySelector("#text-color").value;
 
-    let header = document.querySelector('#header-image');
+    let header = document.querySelector("#header-image");
     let file = header.files[0];
     let reader = new FileReader();
     reader.addEventListener("load", () => {
@@ -23,11 +23,10 @@ document.querySelector('#form-submit').addEventListener('click', (event) => {
         reader.readAsDataURL(file);
     }
     else {
-        alert("Y U NO select a file?!")
+        alert("Y U NO select a file?!");
     }
 });
 
-
-document.querySelector('#form-reset').addEventListener('click', (event) => {
+document.querySelector("#form-reset").addEventListener("click", () => {
     browser.theme.reset();
 });
