@@ -13,3 +13,14 @@ browser.management.onEnabled.addListener((addon) => {
         browser.storage.local.remove("currentPersona");
     }
 });
+
+browser.runtime.onMessage.addListener((message) => {
+    if (message.name === "monitorTabForCookie") {
+        console.log(`Got tab ${message.tabId} from popup.`);
+        browser.cookies.onChanged.addListener((changeInfo) => {
+            if (changeInfo.cookie.domain === "addons.mozilla.org" && changeInfo.cookie.name === "api_auth_token" && !changeInfo.removed && changeInfo.cause === "explicit") {
+                browser.tabs.remove(parseInt(message.tabId));
+            }
+        });
+    }
+});
