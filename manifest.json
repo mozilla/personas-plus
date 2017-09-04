@@ -24,15 +24,22 @@
   "description": "Your Firefox, your style. Easy-to-change themes.",
 
   "icons": {
-    "48": "icons/personas_48x48.png",
-    "96": "icons/personas_96x96.png"
+    "48": "icons/personas.svg",
+    "96": "icons/personas.svg"
   },
 
   "manifest_version": 2,
 
   "name": "Personas Plus",
 
-  "permissions": ["contextMenus", "cookies", "management", "https://addons.mozilla.org/api/*", "theme"],
+  "permissions": [
+    "contextMenus",
+    "cookies",
+    "management",
+    "https://addons.mozilla.org/api/*",
+    "https://addons.cdn.mozilla.net/user-media/*",
+    "storage",
+    "theme"],
 
   "version": "2.0.0a1"
 }

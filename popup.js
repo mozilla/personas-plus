@@ -1,3 +1,7 @@
+function reset() {
+    browser.theme.reset();
+}
+
 async function getInstalled() {
     let addons = await browser.management.getAll();
     const parent = document.getElementById("installed");
@@ -6,7 +10,10 @@ async function getInstalled() {
         if (addon.type == "theme") {
             const entry = document.createElement("li");
             entry.appendChild(document.createTextNode(addon.name));
-            entry.addEventListener("click", function(event) {
+            entry.addEventListener("click", function() {
+                // We need this hack because we use .update even for AMO themes.
+                browser.theme.reset();
+                browser.management.setEnabled(addon.id, false);
                 browser.management.setEnabled(addon.id, true);
             });
             parent.appendChild(entry);
@@ -14,8 +21,32 @@ async function getInstalled() {
     }
 
 }
-
 getInstalled();
+
+
+
+async function enablePersona(persona) {
+    let response = await fetch(persona.theme_data.headerURL);
+    let blob = await response.blob();
+
+    var reader = new FileReader();
+    reader.addEventListener("load", () => {
+        let data = {
+            images: {
+                headerURL: reader.result,
+            },
+            colors: {
+                accentcolor: persona.theme_data.accentcolor,
+                textcolor: persona.theme_data.textcolor
+            }
+        };
+        browser.theme.update(data);
+        browser.storage.local.set({
+            "currentPersona": data
+        });
+    });
+    reader.readAsDataURL(blob);
+}
 
 async function getAMOCookie() {
     let amoCookie = await browser.cookies.get({
@@ -34,12 +65,16 @@ document.querySelector("#featured-header").addEventListener("click", () => {
     getAMOFeatured();
 });
 
-document.querySelector("#favorites-header").addEventListener("click", async () => {
+document.querySelector("#favorites-header").addEventListener("click", async() => {
     let profile = await getAMOProfile();
     if (profile) {
         let username = profile.username;
         getAMOFavorites(username);
     }
+});
+
+document.querySelector("#resetPersona").addEventListener("click", () => {
+    reset();
 });
 
 async function makeAMORequest(url, auth) {
@@ -68,25 +103,31 @@ async function makeAMORequestPaginated(url, auth, results = []) {
     return results;
 }
 
-async function getAMOProfile(cookie) {
+async function getAMOProfile() {
     let account = await makeAMORequest("https://addons.mozilla.org/api/v3/accounts/profile/", true);
     return account;
 }
 
 async function getAMOFeatured() {
-    let result = await makeAMORequestPaginated('https://addons.mozilla.org/api/v3/accounts/account/mozilla/collections/featured-personas/addons/');
-    let container = document.querySelector('#featured');
+    let result = await makeAMORequestPaginated("https://addons.mozilla.org/api/v3/accounts/account/mozilla/collections/featured-personas/addons/?sort=added");
+    let container = document.querySelector("#featured");
     for (let entry of result) {
         if (entry.addon.type === "persona") {
             let persona = entry.addon;
-            let div = document.createElement('li');
-            let nameSpan = document.createTextNode(persona.name[persona.default_locale]);
-            let image = document.createElement('img');
+            let div = document.createElement("li");
+            div.style.marginBottom = "2em";
+            let nameSpan = document.createElement("span");
+            nameSpan.appendChild(document.createTextNode(persona.name[persona.default_locale]));
+            nameSpan.style.fontSize = "16px";
+            let image = document.createElement("img");
             image.setAttribute("src", persona.theme_data.previewURL);
-            let imageDiv = document.createElement('div');
+            let imageDiv = document.createElement("div");
             imageDiv.appendChild(image);
             div.appendChild(nameSpan);
             div.appendChild(imageDiv);
+            div.addEventListener("click", function() {
+                enablePersona(persona);
+            });
             container.appendChild(div);
         }
     }
@@ -94,15 +135,18 @@ async function getAMOFeatured() {
 
 async function getAMOFavorites(username) {
     let result = await makeAMORequestPaginated(`https://addons.mozilla.org/api/v3/accounts/account/${username}/collections/favorites/addons/`, true);
-    let container = document.querySelector('#favorites');
+    let container = document.querySelector("#favorites");
     for (let entry of result) {
         if (entry.addon.type === "persona") {
             let persona = entry.addon;
-            let div = document.createElement('li');
+            let div = document.createElement("li");
             let nameSpan = document.createTextNode(persona.name[persona.default_locale]);
-            let image = document.createElement('img');
+            let image = document.createElement("img");
             image.setAttribute("src", persona.theme_data.previewURL);
-            let imageDiv = document.createElement('div');
+            image.addEventListener("click", function() {
+                enablePersona(persona);
+            });
+            let imageDiv = document.createElement("div");
             imageDiv.appendChild(image);
             div.appendChild(nameSpan);
             div.appendChild(imageDiv);

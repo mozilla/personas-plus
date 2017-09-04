@@ -6,15 +6,17 @@ document.querySelector('#form-submit').addEventListener('click', (event) => {
     let file = header.files[0];
     let reader = new FileReader();
     reader.addEventListener("load", () => {
-        browser.theme.update({
+        let data = {
             images: {
-                headerURL: "dummy.jpg", //reader.result,
+                headerURL: reader.result,
             },
             colors: {
                 accentcolor: backgroundColor,
                 textcolor: textColor
             }
-        });
+        };
+        browser.theme.update(data);
+        browser.storage.local.set({"currentPersona": data});
     });
 
     if (file) {
