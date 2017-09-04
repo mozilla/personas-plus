@@ -11,8 +11,9 @@
 
   "browser_action": {
     "default_icon": {
-      "16": "icons/personas_16x16.png",
-      "32": "icons/personas_32x32.png"
+      "16": "icons/personas.svg",
+      "32": "icons/personas.svg",
+      "64": "icons/personas.svg"
     },
     "default_title": "Personas Plus",
     "default_popup": "popup.html",
