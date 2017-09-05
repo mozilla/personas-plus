@@ -16,7 +16,7 @@
       "64": "icons/personas.svg"
     },
     "default_title": "Personas Plus",
-    "default_popup": "popup.html",
+    "default_popup": "popup/popup.html",
     "browser_style": true
   },
 

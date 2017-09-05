@@ -81,7 +81,7 @@ document.querySelector("#signInLink").addEventListener("click", async() => {
 
 document.querySelector("#openCustomPage").addEventListener("click", () => {
     browser.tabs.create({
-        url: "custom.html"
+        url: "../custom/custom.html"
     });
 });
 
