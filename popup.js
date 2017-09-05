@@ -16,7 +16,6 @@ async function getInstalled() {
             parent.appendChild(entry);
         }
     }
-
 }
 getInstalled();
 
@@ -81,7 +80,9 @@ document.querySelector("#signInLink").addEventListener("click", async() => {
 });
 
 document.querySelector("#openCustomPage").addEventListener("click", () => {
-    browser.tabs.create({url: "custom.html"});
+    browser.tabs.create({
+        url: "custom.html"
+    });
 });
 
 document.querySelector("#resetPersona").addEventListener("click", () => {
@@ -118,7 +119,23 @@ async function getAMOFeatured() {
     document.querySelector("#featured-header").textContent = "Featured themes (loading...)";
     let result = await makeAMORequestPaginated("https://addons.mozilla.org/api/v3/accounts/account/mozilla/collections/featured-personas/addons/?sort=added");
     let container = document.querySelector("#featured");
-    for (let entry of result) {
+    addAMOPersonas(result, container);
+    document.querySelector("#featured-header").textContent = "Featured themes";
+}
+
+async function getAMOFavorites() {
+    let profile = await makeAMORequest("https://addons.mozilla.org/api/v3/accounts/profile/", true);
+    if (profile) {
+        document.querySelector("#favorites-header").textContent = "Favorite themes (loading...)";
+        let result = await makeAMORequestPaginated(`https://addons.mozilla.org/api/v3/accounts/account/${profile.username}/collections/favorites/addons/`, true);
+        let container = document.querySelector("#favorites");
+        addAMOPersonas(result, container);
+    }
+    document.querySelector("#favorites-header").textContent = "Favorite themes";
+}
+
+function addAMOPersonas(personas, container) {
+    for (let entry of personas) {
         if (entry.addon.type === "persona") {
             let persona = entry.addon;
             let div = document.createElement("li");
@@ -138,32 +155,4 @@ async function getAMOFeatured() {
             container.appendChild(div);
         }
     }
-    document.querySelector("#featured-header").textContent = "Featured themes";
-}
-
-async function getAMOFavorites() {
-    let profile = await makeAMORequest("https://addons.mozilla.org/api/v3/accounts/profile/", true);
-    if (profile) {
-        document.querySelector("#featured-header").textContent = "Favorite themes (loading...)";
-        let result = await makeAMORequestPaginated(`https://addons.mozilla.org/api/v3/accounts/account/${profile.username}/collections/favorites/addons/`, true);
-        let container = document.querySelector("#favorites");
-        for (let entry of result) {
-            if (entry.addon.type === "persona") {
-                let persona = entry.addon;
-                let div = document.createElement("li");
-                let nameSpan = document.createTextNode(persona.name[persona.default_locale]);
-                let image = document.createElement("img");
-                image.setAttribute("src", persona.theme_data.previewURL);
-                image.addEventListener("click", () => {
-                    enablePersona(persona);
-                });
-                let imageDiv = document.createElement("div");
-                imageDiv.appendChild(image);
-                div.appendChild(nameSpan);
-                div.appendChild(imageDiv);
-                container.appendChild(div);
-            }
-        }
-    }
-    document.querySelector("#featured-header").textContent = "Favorite themes";
 }
