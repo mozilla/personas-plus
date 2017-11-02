@@ -3,20 +3,42 @@
 <head>
     <meta charset="utf-8">
     <title></title>
-    <link rel="stylesheet" href="">
+      <link rel="stylesheet" href="popup.css">
     <script src="popup.js" type="text/javascript" charset="utf-8" async defer></script>
-</head>
-<body style="min-width: 720px; margin: 1em;">
-    <h3>Installed themes</h3>
-    <ul id="installed">
-    </ul>
-    <h3 id="featured-header">Featured themes</h3>
-    <ul id="featured">
-    </ul>
-    <h3 id="favorites-header">Favorite themes</h3>
+  </head>
+
+<body>
+<main>
+
+  <input id="tab-installed" type="radio" name="tabs" checked>
+    <label for="tab-installed">Installed</label>
+
+  <input id="tab-favorites" type="radio" name="tabs">
+    <label for="tab-favorites">Favorites</label>
+
+  <input id="tab-featured" type="radio" name="tabs">
+    <label for="tab-featured">Featured</label>
+
+  <input id="tab-custom" type="radio" name="tabs">
+    <label for="tab-custom">Custom</label>
+
+  <section id="content-installed">
+    <ul id="installed"></ul>
+  </section>
+
+  <section id="content-favorites">
     <p id="signInNote" style="display:none;">Please <a href="" id="signInLink">sign in</a> to access your favorites.</p>
-    <ul id="favorites">
-    </ul>
+    <ul id="favorites"></ul>
+  </section>
+
+  <section id="content-featured">
+    <ul id="featured"></ul>
+  </section>
+
+  <section id="content-custom">
     <p><a href="" id="openCustomPage">Custom theme</a> | <a href="" id="resetPersona">Reset theme</a></p>
+  </section>
+
+</main>
 </body>
 </html>

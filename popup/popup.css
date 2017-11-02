@@ -1,0 +1,72 @@
+*, *:before, *:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 600px;
+  min-width: 720px;
+}
+
+h1 {
+  padding: 50px 0;
+  font-weight: 400;
+  text-align: center;
+}
+
+p {
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+
+
+section {
+  display: none;
+  padding: 20px 0 0;
+  border-top: 1px solid #ddd;
+}
+
+input {
+  display: none;
+}
+
+label {
+  display: inline-block;
+  width: calc(25% - 3px);
+  margin: 0 0 -1px;
+  padding: 15px 25px;
+  font-weight: 600;
+  text-align: center;
+  color: #bbb;
+  border: 1px solid transparent;
+}
+
+label:before {
+  font-weight: normal;
+  margin-right: 10px;
+}
+
+label[for='tab-installed']:before { content: url('images/installed.svg'); }
+label[for='tab-favorites']:before { content: url('images/favorites.svg'); }
+label[for='tab-featured']:before { content: url('images/featured.svg'); }
+label[for='tab-custom']:before { content: url('images/custom.svg'); }
+
+label:hover {
+  color: #888;
+  cursor: pointer;
+}
+
+input:checked + label {
+  color: #555;
+  border: 1px solid #ddd;
+  border-top: 2px solid #333;
+  border-bottom: 1px solid #fff;
+}
+
+#tab-installed:checked ~ #content-installed,
+#tab-favorites:checked ~ #content-favorites,
+#tab-featured:checked ~ #content-featured,
+#tab-custom:checked ~ #content-custom {
+  display: block;
+}
