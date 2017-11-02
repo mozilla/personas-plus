@@ -46,92 +46,58 @@ function reset() {
     browser.theme.reset();
 }
 
-async function getAMOCookie() {
-    let amoCookie = await browser.cookies.get({
-        url: "https://addons.mozilla.org",
-        name: "api_auth_token"
-    });
-    return amoCookie;
-}
-
 getAMOFeatured();
+getAMOFavorites();
 
-async function getFavorites() {
-    try {
-        await getAMOFavorites();
-    } catch (error) {
-        if (error === "NotLoggedIn") {
-            document.querySelector("#signInNote").style.display = "block";
-        }
-    }
-}
-getFavorites();
-
-document.querySelector("#signInLink").addEventListener("click", async() => {
-    let tab = await browser.tabs.create({
-        url: "https://addons.mozilla.org/firefox/users/login"
-    });
+document.querySelector("#signInLink").addEventListener("click", (event) => {
     browser.runtime.sendMessage({
-        "name": "monitorTabForCookie",
-        "tabId": tab.id
+        "action": "openAMOAndMonitor",
     });
-    console.log(`Sending tab ${tab.id} to background script.`);
+    event.preventDefault();
     window.close();
 });
 
-document.querySelector("#openCustomPage").addEventListener("click", () => {
+document.querySelector("#openCustomPage").addEventListener("click", (event) => {
     browser.tabs.create({
         url: "../custom/custom.html"
     });
+    event.preventDefault();
 });
 
-document.querySelector("#resetPersona").addEventListener("click", () => {
+document.querySelector("#resetPersona").addEventListener("click", (event) => {
     reset();
+    event.preventDefault();
 });
 
-async function makeAMORequest(url, auth) {
-    let options = {};
-    if (auth) {
-        let cookie = await getAMOCookie();
-        if (!cookie) {
-            throw "NotLoggedIn";
+function getAMOFeatured() {
+    //document.querySelector("#featured-header").textContent = "Featured themes (loading...)";
+
+    browser.runtime.onMessage.addListener((message) => {
+        if (message.featured) {
+            let container = document.querySelector("#featured");
+            addAMOPersonas(message.featured, container);
+            //document.querySelector("#featured-header").textContent = "Featured themes";
         }
-        let headers = new Headers();
-        headers.set("Authorization", "Bearer " + cookie.value.replace(/"/g, ""));
-        options.headers = headers;
-    }
-
-    let response = await fetch(url, options);
-    let obj = await response.json();
-    return obj;
+    });
+    browser.runtime.sendMessage({"action": "getFeatured"});
 }
 
-async function makeAMORequestPaginated(url, auth, results = []) {
-    let result = await makeAMORequest(url, auth);
-    results.push(...result.results);
-    if (result.next) {
-        await makeAMORequestPaginated(result.next, auth, results);
-    }
-    return results;
-}
+function getAMOFavorites() {
+    //document.querySelector("#favorites-header").textContent = "Favorite themes (loading...)";
 
-async function getAMOFeatured() {
-    document.querySelector("#featured-header").textContent = "Featured themes (loading...)";
-    let result = await makeAMORequestPaginated("https://addons.mozilla.org/api/v3/accounts/account/mozilla/collections/featured-personas/addons/?sort=added");
-    let container = document.querySelector("#featured");
-    addAMOPersonas(result, container);
-    document.querySelector("#featured-header").textContent = "Featured themes";
-}
+    browser.runtime.onMessage.addListener((message) => {
+        if (message.favorites) {
+            if (message.favorites.error && (message.favorites.error === "NotLoggedIn")) {
+                document.querySelector("#signInNote").style.display = "block";
+            } else {
+                let container = document.querySelector("#favorites");
+                addAMOPersonas(message.favorites, container);
+            }
+            //document.querySelector("#favorites-header").textContent = "Favorite themes";
+        }
+    });
+    browser.runtime.sendMessage({"action": "getFavorites"});
 
-async function getAMOFavorites() {
-    let profile = await makeAMORequest("https://addons.mozilla.org/api/v3/accounts/profile/", true);
-    if (profile) {
-        document.querySelector("#favorites-header").textContent = "Favorite themes (loading...)";
-        let result = await makeAMORequestPaginated(`https://addons.mozilla.org/api/v3/accounts/account/${profile.username}/collections/favorites/addons/`, true);
-        let container = document.querySelector("#favorites");
-        addAMOPersonas(result, container);
-    }
-    document.querySelector("#favorites-header").textContent = "Favorite themes";
 }
 
 function addAMOPersonas(personas, container) {
