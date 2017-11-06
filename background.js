@@ -20,11 +20,10 @@ browser.management.onEnabled.addListener((addon) => {
 browser.runtime.onMessage.addListener(async (message) => {
     switch (message.action) {
         case "getFavorites":
-            browser.runtime.sendMessage({"favorites": await getAMOFavorites()});
+            browser.runtime.sendMessage({"favorites": await getAMOFavorites(message.force)});
             break;
         case "getFeatured":
-            let feat = await getAMOFeatured();
-            browser.runtime.sendMessage({"featured": feat});
+            browser.runtime.sendMessage({"featured": await getAMOFeatured(message.force)});
             break;
         case "openAMOAndMonitor":
             let tab = await browser.tabs.create({
@@ -52,7 +51,7 @@ async function makeAMORequest(url, auth) {
     let options = {};
     if (auth) {
         let cookie = await getAMOCookie();
-        if (!cookie) {
+        if (!cookie || (Date.now() > (cookie.expirationDate * 1000))) {
             throw "NotLoggedIn";
         }
         let headers = new Headers();
@@ -74,15 +73,15 @@ async function makeAMORequestPaginated(url, auth, results = []) {
     return results;
 }
 
-async function getAMOFeatured() {
-    if (!amoFeatured) {
+async function getAMOFeatured(force = false) {
+    if (!amoFeatured || force) {
         amoFeatured = await makeAMORequestPaginated("https://addons.mozilla.org/api/v3/accounts/account/mozilla/collections/featured-personas/addons/?sort=added");
     }
     return amoFeatured;
 }
 
-async function getAMOFavorites() {
-    if (!amoFavorites) {
+async function getAMOFavorites(force = false) {
+    if (!amoFavorites || force) {
         let profile;
         try {
             profile = await makeAMORequest("https://addons.mozilla.org/api/v3/accounts/profile/", true);

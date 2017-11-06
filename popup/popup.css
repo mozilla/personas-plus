@@ -1,12 +1,14 @@
-*, *:before, *:after {
+/**, *:before, *:after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+*/
 
 body {
   min-height: 600px;
-  min-width: 720px;
+  min-width: 766px;
+  color: #0c0c0d;
 }
 
 h1 {
@@ -37,8 +39,8 @@ label {
   margin: 0 0 -1px;
   padding: 15px 25px;
   font-weight: 600;
+  font-size: 18px;
   text-align: center;
-  color: #bbb;
   border: 1px solid transparent;
 }
 
@@ -58,9 +60,8 @@ label:hover {
 }
 
 input:checked + label {
-  color: #555;
   border: 1px solid #ddd;
-  border-top: 2px solid #333;
+  border-top: 2px solid #0a84ff;
   border-bottom: 1px solid #fff;
 }
 
@@ -69,4 +70,83 @@ input:checked + label {
 #tab-featured:checked ~ #content-featured,
 #tab-custom:checked ~ #content-custom {
   display: block;
+}
+
+section[id^=content] {
+  padding: 2em;
+}
+
+section[id^=content] ul {
+  list-style-type: none;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  padding-inline-start: 0px;
+}
+
+section[id^=content] ul li {
+  margin-bottom: 2em;
+}
+
+section[id^=content] ul li div {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 0.3em;
+}
+
+section[id^=content] ul li div.entryHeader {
+   display: flex;
+  justify-content: space-between;
+}
+
+section[id^=content] ul li div img:hover {
+  cursor: pointer;
+}
+
+section#content-installed ul li div span:not(.installed-enabled) {
+  color: #b1b1b3;
+}
+
+.refresh {
+  text-align: end;
+  width: 712px;
+  padding-bottom: 10px;
+}
+
+.hide {
+  display: none;
+}
+
+#signInNote {
+  font-size: 20px;
+}
+
+@keyframes refreshing_anim {
+  0% {
+    transform: rotate(0);
+  }
+
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
+.refreshing {
+  animation-name: refreshing_anim;
+  animation-duration: 666ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.installImage {
+  text-align: right;
+}
+
+.previewImage {
+    border-radius: 4px;
+}
+
+.card {
+  border-radius: 4px;
+  background-color: #ededf0;
+  padding: 16px;
 }

@@ -4,16 +4,33 @@ async function getInstalled() {
 
     for (let addon of addons) {
         if (addon.type == "theme") {
-            const entry = document.createElement("li");
-            entry.style.fontSize = "16px";
-            entry.appendChild(document.createTextNode(addon.name));
-            entry.addEventListener("click", () => {
+
+            let div = document.createElement("li");
+            let nameElem = document.createElement("div");
+
+            let installImage = document.createElement("img");
+            installImage.src = "images/custom.svg";
+            installImage.style.marginRight = '10px';
+
+            let name = document.createElement("span");
+            name.textContent = addon.name;
+            if (addon.enabled) {
+                name.classList.add("installed-enabled")
+            }
+
+            nameElem.appendChild(installImage);
+            nameElem.appendChild(name);
+            div.appendChild(nameElem);
+            parent.appendChild(div);
+
+            nameElem.addEventListener("click", (event) => {
                 // We need this hack because we use .update even for AMO themes.
                 browser.theme.reset();
                 browser.management.setEnabled(addon.id, false);
                 browser.management.setEnabled(addon.id, true);
+                document.querySelector(".installed-enabled").classList.remove("installed-enabled");
+                event.originalTarget.classList.add("installed-enabled");
             });
-            parent.appendChild(entry);
         }
     }
 }
@@ -69,55 +86,80 @@ document.querySelector("#resetPersona").addEventListener("click", (event) => {
     event.preventDefault();
 });
 
-function getAMOFeatured() {
-    //document.querySelector("#featured-header").textContent = "Featured themes (loading...)";
+document.querySelector("#refresh-favorites").addEventListener("click", (event) => {
+    getAMOFavorites(true);
+});
 
-    browser.runtime.onMessage.addListener((message) => {
-        if (message.featured) {
-            let container = document.querySelector("#featured");
-            addAMOPersonas(message.featured, container);
-            //document.querySelector("#featured-header").textContent = "Featured themes";
+document.querySelector("#refresh-featured").addEventListener("click", (event) => {
+    getAMOFeatured(true);
+});
+
+browser.runtime.onMessage.addListener((message) => {
+    if (message.favorites) {
+        if (message.favorites.error && (message.favorites.error === "NotLoggedIn")) {
+            document.querySelector("#signInNote").classList.remove("hide");
+        } else {
+            let container = document.querySelector("#favorites");
+            document.querySelector("#refresh-favorites").classList.remove("hide");
+            document.querySelector("#favorites").innerHTML = "";
+            addAMOPersonas(message.favorites, container);
+            document.querySelector("#refresh-favorites-img").classList.remove("refreshing");
         }
-    });
-    browser.runtime.sendMessage({"action": "getFeatured"});
+    }
+    if (message.featured) {
+            let container = document.querySelector("#featured");
+            document.querySelector("#featured").innerHTML = "";
+            addAMOPersonas(message.featured, container);
+            document.querySelector("#refresh-featured-img").classList.remove("refreshing");
+
+    }
+});
+
+function getAMOFeatured(force = false) {
+    browser.runtime.sendMessage({"action": "getFeatured", "force": force});
+    document.querySelector("#refresh-featured-img").classList.add("refreshing");
 }
 
-function getAMOFavorites() {
-    //document.querySelector("#favorites-header").textContent = "Favorite themes (loading...)";
-
-    browser.runtime.onMessage.addListener((message) => {
-        if (message.favorites) {
-            if (message.favorites.error && (message.favorites.error === "NotLoggedIn")) {
-                document.querySelector("#signInNote").style.display = "block";
-            } else {
-                let container = document.querySelector("#favorites");
-                addAMOPersonas(message.favorites, container);
-            }
-            //document.querySelector("#favorites-header").textContent = "Favorite themes";
-        }
-    });
-    browser.runtime.sendMessage({"action": "getFavorites"});
-
+function getAMOFavorites(force = false) {
+    browser.runtime.sendMessage({"action": "getFavorites", "force": force});
+    document.querySelector("#refresh-favorites").classList.remove("hide");
+    document.querySelector("#refresh-favorites-img").classList.add("refreshing");
 }
 
 function addAMOPersonas(personas, container) {
     for (let entry of personas) {
-        if (entry.addon.type === "persona") {
+        if (entry.addon.type === "persona" && entry.addon.status === "public") {
             let persona = entry.addon;
             let div = document.createElement("li");
-            div.style.marginBottom = "2em";
-            let nameSpan = document.createElement("span");
-            nameSpan.appendChild(document.createTextNode(persona.name[persona.default_locale]));
-            nameSpan.style.fontSize = "16px";
+            div.classList.add("card");
+            let nameElem = document.createElement("div");
+            nameElem.classList.add("entryHeader");
+            nameElem.textContent = persona.name[persona.default_locale];
+
+            let installImage = document.createElement("img");
+            installImage.classList.add("installImage");
+            installImage.src = "images/installed.svg";
+            installImage.title = "Download and install from AMO";
+            installImage.addEventListener("click", () => {
+                browser.tabs.create({
+                    url: `https://addons.mozilla.org/firefox/addon/${persona.slug}`
+                });
+                window.close();
+            });
+            nameElem.appendChild(installImage);
+
             let image = document.createElement("img");
-            image.setAttribute("src", persona.theme_data.previewURL);
+            image.classList.add("previewImage")
+            image.src = persona.theme_data.previewURL;
+            image.title = "Apply this theme directly";
             let imageDiv = document.createElement("div");
-            imageDiv.appendChild(image);
-            div.appendChild(nameSpan);
-            div.appendChild(imageDiv);
-            div.addEventListener("click", () => {
+            imageDiv.addEventListener("click", () => {
                 enablePersona(persona);
             });
+            imageDiv.appendChild(image);
+
+            div.appendChild(imageDiv);
+            div.appendChild(nameElem);
             container.appendChild(div);
         }
     }
