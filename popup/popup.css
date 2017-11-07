@@ -91,13 +91,13 @@ section[id^=content] ul li {
 }
 
 section[id^=content] ul li div {
-  font-weight: bold;
+  font-weight: 500;
   font-size: 20px;
   margin-bottom: 0.3em;
 }
 
 section[id^=content] ul li div.entryHeader {
-   display: flex;
+  display: flex;
   justify-content: space-between;
 }
 
@@ -150,6 +150,7 @@ section#content-installed ul li div span:not(.installed-enabled) {
 
 .card {
   border-radius: 4px;
-  background-color: #ededf0;
+  background-color: #fff;
   padding: 16px;
+  box-shadow: 0 2px 8px rgba(12, 12, 13, 0.1)
 }
