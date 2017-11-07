@@ -42,6 +42,7 @@ label {
   font-size: 18px;
   text-align: center;
   border: 1px solid transparent;
+  opacity: 0.4;
 }
 
 label:before {
@@ -57,12 +58,14 @@ label[for='tab-custom']:before { content: url('images/custom.svg'); }
 label:hover {
   color: #888;
   cursor: pointer;
+  opacity: 1;
 }
 
 input:checked + label {
   border: 1px solid #ddd;
   border-top: 2px solid #0a84ff;
   border-bottom: 1px solid #fff;
+  opacity: 1;
 }
 
 #tab-installed:checked ~ #content-installed,
