@@ -87,7 +87,9 @@ async function getAMOFavorites(force = false) {
             profile = await makeAMORequest("https://addons.mozilla.org/api/v3/accounts/profile/", true);
         } catch (error) {
             if (error === "NotLoggedIn") {
+                amoFavorites = null;
                 browser.runtime.sendMessage({"favorites": {"error": error}});
+                return;
             }
         }
         if (profile) {

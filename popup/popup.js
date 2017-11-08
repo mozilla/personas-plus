@@ -29,7 +29,7 @@ async function getInstalled() {
                 browser.management.setEnabled(addon.id, false);
                 browser.management.setEnabled(addon.id, true);
                 document.querySelector(".installed-enabled").classList.remove("installed-enabled");
-                event.originalTarget.classList.add("installed-enabled");
+                event.target.classList.add("installed-enabled");
             });
         }
     }
@@ -95,12 +95,14 @@ document.querySelector("#refresh-featured").addEventListener("click", (event) =>
 
 browser.runtime.onMessage.addListener((message) => {
     if (message.favorites) {
+        document.querySelector("#favorites").innerHTML = "";
         if (message.favorites.error && (message.favorites.error === "NotLoggedIn")) {
+            document.querySelector("#refresh-favorites-img").classList.remove("refreshing");
+            document.querySelector("#refresh-favorites").classList.add("hide");
             document.querySelector("#signInNote").classList.remove("hide");
         } else {
             let container = document.querySelector("#favorites");
             document.querySelector("#refresh-favorites").classList.remove("hide");
-            document.querySelector("#favorites").innerHTML = "";
             addAMOPersonas(message.favorites, container);
             document.querySelector("#refresh-favorites-img").classList.remove("refreshing");
         }
