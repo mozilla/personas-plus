@@ -1,3 +1,16 @@
+window.addEventListener("load", async () => {
+    let tabId = await browser.storage.local.get("popupSelectedTabId");
+    document.querySelector(`#${tabId.popupSelectedTabId}`).checked = true;
+});
+
+var radios = document.querySelectorAll("input[type=radio][name=tabs]")
+for (let tab of radios) {
+    tab.addEventListener("change", () => {
+        let checkedTabId = document.querySelector('input[name="tabs"]:checked').id;
+        browser.storage.local.set({"popupSelectedTabId": checkedTabId});
+    });
+}
+
 async function getInstalled() {
     let addons = await browser.management.getAll();
     const parent = document.getElementById("installed");
