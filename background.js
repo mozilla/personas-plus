@@ -25,7 +25,7 @@ browser.runtime.onMessage.addListener(async (message) => {
         case "getFeatured":
             browser.runtime.sendMessage({"featured": await getAMOFeatured(message.force)});
             break;
-        case "openAMOAndMonitor":
+        case "openAMOAndMonitor": {
             let tab = await browser.tabs.create({
                 url: "https://addons.mozilla.org/firefox/users/login"
             });
@@ -37,6 +37,7 @@ browser.runtime.onMessage.addListener(async (message) => {
             };
             browser.cookies.onChanged.addListener(cookieListener);
             break;
+        }
     }
 });
 
