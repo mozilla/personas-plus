@@ -154,3 +154,47 @@ section#content-installed ul li div span:not(.installed-enabled) {
   padding: 16px;
   box-shadow: 0 2px 8px rgba(12, 12, 13, 0.1)
 }
+
+button {
+    background-color: rgba(12,12,13,0.1);
+    border-radius: 2px;
+    width: 165px;
+    height: 32px;
+    font-size: 13px;
+    border-style: none;
+    text-align: center;
+    display: inline-block;
+    line-height: 32px;
+}
+
+button:hover {
+    background-color: rgba(12,12,13,0.2);
+}
+
+button:active {
+    background-color: rgba(12,12,13,0.3);
+}
+
+button#openCustom {
+    background-color: #0060df;
+    color: #fff;
+    margin-top: 32px;
+}
+
+button#openCustom:hover {
+    background-color: #003eaa;
+}
+
+button#openCustom:active {
+    background-color: #002275;
+}
+
+.inlineCenter {
+  display: block;
+  margin: 0 auto;
+}
+
+button#resetTheme {
+  display: block;
+  margin: 64px 0 0 auto;
+}

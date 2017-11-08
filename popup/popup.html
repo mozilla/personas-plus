@@ -27,8 +27,9 @@
   </section>
 
   <section id="content-favorites">
-    <p id="signInNote" class="hide">Please <a href="" id="signInLink">log in</a> to access your favorites.</p>
     <div id="refresh-favorites" class="refresh hide"><img id="refresh-favorites-img" src="images/refresh.svg" title="Refresh"></div>
+    <p id="signInNote" class="hide">Please <a href="" id="signInLink">log in</a> to access your favorites.<br>
+     <i>The opening tab will close automatically after login.</i></p>
     <ul id="favorites"></ul>
   </section>
 
@@ -38,7 +39,11 @@
   </section>
 
   <section id="content-custom">
-    <p><a href="" id="openCustomPage">Custom theme</a> | <a href="" id="resetPersona">Reset theme</a></p>
+    <div>
+      <img class="inlineCenter" src="images/custom.svg" width="256" height="256" align="middle">
+      <button class="inlineCenter" id="openCustom" type="button">Apply a custom theme</button>
+    </div>
+    <div><button id="resetTheme" type="button">Reset theme</button></div>
   </section>
 
 </main>

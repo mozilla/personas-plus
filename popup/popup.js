@@ -70,18 +70,17 @@ document.querySelector("#signInLink").addEventListener("click", (event) => {
     browser.runtime.sendMessage({
         "action": "openAMOAndMonitor",
     });
-    event.preventDefault();
     window.close();
 });
 
-document.querySelector("#openCustomPage").addEventListener("click", (event) => {
+document.querySelector("#openCustom").addEventListener("click", (event) => {
     browser.tabs.create({
         url: "../custom/custom.html"
     });
-    event.preventDefault();
+    window.close();
 });
 
-document.querySelector("#resetPersona").addEventListener("click", (event) => {
+document.querySelector("#resetTheme").addEventListener("click", (event) => {
     reset();
     event.preventDefault();
 });
