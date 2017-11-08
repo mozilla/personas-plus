@@ -1,9 +1,71 @@
+body {
+    color: rgb(12,12,13);
+}
+
 #custom-form {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    width: 250px;
+    grid-row-gap: 16px;
 }
 
 #custom-form:nth-child(8) {
     grid-column: 1;
+}
+
+form {
+    margin: 0 auto;
+    width: 500px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 33px;
+    font-weight: 200;
+}
+
+input[type=file] {
+    display: none;
+}
+
+label {
+    font-size: 18px;
+}
+
+input[type=button], label[for=header-image] {
+    background-color: rgba(12,12,13,0.1);
+    border-radius: 2px;
+    width: 132px;
+    height: 32px;
+    font-size: 15px;
+    border-style: none;
+    text-align: center;
+    display: inline-block;
+    line-height: 32px;
+}
+
+input[type=button]:hover, label[for=header-image]:hover {
+    background-color: rgba(12,12,13,0.2);
+}
+
+input[type=button]:active, label[for=header-image]:active {
+    background-color: rgba(12,12,13,0.3);
+}
+
+input[type=button][name=Submit] {
+    background-color: #0060df;
+    color: #fff;
+}
+
+input[type=button][name=Submit]:hover {
+    background-color: #003eaa;
+}
+
+input[type=button][name=Submit]:active {
+    background-color: #002275;
+}
+
+input[type=button][name=Submit]:disabled,
+input[type=button][name=Submit]:disabled:hover,
+input[type=button][name=Submit]:disabled:active {
+    background-color: rgba(0,96,223,0.4);
 }

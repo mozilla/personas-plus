@@ -27,6 +27,8 @@ document.querySelector("#form-submit").addEventListener("click", () => {
     }
 });
 
-document.querySelector("#form-reset").addEventListener("click", () => {
-    browser.theme.reset();
+document.querySelector("#header-image").addEventListener("change", (event) => {
+    if (event.target.files[0]) {
+        document.querySelector("#form-submit").disabled = false;
+    }
 });
