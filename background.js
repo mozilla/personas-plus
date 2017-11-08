@@ -29,12 +29,13 @@ browser.runtime.onMessage.addListener(async (message) => {
             let tab = await browser.tabs.create({
                 url: "https://addons.mozilla.org/firefox/users/login"
             });
-            browser.cookies.onChanged.addListener((changeInfo) => {
-                //browser.cookies.onChanged.removeListener(listener);
+            let cookieListener = (changeInfo) => {
+                browser.cookies.onChanged.removeListener(cookieListener);
                 if (changeInfo.cookie.domain === "addons.mozilla.org" && changeInfo.cookie.name === "api_auth_token" && !changeInfo.removed && changeInfo.cause === "explicit") {
                     browser.tabs.remove(tab.id);
                 }
-            });
+            };
+            browser.cookies.onChanged.addListener(cookieListener);
             break;
     }
 });
