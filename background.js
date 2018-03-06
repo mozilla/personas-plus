@@ -44,7 +44,7 @@ browser.runtime.onMessage.addListener(async (message) => {
 async function getAMOCookie() {
     let amoCookie = await browser.cookies.get({
         url: "https://addons.mozilla.org",
-        name: "api_auth_token"
+        name: "frontend_auth_token"
     });
     return amoCookie;
 }
