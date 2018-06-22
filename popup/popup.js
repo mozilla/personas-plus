@@ -63,8 +63,8 @@ function enablePersona(persona) {
                     headerURL: reader.result,
                 },
                 colors: {
-                    accentcolor: persona.theme_data.accentcolor,
-                    textcolor: persona.theme_data.textcolor
+                    accentcolor: persona.theme_data.accentcolor || "white",
+                    textcolor: persona.theme_data.textcolor || "black"
                 }
             };
             browser.theme.update(data);
