@@ -49,27 +49,32 @@ async function getInstalled() {
 }
 getInstalled();
 
-async function enablePersona(persona) {
-    let response = await fetch(persona.theme_data.headerURL);
-    let blob = await response.blob();
+function enablePersona(persona) {
+    let req = new XMLHttpRequest();
+    req.open("GET", persona.theme_data.headerURL);
+    req.responseType = 'blob';
+    req.onload = function() {
+        let blob = req.response;
 
-    var reader = new FileReader();
-    reader.addEventListener("load", () => {
-        let data = {
-            images: {
-                headerURL: reader.result,
-            },
-            colors: {
-                accentcolor: persona.theme_data.accentcolor,
-                textcolor: persona.theme_data.textcolor
-            }
-        };
-        browser.theme.update(data);
-        browser.storage.local.set({
-            "currentPersona": data
+        var reader = new FileReader();
+        reader.addEventListener("load", () => {
+            let data = {
+                images: {
+                    headerURL: reader.result,
+                },
+                colors: {
+                    accentcolor: persona.theme_data.accentcolor,
+                    textcolor: persona.theme_data.textcolor
+                }
+            };
+            browser.theme.update(data);
+            browser.storage.local.set({
+                "currentPersona": data
+            });
         });
-    });
-    reader.readAsDataURL(blob);
+        reader.readAsDataURL(blob);
+    };
+    req.send();
 }
 
 function reset() {

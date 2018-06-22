@@ -39,8 +39,11 @@
     "management",
     "https://addons.mozilla.org/api/*",
     "https://addons.cdn.mozilla.net/user-media/*",
+    "https://d1sp2sgy246t7c.cloudfront.net/user-media/*",
     "storage",
-    "theme"],
+    "theme",
+    "webRequest",
+    "webRequestBlocking"],
 
   "version": "2.0.1"
 }
