@@ -1,9 +1,7 @@
 Personas Plus
 -------------
 
-Personas are free, easy-to-install "skins" for Firefox. Personas Plus extends
-that built-in functionality to give you even more control and easier access to
-new, popular, and your own favorite Personas.
-
-Install Personas Plus from
-[addons.mozilla.org](https://addons.mozilla.org/en-US/firefox/addon/personas-plus/)
+Personas, also known as lightweight themes, is a way of creating Firefox themes,
+now deprecated. To learn about its replacement, check out the
+[https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/Themes/Theme_concepts](documentation on themes)
+on MDN.

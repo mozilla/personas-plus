@@ -11,6 +11,12 @@ async function restorePersona() {
 
 restorePersona();
 
+browser.runtime.onInstalled.addListener((details) => {
+    if (details.reason === "install" || details.reason === "update") {
+        browser.tabs.create({ "url": "/notification/notification.html" });
+    }
+});
+
 browser.management.onEnabled.addListener((addon) => {
     if (addon.type === "theme") {
         browser.storage.local.remove("currentPersona");
